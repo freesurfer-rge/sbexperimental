@@ -8,7 +8,7 @@ INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIRS} )
 FIND_PACKAGE(XercesC REQUIRED)
 INCLUDE_DIRECTORIES( ${XercesC_INCLUDE_DIRS} )
 
-SET(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Wextra -Wthread-safety -pedantic -Weffc++ --system-header-prefix=boost")
+SET(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Wextra -Wthread-safety -pedantic -Weffc++")
 
 INCLUDE_DIRECTORIES( ./include )
 
