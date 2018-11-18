@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SignalBox>
+  <ControlledItems>
+    <SignalHead id="00:00:00:01" aspectCount="4" >
+      <OutputPin id="GPIO02" control="Red" />
+      <OutputPin id="GPIO21" control="Yellow1" />
+      <OutputPin id="GPIO16" control="Yellow2" />
+      <OutputPin id="GPIO05" control="Green" />
+    </SignalHead>
+  </ControlledItems>
+</SignalBox>

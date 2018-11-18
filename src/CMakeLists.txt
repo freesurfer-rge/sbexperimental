@@ -1,0 +1,14 @@
+SET( srcs )
+
+LIST(APPEND srcs xercesguard.cpp)
+LIST(APPEND srcs xercesstringdeleter.cpp)
+LIST(APPEND srcs itemid.cpp)
+LIST(APPEND srcs configreader.cpp)
+LIST(APPEND srcs signalheaddata.cpp)
+LIST(APPEND srcs signalheadpins.cpp)
+LIST(APPEND srcs outputpin.cpp)
+LIST(APPEND srcs signalstate.cpp)
+LIST(APPEND srcs mockoutputpin.cpp)
+LIST(APPEND srcs signalhead.cpp)
+
+ADD_LIBRARY( signalbox ${srcs} )
