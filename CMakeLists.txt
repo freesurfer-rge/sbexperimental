@@ -9,7 +9,7 @@ FIND_PACKAGE(XercesC REQUIRED)
 INCLUDE_DIRECTORIES(SYSTEM ${XercesC_INCLUDE_DIRS} )
 
 # SET(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Wextra -Wthread-safety -pedantic -Weffc++")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -Wall -Wextra -Weffc++ -pedantic")
 
 INCLUDE_DIRECTORIES( ./include )
 
