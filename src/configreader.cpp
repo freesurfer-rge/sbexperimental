@@ -26,7 +26,11 @@ namespace Signalbox {
     return std::unique_ptr<XMLCh,xercesstringdeleter>(tc,xercesstringdeleter());
   }
   
-  ConfigReader::ConfigReader( const std::string& filename ) {
+  ConfigReader::ConfigReader( const std::string& filename ) : configFileParser(),
+							      ATTR_id(),
+							      ATTR_aspectCount(),
+							      TAG_OutputPin(),
+							      ATTR_OutputPin_control() {
     if( !boost::filesystem::exists(filename) ) {
       throw std::runtime_error( filename + " NOT FOUND" );
     }
