@@ -12,7 +12,7 @@ INCLUDE_DIRECTORIES(SYSTEM ${XercesC_INCLUDE_DIRS} )
 
 # Sort out compiler flags
 IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  SET(PLATFORM_CXX_FLAGS "-std=c++11 -Wall -Wextra -Wthread-safety -pedantic -Weffc++")
+  SET(PLATFORM_CXX_FLAGS "-std=c++11 -Wall -Wextra -Wthread-safety -Wpedantic -Wc++11-compat-pedantic -Weffc++")
 ELSEIF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   SET(PLATFORM_CXX_FLAGS "-std=c++11 -pthread -Wall -Wextra -Weffc++ -pedantic")
 ENDIF()
