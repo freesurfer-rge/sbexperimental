@@ -9,6 +9,10 @@
 namespace Signalbox {
   class SignalHeadData : public ControlledItem {
   public:
+    SignalHeadData() : ControlledItem(),
+		       aspectCount(0),
+		       pinData() {}
+    
     char aspectCount;
     std::map<SignalHeadPins,char> pinData;
 

@@ -9,6 +9,8 @@
 namespace Signalbox {
   class ControlledItem {
   public:
+    ControlledItem() : id(0) {}
+    
     ItemId id;
 
     virtual ~ControlledItem() {}

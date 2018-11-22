@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 }
 
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // =========================================
 
@@ -339,7 +339,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 }
 
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(FlashingAspects)
 
@@ -438,7 +438,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   BOOST_CHECK( seenRedOn );
 }
   
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
 // =================================
 
@@ -495,6 +495,6 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,true), std::range_error );
 }
 
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE_END();
+BOOST_AUTO_TEST_SUITE_END()
