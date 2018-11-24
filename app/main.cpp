@@ -2,14 +2,17 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <map>
 
 #include <boost/program_options.hpp>
 
 #include "configreader.hpp"
 #include "outputpin.hpp"
-#include "consoleoutputpin.hpp"
 #include "signalheaddata.hpp"
 #include "signalhead.hpp"
+
+#include "consoleloop.hpp"
+#include "consoleoutputpin.hpp"
 
 // ===================================================
 
@@ -53,7 +56,7 @@ int main(int ac, char* av[]) {
 
     Signalbox::OutputPin::sample = std::unique_ptr<Signalbox::OutputPin>(new Signalbox::ConsoleOutputPin());
 
-    std::vector<std::unique_ptr<Signalbox::SignalHead>> sigs;
+    std::map<Signalbox::ItemId,std::unique_ptr<Signalbox::SignalHead>> sigs;
     for( auto it=configItems.begin();
 	 it!= configItems.end();
 	 ++it ) {
@@ -63,16 +66,18 @@ int main(int ac, char* av[]) {
 	throw std::runtime_error("Could  not convert to SignalHeadData");
       }
       auto nxt = Signalbox::SignalHead::create(sd);
-      sigs.push_back(std::move(nxt));
+      sigs[nxt->getId()]= std::move(nxt);
     }
 
     std::cout << "Signals created" << std::endl;
 
     for( auto it=sigs.begin(); it!=sigs.end(); ++it ) {
-      (*it)->Activate();
+      (*it).second->Activate();
     }
 
     std::cout << "Signals activated" << std::endl;
+
+    consoleloop( sigs );
   }
   catch(std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;
