@@ -5,10 +5,18 @@
 
 #include <boost/program_options.hpp>
 
+#include "configreader.hpp"
+#include "outputpin.hpp"
+#include "consoleoutputpin.hpp"
+#include "signalheaddata.hpp"
+
+// ===================================================
+
 int main(int ac, char* av[]) {
+
   try {
-    std::string configOpt = "configuration-file";
     std::string configFile;
+    std::string configOpt = "configuration-file";
     namespace bpo = boost::program_options;
     
     bpo::options_description desc("Allowed Options");
@@ -31,11 +39,22 @@ int main(int ac, char* av[]) {
     } else {
       throw std::runtime_error("Configuration file not specified");
     }
+
+    // -----
+
+    Signalbox::ConfigReader cr(configFile);
+    std::vector< std::unique_ptr<Signalbox::ControlledItem> > configItems;
+    cr.ReadConfiguration( configItems );
+
+    // -----
+
+    Signalbox::OutputPin::sample = std::unique_ptr<Signalbox::OutputPin>(new Signalbox::ConsoleOutputPin());
   }
   catch(std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return EXIT_FAILURE;
   }
+
   
   return EXIT_SUCCESS;
 }
