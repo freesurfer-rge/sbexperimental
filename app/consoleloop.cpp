@@ -47,6 +47,18 @@ namespace Signalbox {
 	  std::cout << (*it) << "==";
 	}
 	std::cout << std::endl;
+
+	if( tokens.size() != 3 ) {
+	  std::cerr << "Did not find three tokens" << std::endl;
+	  continue;
+	}
+
+	ItemId target;
+	SignalState state;
+	bool flash;
+
+	target.Parse(tokens.at(0));
+	
       }
     }
   }
