@@ -43,11 +43,6 @@ namespace Signalbox {
 	std::vector<std::string> tokens;
 	stringtotokens(inputLine, tokens);
 
-	for( auto it=tokens.begin(); it!=tokens.end(); ++it ) {
-	  std::cout << (*it) << "==";
-	}
-	std::cout << std::endl;
-
 	if( tokens.size() != 3 ) {
 	  std::cerr << "Did not find three tokens" << std::endl;
 	  continue;
@@ -55,12 +50,23 @@ namespace Signalbox {
 
 	ItemId target;
 	SignalState state;
-	bool flash;
+	SignalFlash flash;
 
-	target.Parse(tokens.at(0));
-	Parse(tokens.at(1), state);
-	
-	
+	try {
+	  target.Parse(tokens.at(0));
+	  Parse(tokens.at(1), state);
+	  Parse(tokens.at(2), flash);
+	}
+	catch( std::exception& e ) {
+	  std::cerr << e.what() << std::endl;
+	  continue;
+	}
+
+	if( sigs.count(target) != 0 ) {
+	  sigs[target]->SetState(state,flash);
+	} else {
+	  std::cerr << "Unrecognised Id: " << target << std::endl;
+	}
       }
     }
   }
