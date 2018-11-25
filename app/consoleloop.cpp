@@ -58,6 +58,8 @@ namespace Signalbox {
 	bool flash;
 
 	target.Parse(tokens.at(0));
+	Parse(tokens.at(1), state);
+	
 	
       }
     }

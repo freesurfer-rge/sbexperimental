@@ -10,5 +10,6 @@ LIST(APPEND srcs outputpin.cpp)
 LIST(APPEND srcs signalstate.cpp)
 LIST(APPEND srcs mockoutputpin.cpp)
 LIST(APPEND srcs signalhead.cpp)
+LIST(APPEND srcs signalflash.cpp)
 
 ADD_LIBRARY( signalbox ${srcs} )
