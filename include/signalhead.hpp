@@ -9,13 +9,14 @@
 #include "signalheaddata.hpp"
 #include "outputpin.hpp"
 #include "signalstate.hpp"
+#include "signalflash.hpp"
 
 namespace Signalbox {
   class SignalHead {
   public:
     ~SignalHead() {
       if( this->t.joinable() ) {
-	this->SetState(SignalState::Done,false);
+	this->SetState(SignalState::Done,SignalFlash::Steady);
 	this->t.join();
       }
     }
@@ -40,7 +41,7 @@ namespace Signalbox {
 
     void RunSignal();
 
-    void SetState(const SignalState s, const bool flashing) {
+    void SetState(const SignalState s, const SignalFlash f) {
       if( (s == SignalState::Yellow) && (this->pins.size() < 3) ) {
 	throw std::range_error("Not enough pins for Yellow");
       }
@@ -51,7 +52,7 @@ namespace Signalbox {
       {
 	std::lock_guard<std::mutex> lg(this->mtx);
 	this->state = s;
-	this->flash = flashing;
+	this->flash = f;
       }
       this->cv.notify_one();
     }
@@ -69,7 +70,7 @@ namespace Signalbox {
     
     ItemId id;
     SignalState state, savedState;
-    bool flash, savedFlash;
+    SignalFlash flash, savedFlash;
 
     std::map<SignalHeadPins,PinSwitch> pins;
 
@@ -81,7 +82,7 @@ namespace Signalbox {
     SignalHead(const ItemId sigId) :
       id(sigId),
       state(SignalState::Inactive), savedState(SignalState::Inactive),
-      flash(false), savedFlash(false),
+      flash(SignalFlash::Steady), savedFlash(SignalFlash::Steady),
       pins(),
       t(),
       mtx(),

@@ -176,13 +176,13 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 
   // Change signal to steady green
-  sig->SetState(Signalbox::SignalState::Green,false);
+  sig->SetState(Signalbox::SignalState::Green,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 
   // Change back to steady Red
-  sig->SetState(Signalbox::SignalState::Red,false);
+  sig->SetState(Signalbox::SignalState::Red,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
@@ -233,21 +233,21 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 
   // Set steady yellow
-  sig->SetState(Signalbox::SignalState::Yellow,false);
+  sig->SetState(Signalbox::SignalState::Yellow,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 
   // Set steady green
-  sig->SetState(Signalbox::SignalState::Green,false);
+  sig->SetState(Signalbox::SignalState::Green,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 
   // Back to steady red
-  sig->SetState(Signalbox::SignalState::Red,false);
+  sig->SetState(Signalbox::SignalState::Red,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
@@ -307,7 +307,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
   
   // Set steady yellow
-  sig->SetState(Signalbox::SignalState::Yellow,false);
+  sig->SetState(Signalbox::SignalState::Yellow,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
@@ -315,7 +315,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 
   // Set steady double yellow
-  sig->SetState(Signalbox::SignalState::DoubleYellow,false);
+  sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 
   // Set steady green
-  sig->SetState(Signalbox::SignalState::Green,false);
+  sig->SetState(Signalbox::SignalState::Green,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
@@ -331,7 +331,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[greenPin]->isOn );
 
   // Back to steady red
-  sig->SetState(Signalbox::SignalState::Red,false);
+  sig->SetState(Signalbox::SignalState::Red,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
   BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
@@ -389,7 +389,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   auto checkForTime = std::chrono::seconds(2);
   
   // Set to flashing green
-  sig->SetState(Signalbox::SignalState::Green, true);
+  sig->SetState(Signalbox::SignalState::Green, Signalbox::SignalFlash::Flashing);
   PauseForSignal();
   auto start = std::chrono::system_clock::now();
   do {
@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   
   // And flashing red
   seenGreenOn = seenGreenOff = seenRedOn = seenRedOff = false;
-  sig->SetState(Signalbox::SignalState::Red, true);
+  sig->SetState(Signalbox::SignalState::Red, Signalbox::SignalFlash::Flashing);
   PauseForSignal();
   start = std::chrono::system_clock::now();
   do {
@@ -464,10 +464,14 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sig->Activate();
 
   // Attempt to set incorrect aspects
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow,false), std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow,true), std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,false), std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,true), std::range_error );
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow,Signalbox::SignalFlash::Steady),
+		     std::range_error );
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow,Signalbox::SignalFlash::Flashing),
+		     std::range_error );
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Steady),
+		     std::range_error );
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Flashing),
+		     std::range_error );
 }
 
 BOOST_AUTO_TEST_CASE(ThreeAspect)
@@ -491,8 +495,10 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   sig->Activate();
 
   // Attempt to set incorrect aspects
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,false), std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,true), std::range_error );
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Steady),
+		     std::range_error );
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Flashing),
+		     std::range_error );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -33,7 +33,7 @@ namespace Signalbox {
       this->savedState = this->state;
       this->UpdatePinActivation( this->state );
 
-      if( !this->savedFlash ) {
+      if( this->savedFlash == SignalFlash::Steady ) {
 	this->TurnPinsOnOff( true );
 	this->cv.wait( lck, [this](){return this->HaveUpdateOrDone();} );      
       } else {
