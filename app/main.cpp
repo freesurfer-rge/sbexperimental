@@ -14,39 +14,22 @@
 #include "consoleloop.hpp"
 #include "consoleoutputpin.hpp"
 
+#include "cmdlineopts.hpp"
+
 // ===================================================
 
 int main(int ac, char* av[]) {
 
   try {
-    std::string configFile;
-    std::string configOpt = "configuration-file";
-    namespace bpo = boost::program_options;
-    
-    bpo::options_description desc("Allowed Options");
-    desc.add_options()
-      ("help", "Show help message")
-      ((configOpt+",f").c_str(), bpo::value<std::string>(&configFile), "Path to configuration XML file")
-      ;
-    
-    bpo::variables_map vm;
-    bpo::store(bpo::parse_command_line(ac, av, desc), vm);
-    bpo::notify(vm);
-    
-    if( vm.count("help") ) {
-      std::cout << desc << std::endl;
+    Signalbox::CmdLineOpts opts;
+
+    opts.Populate(ac, av);
+    if( opts.helpMessagePrinted ) {
       return EXIT_SUCCESS;
     }
-    
-    if( vm.count(configOpt.c_str()) ) {
-      std::cout << "Configuration file: " << configFile << std::endl;
-    } else {
-      throw std::runtime_error("Configuration file not specified");
-    }
-
     // -----
 
-    Signalbox::ConfigReader cr(configFile);
+    Signalbox::ConfigReader cr(opts.configFilePath);
     std::vector< std::unique_ptr<Signalbox::ControlledItem> > configItems;
     cr.ReadConfiguration( configItems );
 

@@ -2,6 +2,7 @@ SET( srcs main.cpp )
 
 LIST(APPEND srcs consoleoutputpin.cpp)
 LIST(APPEND srcs consoleloop.cpp)
+LIST(APPEND srcs cmdlineopts.cpp)
 
 ADD_EXECUTABLE(Signalbox ${srcs})
 
