@@ -4,8 +4,6 @@
 #include <string>
 #include <map>
 
-#include <boost/program_options.hpp>
-
 #include "configreader.hpp"
 #include "outputpin.hpp"
 #include "signalheaddata.hpp"
@@ -27,6 +25,7 @@ int main(int ac, char* av[]) {
     if( opts.helpMessagePrinted ) {
       return EXIT_SUCCESS;
     }
+    
     // -----
 
     Signalbox::ConfigReader cr(opts.configFilePath);
@@ -46,7 +45,7 @@ int main(int ac, char* av[]) {
       Signalbox::ControlledItem* ci = (*it).get();
       Signalbox::SignalHeadData* sd = dynamic_cast<Signalbox::SignalHeadData*>( ci );
       if( sd == NULL ) {
-	throw std::runtime_error("Could  not convert to SignalHeadData");
+	throw std::runtime_error("Could not convert to SignalHeadData");
       }
       auto nxt = Signalbox::SignalHead::create(sd);
       sigs[nxt->getId()]= std::move(nxt);
@@ -67,6 +66,5 @@ int main(int ac, char* av[]) {
     return EXIT_FAILURE;
   }
 
-  
   return EXIT_SUCCESS;
 }
