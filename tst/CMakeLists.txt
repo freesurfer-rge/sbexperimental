@@ -5,6 +5,8 @@ LIST(APPEND srcs signalheaddatatest.cpp)
 LIST(APPEND srcs configreadertest.cpp)
 LIST(APPEND srcs mockoutputpintest.cpp)
 LIST(APPEND srcs signalheadtest.cpp)
+LIST(APPEND srcs signalstatetest.cpp)
+LIST(APPEND srcs signalflashtest.cpp)
 
 ADD_EXECUTABLE(SignalboxTest ${srcs})
 

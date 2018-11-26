@@ -1,27 +1,23 @@
 #include <boost/bimap.hpp>
 
-#include "signalstate.hpp"
+#include "signalflash.hpp"
 
 namespace Signalbox {
-  static boost::bimap<SignalState,std::string> convertor;
+  static boost::bimap<SignalFlash,std::string> convertor;
 
   static void initconvertor() {
     typedef decltype(convertor)::value_type pos;
-    convertor.insert( pos(SignalState::Inactive, "Inactive") );
-    convertor.insert( pos(SignalState::Done, "Done") );
-    convertor.insert( pos(SignalState::Red, "Red") );
-    convertor.insert( pos(SignalState::Yellow, "Yellow") );
-    convertor.insert( pos(SignalState::DoubleYellow, "DoubleYellow") );
-    convertor.insert( pos(SignalState::Green, "Green") );
+    convertor.insert( pos(SignalFlash::Steady, "Steady") );
+    convertor.insert( pos(SignalFlash::Flashing, "Flashing") );
   }
   
-  std::ostream& operator<<( std::ostream& os, const SignalState s ) {
+  std::ostream& operator<<( std::ostream& os, const SignalFlash s ) {
     os << ToString( s );
     
     return os;
   }
 
-  std::string ToString( const SignalState s ) {
+  std::string ToString( const SignalFlash s ) {
     if( convertor.empty() ) {
       initconvertor();
     }
@@ -32,7 +28,7 @@ namespace Signalbox {
     }
     catch( std::out_of_range& e ) {
       std::stringstream msg;
-      msg << "Unrecognised SignalState: ";
+      msg << "Unrecognised SignalFlash: ";
       msg << static_cast<int>(s);
       throw std::runtime_error(msg.str());
     }
@@ -40,7 +36,7 @@ namespace Signalbox {
     return res;
   }
 
-  void Parse( const std::string str, SignalState& s ) {
+  void Parse( const std::string str, SignalFlash& s ) {
     if( convertor.empty() ) {
       initconvertor();
     }
@@ -52,7 +48,7 @@ namespace Signalbox {
       std::stringstream msg;
       msg << "Could not parse '";
       msg << str;
-      msg << "' to SignalState";
+      msg << "' to SignalFlash";
       throw std::out_of_range(msg.str());
     }
   }

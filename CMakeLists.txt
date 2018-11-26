@@ -3,7 +3,7 @@ PROJECT(SignalBox)
 
 # Detect Boost
 set(Boost_USE_STATIC_LIBS ON)
-FIND_PACKAGE(Boost REQUIRED COMPONENTS filesystem system)
+FIND_PACKAGE(Boost REQUIRED COMPONENTS filesystem system program_options)
 INCLUDE_DIRECTORIES(SYSTEM ${Boost_INCLUDE_DIRS} )
 
 # Detect XercesC
@@ -23,3 +23,4 @@ INCLUDE_DIRECTORIES( ./include )
 
 ADD_SUBDIRECTORY( src )
 ADD_SUBDIRECTORY( tst )
+ADD_SUBDIRECTORY( app )
