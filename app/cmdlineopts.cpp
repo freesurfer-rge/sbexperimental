@@ -23,10 +23,10 @@ namespace Signalbox {
       ((configOpt+",f").c_str(), bpo::value<std::string>(&(this->configFilePath)), "Path to configuration XML file")
       ;
     
-    std::string outputVals = OutputSelector::ListOutputSelectors();
-    std::string outputDesc = std::string("Output option (") + outputVals + ")";
+    std::string outputDests = OutputSelector::ListOutputSelectors();
+    std::string outputDesc = std::string("Output destination (") + outputDests + ")";
     desc.add_options()
-      ((outputOpt+",o").c_str(), bpo::value<std::string>(&(this->outputOption)), outputDesc.c_str());
+      ((outputOpt+",o").c_str(), bpo::value<std::string>(&(this->outputDestination)), outputDesc.c_str());
     
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
@@ -42,6 +42,12 @@ namespace Signalbox {
       std::cout << "Configuration file: " << this->configFilePath << std::endl;
     } else {
       throw std::runtime_error("Configuration file not specified");
+    }
+
+    if( vm.count(outputOpt.c_str()) ) {
+      std::cout << "Output destination: " << this->outputDestination << std::endl;
+    } else {
+      throw std::runtime_error("Output option not specified");
     }
   }
 }

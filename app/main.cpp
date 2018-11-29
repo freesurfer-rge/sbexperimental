@@ -36,7 +36,8 @@ int main(int ac, char* av[]) {
     
     // -----
 
-    Signalbox::OutputPin::sample = Signalbox::OutputSelector::GetSelector(opts.outputOption)->GetSample();
+    Signalbox::OutputSelector* dest = Signalbox::OutputSelector::GetSelector(opts.outputDestination);
+    Signalbox::OutputPin::sample = dest->GetSample();
 
     std::map<Signalbox::ItemId,std::unique_ptr<Signalbox::SignalHead>> sigs;
     for( auto it=configItems.begin();

@@ -10,7 +10,7 @@ namespace Signalbox {
     
     bool helpMessagePrinted;
     std::string configFilePath;
-    std::string outputOption;
+    std::string outputDestination;
 
     void Populate( int argc, char* argv[] );
   };
