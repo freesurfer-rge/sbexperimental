@@ -5,9 +5,9 @@ namespace Signalbox {
   class ConsoleOutputSelector : public OutputSelector {
   public:
     ConsoleOutputSelector() {
-      this->AddSelf();
+      this->AddSelector( std::string("console"), this );
     }
-  protected:
-    virtual void AddSelf() override;
+
+    virtual std::unique_ptr<OutputPin> GetSample() override;
   };
 }

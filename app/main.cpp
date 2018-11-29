@@ -10,9 +10,9 @@
 #include "signalhead.hpp"
 
 #include "consoleloop.hpp"
-#include "consoleoutputpin.hpp"
 
 #include "cmdlineopts.hpp"
+#include "outputselector.hpp"
 
 // ===================================================
 
@@ -36,7 +36,7 @@ int main(int ac, char* av[]) {
     
     // -----
 
-    Signalbox::OutputPin::sample = std::unique_ptr<Signalbox::OutputPin>(new Signalbox::ConsoleOutputPin());
+    Signalbox::OutputPin::sample = Signalbox::OutputSelector::GetSelector(opts.outputOption)->GetSample();
 
     std::map<Signalbox::ItemId,std::unique_ptr<Signalbox::SignalHead>> sigs;
     for( auto it=configItems.begin();

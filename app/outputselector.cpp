@@ -4,7 +4,9 @@
 namespace Signalbox {
   std::map<std::string,OutputSelector*> OutputSelector::selectors;
 
-  std::string OutputSelector::chosen;
+  OutputSelector* OutputSelector::GetSelector( std::string name ) {
+    return OutputSelector::selectors.at(name);
+  }
   
   std::string OutputSelector::ListOutputSelectors() {
     std::string res;

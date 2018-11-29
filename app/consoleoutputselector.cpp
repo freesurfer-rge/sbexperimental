@@ -1,9 +1,10 @@
+#include "consoleoutputpin.hpp"
 #include "consoleoutputselector.hpp"
 
 namespace Signalbox {
   static ConsoleOutputSelector cos;
 
-  void ConsoleOutputSelector::AddSelf() {
-    this->AddSelector( std::string("console"), this );
+  std::unique_ptr<OutputPin> ConsoleOutputSelector::GetSample() {
+    return std::unique_ptr<Signalbox::OutputPin>(new Signalbox::ConsoleOutputPin() );
   }
 }
