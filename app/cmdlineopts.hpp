@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <string>
@@ -6,7 +7,8 @@ namespace Signalbox {
   class CmdLineOpts {
   public:
     CmdLineOpts() : helpMessagePrinted(false),
-		    configFilePath() {}
+		    configFilePath(),
+		    outputDestination() {}
     
     bool helpMessagePrinted;
     std::string configFilePath;
