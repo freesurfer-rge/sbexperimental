@@ -4,6 +4,8 @@
 
 #include "cmdlineopts.hpp"
 
+#include "outputselector.hpp"
+
 // -------------------------
 
 namespace bpo = boost::program_options;
@@ -13,12 +15,21 @@ namespace bpo = boost::program_options;
 namespace Signalbox {
   void CmdLineOpts::Populate( int argc, char* argv[] ) {
     std::string configOpt = "configuration-file";
+    std::string outputOpt = "output";
 
     bpo::options_description desc("Allowed Options");
     desc.add_options()
       ("help", "Show help message")
       ((configOpt+",f").c_str(), bpo::value<std::string>(&(this->configFilePath)), "Path to configuration XML file")
       ;
+
+    std::cout << __FUNCTION__ << "About to call ListOutputSelectors()" << std::endl;
+    
+    std::string outputVals = OutputSelector::ListOutputSelectors();
+    std::string outputDesc = std::string("Output option (") + outputVals + ")";
+    std::cout << __FUNCTION__ << outputDesc;
+    desc.add_options()
+      ((outputOpt+",o").c_str(), bpo::value<std::string>(&(OutputSelector::chosen)), outputDesc.c_str());
     
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
