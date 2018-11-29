@@ -5,6 +5,7 @@ LIST(APPEND srcs consoleloop.cpp)
 LIST(APPEND srcs cmdlineopts.cpp)
 LIST(APPEND srcs outputselector.cpp)
 LIST(APPEND srcs consoleoutputselector.cpp)
+LIST(APPEND srcs pigpiooutputselector.cpp)
 
 ADD_EXECUTABLE(Signalbox ${srcs})
 

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "outputselector.hpp"
 
 namespace Signalbox {
@@ -21,7 +20,6 @@ namespace Signalbox {
       res += it->first;
       res += "|";
     }
-    std::cout << __FUNCTION__ << " : " << res << std::endl;
     res.pop_back();
 
     return res;

@@ -25,7 +25,6 @@ namespace Signalbox {
     
     std::string outputVals = OutputSelector::ListOutputSelectors();
     std::string outputDesc = std::string("Output option (") + outputVals + ")";
-    std::cout << __FUNCTION__ << outputDesc;
     desc.add_options()
       ((outputOpt+",o").c_str(), bpo::value<std::string>(&(this->outputOption)), outputDesc.c_str());
     
