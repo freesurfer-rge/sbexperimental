@@ -4,16 +4,14 @@
 
 namespace Signalbox {
   void ConsoleOutputPin::TurnOn() {
-    // Cast so a number is output (not the corresponding character)
-    std::cout << "Pin : " << static_cast<int>(this->pin) << " ON" << std::endl;
+    std::cout << "Pin : " << this->pin << " ON" << std::endl;
   }
   
   void ConsoleOutputPin::TurnOff() {
-    // Cast so a number is output (not the corresponding character)
-    std::cout << "Pin : " << static_cast<int>(this->pin) << " OFF" << std::endl;
+    std::cout << "Pin : " << this->pin << " OFF" << std::endl;
   }
 
-  std::unique_ptr<OutputPin> ConsoleOutputPin::manufacture(const char pinId) {
+  std::unique_ptr<OutputPin> ConsoleOutputPin::manufacture(const std::string pinId) {
     auto res = std::unique_ptr<ConsoleOutputPin>(new ConsoleOutputPin());
     res->pin = pinId;
 

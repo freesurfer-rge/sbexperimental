@@ -5,15 +5,15 @@
 namespace Signalbox {
   class ConsoleOutputPin : public OutputPin {
   public:
-    ConsoleOutputPin() : pin(-1) {}
+    ConsoleOutputPin() : pin(std::string("UNASSIGNED")) {}
 
-    char pin;
+    std::string pin;
 
     virtual void TurnOn() override;
 
     virtual void TurnOff() override;
 
   protected:
-    virtual std::unique_ptr<OutputPin> manufacture(const char pindId) override;
+    virtual std::unique_ptr<OutputPin> manufacture(const std::string pindId) override;
   };
 }
