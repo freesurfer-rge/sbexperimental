@@ -8,6 +8,6 @@ namespace Signalbox {
       this->AddSelector( std::string("console"), this );
     }
 
-    virtual std::unique_ptr<OutputPin> GetSample() override;
+    virtual std::unique_ptr<PinManager> CreatePinManager() override;
   };
 }
