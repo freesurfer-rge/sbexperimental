@@ -9,6 +9,6 @@ namespace Signalbox {
   public:
     virtual ~PinManager() {}
 
-    virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pidId) = 0;
+    virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) = 0;
   };
 }
