@@ -25,8 +25,8 @@ BOOST_AUTO_TEST_SUITE( Creation )
 
 BOOST_AUTO_TEST_CASE(TwoAspect)
 {
-  const char redPin = 12;
-  const char greenPin = 15;
+  const std::string redPin = "12";
+  const std::string greenPin = "15";
   Signalbox::SignalHeadData sd;
   sd.aspectCount = 2;
   sd.id = Signalbox::ItemId::Random();
@@ -54,9 +54,9 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
 
 BOOST_AUTO_TEST_CASE(ThreeAspect)
 {
-  const char redPin = 1;
-  const char yellow1Pin = 2;
-  const char greenPin = 3;
+  const std::string redPin = "GPIO01";
+  const std::string yellow1Pin = "GPIO02";
+  const std::string greenPin = "GPIO03";
 
   Signalbox::SignalHeadData sd;
   sd.aspectCount = 3;
@@ -92,10 +92,10 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
 
 BOOST_AUTO_TEST_CASE(FourAspect)
 {
-  const char redPin = 1;
-  const char yellow1Pin = 2;
-  const char yellow2Pin = 7;
-  const char greenPin = 3;
+  const std::string redPin = "1";
+  const std::string yellow1Pin = "2";
+  const std::string yellow2Pin = "7";
+  const std::string greenPin = "3";
 
   Signalbox::SignalHeadData sd;
   sd.aspectCount = 4;
@@ -142,8 +142,8 @@ BOOST_AUTO_TEST_SUITE(SteadyAspects)
 
 BOOST_AUTO_TEST_CASE(TwoAspect)
 {
-  const char redPin = 15;
-  const char greenPin = 12;
+  const std::string redPin = "15";
+  const std::string greenPin = "12";
   Signalbox::SignalHeadData sd;
   sd.aspectCount = 2;
   sd.id = Signalbox::ItemId::Random();
@@ -190,9 +190,9 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
 
 BOOST_AUTO_TEST_CASE(ThreeAspect)
 {
-  const char redPin = 1;
-  const char yellow1Pin = 2;
-  const char greenPin = 3;
+  const std::string redPin = "GPIO01";
+  const std::string yellow1Pin = "GPIO02";
+  const std::string greenPin = "GPIO03";
 
   Signalbox::SignalHeadData sd;
   sd.aspectCount = 3;
@@ -256,10 +256,10 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
 
 BOOST_AUTO_TEST_CASE(FourAspect)
 {
-  const char redPin = 1;
-  const char yellow1Pin = 2;
-  const char yellow2Pin = 7;
-  const char greenPin = 3;
+  const std::string redPin = "1";
+  const std::string yellow1Pin = "2";
+  const std::string yellow2Pin = "7";
+  const std::string greenPin = "3";
 
   Signalbox::SignalHeadData sd;
   sd.aspectCount = 4;
@@ -345,8 +345,8 @@ BOOST_AUTO_TEST_SUITE(FlashingAspects)
 
 BOOST_AUTO_TEST_CASE(TwoAspect)
 {
-  const char redPin = 5;
-  const char greenPin = 18;
+  const std::string redPin = "GPIO05";
+  const std::string greenPin = "GPIO18";
   Signalbox::SignalHeadData sd;
   sd.aspectCount = 2;
   sd.id = Signalbox::ItemId::Random();
