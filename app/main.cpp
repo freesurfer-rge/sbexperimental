@@ -5,7 +5,7 @@
 #include <map>
 
 #include "configreader.hpp"
-#include "outputpin.hpp"
+#include "pinmanager.hpp"
 #include "signalheaddata.hpp"
 #include "signalhead.hpp"
 
@@ -37,7 +37,7 @@ int main(int ac, char* av[]) {
     // -----
 
     Signalbox::OutputSelector* dest = Signalbox::OutputSelector::GetSelector(opts.outputDestination);
-    Signalbox::OutputPin::sample = dest->GetSample();
+    std::unique_ptr<Signalbox::PinManager> pm = dest->CreatePinManager();
 
     std::map<Signalbox::ItemId,std::unique_ptr<Signalbox::SignalHead>> sigs;
     for( auto it=configItems.begin();
@@ -48,7 +48,7 @@ int main(int ac, char* av[]) {
       if( sd == NULL ) {
 	throw std::runtime_error("Could not convert to SignalHeadData");
       }
-      auto nxt = Signalbox::SignalHead::create(sd);
+      auto nxt = Signalbox::SignalHead::create(sd, pm.get());
       sigs[nxt->getId()]= std::move(nxt);
     }
 

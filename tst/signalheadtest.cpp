@@ -2,7 +2,7 @@
 
 #include "signalhead.hpp"
 
-#include "mockoutputpinfixture.hpp"
+#include "mockpinmanagerfixture.hpp"
 
 // =========================================
 
@@ -17,7 +17,7 @@ void PauseForSignal() {
 // =========================================
 
 
-BOOST_FIXTURE_TEST_SUITE( SignalHead, MockOutputPinFixture )
+BOOST_FIXTURE_TEST_SUITE( SignalHead, MockPinManagerFixture )
 
 // =========================================
 
@@ -34,22 +34,22 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
   // Check both pins have been created
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins.size(), 2 );
+  BOOST_CHECK_EQUAL( this->mpm.DigitalOutputPinCount(), 2 );
 
   // Red pin as expected - and on
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[redPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[redPin]->pin, redPin );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
+  auto red = this->mpm.FetchMockDigitalOutputPin(redPin);
+  BOOST_REQUIRE( red );
+  BOOST_CHECK( red->Get() );
 
   // Green pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[greenPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[greenPin]->pin, greenPin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
+  BOOST_REQUIRE( green );
+  BOOST_CHECK( !green->Get() );
 }
 
 BOOST_AUTO_TEST_CASE(ThreeAspect)
@@ -66,28 +66,27 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
   // Check both pins have been created
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins.size(), 3 );
+  BOOST_CHECK_EQUAL( this->mpm.DigitalOutputPinCount(), 3 );
 
-  
   // Red pin as expected - and on
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[redPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[redPin]->pin, redPin );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
+  auto red = this->mpm.FetchMockDigitalOutputPin(redPin);
+  BOOST_REQUIRE( red );
+  BOOST_CHECK( red->Get() );
 
   // Yellow1 pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[yellow1Pin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[yellow1Pin]->pin, yellow1Pin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
+  auto yellow1 = this->mpm.FetchMockDigitalOutputPin(yellow1Pin);
+  BOOST_REQUIRE( yellow1 );
+  BOOST_CHECK( !yellow1->Get() );
   
   // Green pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[greenPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[greenPin]->pin, greenPin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
+  BOOST_REQUIRE( green );
+  BOOST_CHECK( !green->Get() );
 }
 
 BOOST_AUTO_TEST_CASE(FourAspect)
@@ -106,32 +105,32 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
   // Check both pins have been created
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins.size(), 4 );
-  
+  BOOST_CHECK_EQUAL( this->mpm.DigitalOutputPinCount(), 4 );
+
   // Red pin as expected - and on
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[redPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[redPin]->pin, redPin );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
+  auto red = this->mpm.FetchMockDigitalOutputPin(redPin);
+  BOOST_REQUIRE( red );
+  BOOST_CHECK( red->Get() );
 
   // Yellow1 pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[yellow1Pin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[yellow1Pin]->pin, yellow1Pin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
+  auto yellow1 = this->mpm.FetchMockDigitalOutputPin(yellow1Pin);
+  BOOST_REQUIRE( yellow1 );
+  BOOST_CHECK( !yellow1->Get() );
   
-  // Yellow1 pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[yellow2Pin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[yellow2Pin]->pin, yellow2Pin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow2Pin]->isOn );
+  // Yellow2 pin as expected - and off
+  auto yellow2 = this->mpm.FetchMockDigitalOutputPin(yellow2Pin);
+  BOOST_REQUIRE( yellow2 );
+  BOOST_CHECK( !yellow2->Get() );
   
   // Green pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[greenPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[greenPin]->pin, greenPin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
+  BOOST_REQUIRE( green );
+  BOOST_CHECK( !green->Get() );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -151,41 +150,41 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
   // Check both pins have been created
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins.size(), 2 );
+  BOOST_CHECK_EQUAL( this->mpm.DigitalOutputPinCount(), 2 );
 
   // Red pin as expected - and on
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[redPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[redPin]->pin, redPin );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
+  auto red = this->mpm.FetchMockDigitalOutputPin(redPin);
+  BOOST_REQUIRE( red );
+  BOOST_CHECK( red->Get() );
 
   // Green pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[greenPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[greenPin]->pin, greenPin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
-
+  auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
+  BOOST_REQUIRE( green );
+  BOOST_CHECK( !green->Get() );
+  
   // Activate the signal
   sig->Activate();
 
   // Verify we're still in the right state
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
-
+  BOOST_CHECK( red->Get() );
+  BOOST_CHECK( !green->Get() );
+  
   // Change signal to steady green
-  sig->SetState(Signalbox::SignalState::Green,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalState::Green, Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( !red->Get() );
+  BOOST_CHECK( green->Get() );
 
   // Change back to steady Red
-  sig->SetState(Signalbox::SignalState::Red,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalState::Red, Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( red->Get() );
+  BOOST_CHECK( !green->Get() );
 }
 
 BOOST_AUTO_TEST_CASE(ThreeAspect)
@@ -202,56 +201,56 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
   // Check both pins have been created
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins.size(), 3 );
-  
+  BOOST_CHECK_EQUAL( this->mpm.DigitalOutputPinCount(), 3 );
+
   // Red pin as expected - and on
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[redPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[redPin]->pin, redPin );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
+  auto red = this->mpm.FetchMockDigitalOutputPin(redPin);
+  BOOST_REQUIRE( red );
+  BOOST_CHECK( red->Get() );
 
   // Yellow1 pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[yellow1Pin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[yellow1Pin]->pin, yellow1Pin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
+  auto yellow1 = this->mpm.FetchMockDigitalOutputPin(yellow1Pin);
+  BOOST_REQUIRE( yellow1 );
+  BOOST_CHECK( !yellow1->Get() );
   
   // Green pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[greenPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[greenPin]->pin, greenPin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
+  BOOST_REQUIRE( green );
+  BOOST_CHECK( !green->Get() );
 
   // Activate the signal
   sig->Activate();
 
   // Verify we're still in the right state
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( red->Get() );
+  BOOST_CHECK( !yellow1->Get() );
+  BOOST_CHECK( !green->Get() );
 
   // Set steady yellow
-  sig->SetState(Signalbox::SignalState::Yellow,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalState::Yellow, Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( !red->Get() );
+  BOOST_CHECK( yellow1->Get() );
+  BOOST_CHECK( !green->Get() );
 
   // Set steady green
-  sig->SetState(Signalbox::SignalState::Green,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalState::Green, Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( !red->Get() );
+  BOOST_CHECK( !yellow1->Get() );
+  BOOST_CHECK( green->Get() );
 
   // Back to steady red
-  sig->SetState(Signalbox::SignalState::Red,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalState::Red, Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( red->Get() );
+  BOOST_CHECK( !yellow1->Get() );
+  BOOST_CHECK( !green->Get() );
 }
 
 BOOST_AUTO_TEST_CASE(FourAspect)
@@ -270,76 +269,78 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
   // Check both pins have been created
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins.size(), 4 );
-  
+  BOOST_CHECK_EQUAL( this->mpm.DigitalOutputPinCount(), 4 );
+
   // Red pin as expected - and on
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[redPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[redPin]->pin, redPin );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
+  auto red = this->mpm.FetchMockDigitalOutputPin(redPin);
+  BOOST_REQUIRE( red );
+  BOOST_CHECK( red->Get() );
 
   // Yellow1 pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[yellow1Pin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[yellow1Pin]->pin, yellow1Pin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
+  auto yellow1 = this->mpm.FetchMockDigitalOutputPin(yellow1Pin);
+  BOOST_REQUIRE( yellow1 );
+  BOOST_CHECK( !yellow1->Get() );
   
-  // Yellow1 pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[yellow2Pin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[yellow2Pin]->pin, yellow2Pin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow2Pin]->isOn );
+  // Yellow2 pin as expected - and off
+  auto yellow2 = this->mpm.FetchMockDigitalOutputPin(yellow2Pin);
+  BOOST_REQUIRE( yellow2 );
+  BOOST_CHECK( !yellow2->Get() );
   
   // Green pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[greenPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[greenPin]->pin, greenPin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
-
+  auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
+  BOOST_REQUIRE( green );
+  BOOST_CHECK( !green->Get() );
+  
   // Activate the signal
   sig->Activate();
 
   // Verify we're still in the right state
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow2Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( red->Get() );
+  BOOST_CHECK( !yellow1->Get() );
+  BOOST_CHECK( !yellow2->Get() );
+  BOOST_CHECK( !green->Get() );
   
   // Set steady yellow
-  sig->SetState(Signalbox::SignalState::Yellow,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalState::Yellow, Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow2Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( !red->Get() );
+  BOOST_CHECK( yellow1->Get() );
+  BOOST_CHECK( !yellow2->Get() );
+  BOOST_CHECK( !green->Get() );
 
   // Set steady double yellow
-  sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[yellow2Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( !red->Get() );
+  BOOST_CHECK( yellow1->Get() );
+  BOOST_CHECK( yellow2->Get() );
+  BOOST_CHECK( !green->Get() );
 
   // Set steady green
   sig->SetState(Signalbox::SignalState::Green,Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow2Pin]->isOn );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( !red->Get() );
+  BOOST_CHECK( !yellow1->Get() );
+  BOOST_CHECK( !yellow2->Get() );
+  BOOST_CHECK( green->Get() );
 
   // Back to steady red
   sig->SetState(Signalbox::SignalState::Red,Signalbox::SignalFlash::Steady);
   PauseForSignal();
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow1Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[yellow2Pin]->isOn );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
+  BOOST_CHECK( red->Get() );
+  BOOST_CHECK( !yellow1->Get() );
+  BOOST_CHECK( !yellow2->Get() );
+  BOOST_CHECK( !green->Get() );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+// ==============================================================
 
 BOOST_AUTO_TEST_SUITE(FlashingAspects)
 
@@ -354,23 +355,23 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
   // Check both pins have been created
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins.size(), 2 );
+  BOOST_CHECK_EQUAL( this->mpm.DigitalOutputPinCount(), 2 );
 
   // Red pin as expected - and on
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[redPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[redPin]->pin, redPin );
-  BOOST_CHECK( Signalbox::MockOutputPin::allPins[redPin]->isOn );
+  auto red = this->mpm.FetchMockDigitalOutputPin(redPin);
+  BOOST_REQUIRE( red );
+  BOOST_CHECK( red->Get() );
 
   // Green pin as expected - and off
-  BOOST_REQUIRE( Signalbox::MockOutputPin::allPins[greenPin] );
-  BOOST_CHECK_EQUAL( Signalbox::MockOutputPin::allPins[greenPin]->pin, greenPin );
-  BOOST_CHECK( !Signalbox::MockOutputPin::allPins[greenPin]->isOn );
-
+  auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
+  BOOST_REQUIRE( green );
+  BOOST_CHECK( !green->Get() );
+  
   BOOST_TEST_CHECKPOINT("Initialisation complete");
   
   // Activate the signal
@@ -393,13 +394,13 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   PauseForSignal();
   auto start = std::chrono::system_clock::now();
   do {
-    if( Signalbox::MockOutputPin::allPins[greenPin]->isOn ) {
+    if( green->Get() ) {
       seenGreenOn = true;
     } else {
       seenGreenOff = true;
     }
 
-    if( Signalbox::MockOutputPin::allPins[redPin]->isOn ) {
+    if( red->Get() ) {
       seenRedOn = true;
     } else {
       seenRedOff = true;
@@ -419,13 +420,13 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   PauseForSignal();
   start = std::chrono::system_clock::now();
   do {
-    if( Signalbox::MockOutputPin::allPins[greenPin]->isOn ) {
+    if( green->Get() ) {
       seenGreenOn = true;
     } else {
       seenGreenOff = true;
     }
 
-    if( Signalbox::MockOutputPin::allPins[redPin]->isOn ) {
+    if( red->Get() ) {
       seenRedOn = true;
     } else {
       seenRedOff = true;
@@ -455,7 +456,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
 
   BOOST_TEST_CHECKPOINT("Signal constructed");
@@ -464,13 +465,13 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sig->Activate();
 
   // Attempt to set incorrect aspects
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow,Signalbox::SignalFlash::Steady),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow, Signalbox::SignalFlash::Steady),
 		     std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow,Signalbox::SignalFlash::Flashing),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow, Signalbox::SignalFlash::Flashing),
 		     std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Steady),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Steady),
 		     std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Flashing),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Flashing),
 		     std::range_error );
 }
 
@@ -488,16 +489,16 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd);
+  sig = Signalbox::SignalHead::create(&sd, this->pm);
   BOOST_REQUIRE( sig );
 
   // Activate the signal
   sig->Activate();
 
   // Attempt to set incorrect aspects
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Steady),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Steady),
 		     std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow,Signalbox::SignalFlash::Flashing),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Flashing),
 		     std::range_error );
 }
 

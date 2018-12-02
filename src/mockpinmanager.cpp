@@ -1,0 +1,23 @@
+#include <sstream>
+#include <stdexcept>
+
+#include "mockpinmanager.hpp"
+
+namespace Signalbox {
+  DigitalOutputPin* MockPinManager::CreateDigitalOutputPin(const std::string pinId) {
+    if( this->outputPins.count(pinId) != 0 ) {
+      std::stringstream msg;
+      msg << "Pin '" << pinId << "' already exists";
+      throw std::runtime_error(msg.str());
+    }
+    
+    auto nxt = std::unique_ptr<MockDigitalOutputPin>(new MockDigitalOutputPin());
+    this->outputPins[pinId] = std::move(nxt);
+
+    return this->outputPins[pinId].get();
+  }
+
+  MockDigitalOutputPin* MockPinManager::FetchMockDigitalOutputPin(const std::string pinId) const {
+    return this->outputPins.at(pinId).get();
+  }
+}

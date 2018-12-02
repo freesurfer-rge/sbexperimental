@@ -7,7 +7,8 @@
 
 #include "signalheadpins.hpp"
 #include "signalheaddata.hpp"
-#include "outputpin.hpp"
+#include "pinmanager.hpp"
+#include "digitaloutputpin.hpp"
 #include "signalstate.hpp"
 #include "signalflash.hpp"
 
@@ -57,15 +58,15 @@ namespace Signalbox {
       this->cv.notify_one();
     }
     
-    static std::unique_ptr<SignalHead> create( const SignalHeadData* sd ); 
+    static std::unique_ptr<SignalHead> create( const SignalHeadData* sd, PinManager* pm ); 
   private:
     struct PinSwitch {
       bool isActive;
-      std::unique_ptr<OutputPin> pin;
+      DigitalOutputPin* pin;
 
-      PinSwitch() : isActive(false), pin() {}
+      PinSwitch() : isActive(false), pin(NULL) {}
       
-      PinSwitch( bool a, std::unique_ptr<OutputPin> p ) : isActive(a), pin(std::move(p)) {}
+      PinSwitch( bool a, DigitalOutputPin *p ) : isActive(a), pin(p) {}
     };
     
     ItemId id;
