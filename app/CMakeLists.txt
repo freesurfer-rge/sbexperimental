@@ -1,6 +1,7 @@
 SET( srcs main.cpp )
 
-LIST(APPEND srcs consoleoutputpin.cpp)
+LIST(APPEND srcs consoledigitaloutputpin.cpp)
+LIST(APPEND srcs consolepinmanager.cpp)
 LIST(APPEND srcs consoleloop.cpp)
 LIST(APPEND srcs cmdlineopts.cpp)
 LIST(APPEND srcs outputselector.cpp)

@@ -1,7 +1,7 @@
-#include "mockpinmanager.hpp"
-
 #include <sstream>
 #include <stdexcept>
+
+#include "mockpinmanager.hpp"
 
 namespace Signalbox {
   DigitalOutputPin* MockPinManager::CreateDigitalOutputPin(const std::string pinId) {
