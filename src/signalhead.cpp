@@ -95,7 +95,7 @@ namespace Signalbox {
     return stateChange || flashChange || isDone;
   }
   
-  std::unique_ptr<SignalHead> SignalHead::create( const SignalHeadData* sd ) {
+  std::unique_ptr<SignalHead> SignalHead::create( const SignalHeadData* sd, PinManager* pm ) {
     // Skip input validation for now
 
     std::unique_ptr<SignalHead> res;
@@ -105,7 +105,7 @@ namespace Signalbox {
     for( auto it=sd->pinData.begin(); it!=sd->pinData.end(); ++it ) {
       auto aspect = (*it).first;
       auto pinId = (*it).second;
-      res->pins[aspect] = PinSwitch(false, OutputPin::create(pinId));
+      res->pins[aspect] = PinSwitch(false, pm->CreateDigitalOutputPin(pinId));
       res->pins[aspect].pin->TurnOff();
     }
     // Turn red on
