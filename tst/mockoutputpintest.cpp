@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_CASE( Manufacture )
 {
   Signalbox::OutputPin::sample = std::unique_ptr<Signalbox::OutputPin>(new Signalbox::MockOutputPin());
 
-  const char anyPin = 10;
+  const std::string anyPin = "10";
 
   auto res = Signalbox::OutputPin::create(anyPin);
 
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE( TurnOnOff )
 {
   Signalbox::OutputPin::sample = std::unique_ptr<Signalbox::OutputPin>(new Signalbox::MockOutputPin());
 
-  const char anyPin = 11;
+  const std::string anyPin = "GPIO11";
 
   auto res = Signalbox::OutputPin::create(anyPin);
   
