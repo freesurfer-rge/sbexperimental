@@ -7,9 +7,9 @@
 namespace Signalbox {
   class MockOutputPin : public OutputPin {
   public:
-    MockOutputPin() : pin(-1), isOn(false) {}
+    MockOutputPin() : pin(std::string("UNASSIGNED")), isOn(false) {}
     
-    char pin;
+    std::string pin;
 
     std::atomic<bool> isOn;
     
@@ -17,9 +17,9 @@ namespace Signalbox {
 
     virtual void TurnOff() override;
 
-    static std::map<char,MockOutputPin*> allPins;
+    static std::map<std::string,MockOutputPin*> allPins;
 
   protected:
-    virtual std::unique_ptr<OutputPin> manufacture(const char pinId) override;
+    virtual std::unique_ptr<OutputPin> manufacture(const std::string pinId) override;
   };
 }

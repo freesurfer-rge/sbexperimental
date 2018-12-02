@@ -78,7 +78,7 @@ namespace Signalbox {
   std::vector<ControlledItemError> SignalHeadData::GetPinErrors() const {
     std::vector<ControlledItemError> result;
 
-    std::set<char> uniquePins;
+    std::set<std::string> uniquePins;
 
     for( auto it=this->pinData.begin(); it!=this->pinData.end(); ++it ) {
       uniquePins.insert(it->second);

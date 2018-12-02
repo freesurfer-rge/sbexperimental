@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <string>
 
 #include "controlleditem.hpp"
 
@@ -14,7 +15,7 @@ namespace Signalbox {
 		       pinData() {}
     
     char aspectCount;
-    std::map<SignalHeadPins,char> pinData;
+    std::map<SignalHeadPins,std::string> pinData;
 
     virtual std::vector<ControlledItemError> GetErrors() const override;
 
