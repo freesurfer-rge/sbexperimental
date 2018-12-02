@@ -1,13 +1,14 @@
 #pragma once
 
 #include <map>
+#include <memory>
 
 #include "pinmanager.hpp"
 
 #include "mockdigitaloutputpin.hpp"
 
 namespace Signalbox {
-  class MockPinManager : PinManager {
+  class MockPinManager : public PinManager {
   public:
     MockPinManager() :
       outputPins() {}
@@ -15,6 +16,6 @@ namespace Signalbox {
     virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) override;
 
   private:
-    std::map<std::string,MockDigitalOutputPin> outputPins;
+    std::map<std::string,std::unique_ptr<MockDigitalOutputPin>> outputPins;
   };
 }
