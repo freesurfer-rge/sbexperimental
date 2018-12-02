@@ -3,7 +3,7 @@
 #include "outputpin.hpp"
 
 namespace Signalbox {
-  std::unique_ptr<OutputPin> OutputPin::create(const char pinId) {
+  std::unique_ptr<OutputPin> OutputPin::create(const std::string pinId) {
     if( !OutputPin::sample ) {
       throw std::runtime_error("OutputPin::sample is not set");
     }

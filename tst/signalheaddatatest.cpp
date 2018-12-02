@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE( NoRedAspect )
   sd.id = Signalbox::ItemId::Random();
   sd.aspectCount = 2;
 
-  sd.pinData[Signalbox::SignalHeadPins::Green] = 0;
+  sd.pinData[Signalbox::SignalHeadPins::Green] = "0";
 
   auto res = sd.GetErrors();
 
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE( NoGreenAspect )
   sd.id = Signalbox::ItemId::Random();
   sd.aspectCount = 2;
 
-  sd.pinData[Signalbox::SignalHeadPins::Red] = 0;
+  sd.pinData[Signalbox::SignalHeadPins::Red] = "0";
 
   auto res = sd.GetErrors();
 
@@ -86,9 +86,9 @@ BOOST_AUTO_TEST_CASE( InvalidYellow1Aspect )
   sd.id = Signalbox::ItemId::Random();
   sd.aspectCount = 2;
 
-  sd.pinData[Signalbox::SignalHeadPins::Red] = 0;
-  sd.pinData[Signalbox::SignalHeadPins::Green] = 1;
-  sd.pinData[Signalbox::SignalHeadPins::Yellow1] = 2;
+  sd.pinData[Signalbox::SignalHeadPins::Red] = "0";
+  sd.pinData[Signalbox::SignalHeadPins::Green] = "1";
+  sd.pinData[Signalbox::SignalHeadPins::Yellow1] = "2";
   
   auto res = sd.GetErrors();
 
@@ -104,8 +104,8 @@ BOOST_AUTO_TEST_CASE( MissingYellow1Aspect )
   sd.id = Signalbox::ItemId::Random();
   sd.aspectCount = 3;
 
-  sd.pinData[Signalbox::SignalHeadPins::Red] = 0;
-  sd.pinData[Signalbox::SignalHeadPins::Green] = 1;
+  sd.pinData[Signalbox::SignalHeadPins::Red] = "0";
+  sd.pinData[Signalbox::SignalHeadPins::Green] = "1";
   
   auto res = sd.GetErrors();
 
@@ -121,10 +121,10 @@ BOOST_AUTO_TEST_CASE( InvalidYellow2Aspect )
   sd.id = Signalbox::ItemId::Random();
   sd.aspectCount = 3;
 
-  sd.pinData[Signalbox::SignalHeadPins::Red] = 0;
-  sd.pinData[Signalbox::SignalHeadPins::Green] = 1;
-  sd.pinData[Signalbox::SignalHeadPins::Yellow1] = 2;
-  sd.pinData[Signalbox::SignalHeadPins::Yellow2] = 3;
+  sd.pinData[Signalbox::SignalHeadPins::Red] = "0";
+  sd.pinData[Signalbox::SignalHeadPins::Green] = "1";
+  sd.pinData[Signalbox::SignalHeadPins::Yellow1] = "2";
+  sd.pinData[Signalbox::SignalHeadPins::Yellow2] = "3";
   
   auto res = sd.GetErrors();
 
@@ -140,9 +140,9 @@ BOOST_AUTO_TEST_CASE( MissingYellow2Aspect )
   sd.id = Signalbox::ItemId::Random();
   sd.aspectCount = 4;
 
-  sd.pinData[Signalbox::SignalHeadPins::Red] = 0;
-  sd.pinData[Signalbox::SignalHeadPins::Green] = 1;
-  sd.pinData[Signalbox::SignalHeadPins::Yellow1] = 2;
+  sd.pinData[Signalbox::SignalHeadPins::Red] = "0";
+  sd.pinData[Signalbox::SignalHeadPins::Green] = "1";
+  sd.pinData[Signalbox::SignalHeadPins::Yellow1] = "2";
   
   auto res = sd.GetErrors();
 
@@ -158,8 +158,8 @@ BOOST_AUTO_TEST_CASE( DuplicatePins )
   sd.id = Signalbox::ItemId::Random();
   sd.aspectCount = 2;
 
-  sd.pinData[Signalbox::SignalHeadPins::Red] = 0;
-  sd.pinData[Signalbox::SignalHeadPins::Green] = 0;
+  sd.pinData[Signalbox::SignalHeadPins::Red] = "0";
+  sd.pinData[Signalbox::SignalHeadPins::Green] = "0";
 
   auto res = sd.GetErrors();
 

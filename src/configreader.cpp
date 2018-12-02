@@ -162,7 +162,7 @@ namespace Signalbox {
     
     auto controlPin = StringToSignalHeadPins(controlstring);
 	  	  
-    signal->pinData[controlPin] = pin;
+    signal->pinData[controlPin] = idstring;
   }
   
 }
