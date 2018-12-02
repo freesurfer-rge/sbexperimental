@@ -46,10 +46,10 @@ BOOST_AUTO_TEST_CASE( ReadSingleSignal )
   BOOST_REQUIRE( sig != nullptr );
 
   BOOST_CHECK_EQUAL( sig->aspectCount, 4 );
-  BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Red], 02 );
-  BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Yellow1], 21 );
-  BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Yellow2], 16 );
-  BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Green], 05 );
+  BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Red], "GPIO02" );
+  BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Yellow1], "GPIO21" );
+  BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Yellow2], "GPIO16" );
+  BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Green], "GPIO05" );
 }
 
 BOOST_AUTO_TEST_CASE( ReadTwoSignals )
@@ -68,13 +68,13 @@ BOOST_AUTO_TEST_CASE( ReadTwoSignals )
     
     if( sig->id == Signalbox::ItemId(1) ) {
       BOOST_CHECK_EQUAL( sig->aspectCount, 2 );
-      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Red], 02 );
-      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Green], 05 );
+      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Red], "GPIO02" );
+      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Green], "GPIO05" );
     } else if( sig->id == Signalbox::ItemId(2) ) {
       BOOST_CHECK_EQUAL( sig->aspectCount, 3 );
-      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Red], 03 );
-      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Yellow1], 04 );
-      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Green], 06 );
+      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Red], "GPIO03" );
+      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Yellow1], "GPIO04" );
+      BOOST_CHECK_EQUAL( sig->pinData[Signalbox::SignalHeadPins::Green], "GPIO06" );
 
     } else {
       BOOST_FAIL("Bad ItemId detected");
