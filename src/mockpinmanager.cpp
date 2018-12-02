@@ -16,4 +16,8 @@ namespace Signalbox {
 
     return this->outputPins[pinId].get();
   }
+
+  MockDigitalOutputPin* MockPinManager::FetchMockDigitalOutputPin(const std::string pinId) const {
+    return this->outputPins.at(pinId).get();
+  }
 }
