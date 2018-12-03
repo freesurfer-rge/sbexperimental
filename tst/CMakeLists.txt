@@ -8,9 +8,16 @@ LIST(APPEND srcs signalheadtest.cpp)
 LIST(APPEND srcs signalstatetest.cpp)
 LIST(APPEND srcs signalflashtest.cpp)
 
+IF( pigpio_FOUND )
+  LIST(APPEND srcs pigpiodpinmanagertest.cpp)
+ENDIF()
+
 ADD_EXECUTABLE(SignalboxTest ${srcs})
 
 TARGET_LINK_LIBRARIES( SignalboxTest signalbox ${Boost_LIBRARIES} ${XercesC_LIBRARIES} )
+IF( pigpio_FOUND )
+  TARGET_LINK_LIBRARIES( SignalboxTest ${pigpiod_if2_LIBRARY})
+ENDIF()
 
 CONFIGURE_FILE(singlesignalhead.xml . COPYONLY)
 CONFIGURE_FILE(twosignalheads.xml . COPYONLY)

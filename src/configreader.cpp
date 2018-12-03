@@ -153,9 +153,6 @@ namespace Signalbox {
 	  
     auto idstring = std::string(idchars.get());
 	  
-    // Format is GPIOnn
-    char pin = std::stoi(idstring.substr(4,2));
-	  
     auto control_attr = currentPin->getAttribute(this->ATTR_OutputPin_control.get());
     auto controlchars = std::unique_ptr<char,xercesstringdeleter>(xercesc::XMLString::transcode(control_attr),xercesstringdeleter());
     auto controlstring = std::string(controlchars.get());

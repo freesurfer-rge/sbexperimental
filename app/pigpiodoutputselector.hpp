@@ -2,10 +2,10 @@
 #include "outputselector.hpp"
 
 namespace Signalbox {
-  class PiGPIOOutputSelector : public OutputSelector {
+  class PiGPIOdOutputSelector : public OutputSelector {
   public:
-    PiGPIOOutputSelector() {
-      this->AddSelector( std::string("pigpio"), this );
+    PiGPIOdOutputSelector() {
+      this->AddSelector( std::string("pigpiod"), this );
     }
 
     virtual std::unique_ptr<PinManager> CreatePinManager() override;
