@@ -10,6 +10,10 @@ namespace Signalbox {
     virtual void Set(const bool level) override;
 
     virtual bool Get() const override;
+    
+    ~PiGPIOdDigitalOutputPin() {
+      this->Set(false);
+    }
 
     // Delete copy constructor and operator=
     PiGPIOdDigitalOutputPin(PiGPIOdDigitalOutputPin&) = delete;

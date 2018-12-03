@@ -20,6 +20,7 @@ namespace Signalbox {
   }
 
   PiGPIOdPinManager::~PiGPIOdPinManager() {
+    this->outputPins.clear();
     if( this->piId >= 0 ) {
       pigpio_stop(this->piId);
     }
