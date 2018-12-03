@@ -12,8 +12,18 @@ namespace Signalbox {
   }
   
   DigitalOutputPin* PiGPIOdPinManager::CreateDigitalOutputPin(const std::string pinId) {
-    std::stringstream msg;
-    msg << __PRETTY_FUNCTION__ << ": Not implemented";
-    throw std::runtime_error(msg.str());
+    const int id = this->ParseId(pinId);
+    
+     if( this->outputPins.count(id) != 0 ) {
+      std::stringstream msg;
+      msg << "Pin '" << pinId << "' already exists";
+      throw std::runtime_error(msg.str());
+    }
+
+     auto nxt = std::unique_ptr<PiGPIOdDigitalOutputPin>(new PiGPIOdDigitalOutputPin());
+
+     this->outputPins[id] = std::move(nxt);
+
+     return this->outputPins[id].get();
   }
 }
