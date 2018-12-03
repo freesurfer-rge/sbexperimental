@@ -12,4 +12,6 @@ LIST(APPEND srcs signalflash.cpp)
 LIST(APPEND srcs mockpinmanager.cpp)
 LIST(APPEND srcs mockdigitaloutputpin.cpp)
 
+LIST(APPEND srcs pigpioddigitaloutputpin.cpp)
+
 ADD_LIBRARY( signalbox ${srcs} )
