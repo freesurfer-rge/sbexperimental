@@ -18,6 +18,7 @@ namespace Signalbox {
 	  << " error: " << err;
       throw std::runtime_error(msg.str());
     }
+    this->Set(false);
   }
   
   void PiGPIOdDigitalOutputPin::Set(const bool level) {
