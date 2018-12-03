@@ -2,9 +2,9 @@
 #include "outputselector.hpp"
 
 namespace Signalbox {
-  class PiGPIOOutputSelector : public OutputSelector {
+  class PiGPIOdOutputSelector : public OutputSelector {
   public:
-    PiGPIOOutputSelector() {
+    PiGPIOdOutputSelector() {
       this->AddSelector( std::string("pigpio"), this );
     }
 

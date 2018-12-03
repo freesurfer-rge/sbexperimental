@@ -5,6 +5,6 @@ namespace Signalbox {
   static ConsoleOutputSelector cos;
 
   std::unique_ptr<PinManager> ConsoleOutputSelector::CreatePinManager() {
-    return std::unique_ptr<Signalbox::PinManager>(new Signalbox::ConsolePinManager() );
+    return std::unique_ptr<PinManager>(new ConsolePinManager() );
   }
 }
