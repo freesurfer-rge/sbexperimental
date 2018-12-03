@@ -7,8 +7,13 @@ LIST(APPEND srcs cmdlineopts.cpp)
 LIST(APPEND srcs outputselector.cpp)
 LIST(APPEND srcs consoleoutputselector.cpp)
 
-LIST(APPEND srcs pigpiodoutputselector.cpp)
+IF( pigpio_FOUND )
+  LIST(APPEND srcs pigpiodoutputselector.cpp)
+ENDIF()
 
 ADD_EXECUTABLE(Signalbox ${srcs})
 
 TARGET_LINK_LIBRARIES( Signalbox signalbox ${Boost_LIBRARIES} ${XercesC_LIBRARIES} )
+IF( pigpio_FOUND )
+  TARGET_LINK_LIBRARIES( Signalbox ${pigpiod_if2_LIBRARY})
+ENDIF()
