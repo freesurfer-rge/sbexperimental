@@ -49,12 +49,12 @@ namespace Signalbox {
 	}
 
 	ItemId target;
-	SignalState state;
+	SignalAspect aspect;
 	SignalFlash flash;
 
 	try {
 	  target.Parse(tokens.at(0));
-	  Parse(tokens.at(1), state);
+	  Parse(tokens.at(1), aspect);
 	  Parse(tokens.at(2), flash);
 	}
 	catch( std::exception& e ) {
@@ -63,7 +63,7 @@ namespace Signalbox {
 	}
 
 	if( sigs.count(target) != 0 ) {
-	  sigs[target]->SetState(state,flash);
+	  sigs[target]->SetState(aspect,flash);
 	} else {
 	  std::cerr << "Unrecognised Id: " << target << std::endl;
 	}

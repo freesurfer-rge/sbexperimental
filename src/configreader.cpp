@@ -53,7 +53,7 @@ namespace Signalbox {
     this->ATTR_OutputPin_control = GetTranscoded("control");
   }
 
-  void ConfigReader::ReadConfiguration( std::vector< std::unique_ptr<ControlledItem> >& items ) {
+  void ConfigReader::ReadConfiguration( std::vector< std::unique_ptr<ControlledItemData> >& items ) {
     // Make sure we have an empty list
     items.clear();
 
@@ -71,7 +71,7 @@ namespace Signalbox {
   }
 
   void ConfigReader::ReadControlledItems( xercesc::DOMElement* elementSignalbox,
-					  std::vector<std::unique_ptr<ControlledItem>>& items ) {
+					  std::vector<std::unique_ptr<ControlledItemData>>& items ) {
     auto TAG_ControlledItems = GetTranscoded("ControlledItems");
     auto TAG_SignalHead = GetTranscoded("SignalHead");
     
@@ -90,7 +90,7 @@ namespace Signalbox {
 
     auto controlledItems = elementControlledItems->getChildNodes();
     for( XMLSize_t i=0; i<controlledItems->getLength(); ++i ) {
-      std::unique_ptr<ControlledItem> item(nullptr);
+      std::unique_ptr<ControlledItemData> item(nullptr);
       auto currentNode = controlledItems->item(i);
 
       if( (currentNode->getNodeType()) &&
@@ -119,7 +119,7 @@ namespace Signalbox {
     }
   }
   
-  ControlledItem* ConfigReader::ReadSignalHead(xercesc::DOMElement* currentElement ) {
+  ControlledItemData* ConfigReader::ReadSignalHead(xercesc::DOMElement* currentElement ) {
     std::unique_ptr<SignalHeadData> signal( new SignalHeadData );
 
     auto aspectCount_attr = currentElement->getAttribute(this->ATTR_aspectCount.get());

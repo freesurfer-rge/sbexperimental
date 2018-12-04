@@ -175,13 +175,13 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   BOOST_CHECK( !green->Get() );
   
   // Change signal to steady green
-  sig->SetState(Signalbox::SignalState::Green, Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::Green, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( green->Get() );
 
   // Change back to steady Red
-  sig->SetState(Signalbox::SignalState::Red, Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::Red, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( red->Get() );
   BOOST_CHECK( !green->Get() );
@@ -232,21 +232,21 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   BOOST_CHECK( !green->Get() );
 
   // Set steady yellow
-  sig->SetState(Signalbox::SignalState::Yellow, Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::Yellow, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( yellow1->Get() );
   BOOST_CHECK( !green->Get() );
 
   // Set steady green
-  sig->SetState(Signalbox::SignalState::Green, Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::Green, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( !yellow1->Get() );
   BOOST_CHECK( green->Get() );
 
   // Back to steady red
-  sig->SetState(Signalbox::SignalState::Red, Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::Red, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( red->Get() );
   BOOST_CHECK( !yellow1->Get() );
@@ -306,7 +306,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !green->Get() );
   
   // Set steady yellow
-  sig->SetState(Signalbox::SignalState::Yellow, Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::Yellow, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( yellow1->Get() );
@@ -314,7 +314,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !green->Get() );
 
   // Set steady double yellow
-  sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::DoubleYellow, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( yellow1->Get() );
@@ -322,7 +322,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !green->Get() );
 
   // Set steady green
-  sig->SetState(Signalbox::SignalState::Green,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::Green,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( !yellow1->Get() );
@@ -330,7 +330,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( green->Get() );
 
   // Back to steady red
-  sig->SetState(Signalbox::SignalState::Red,Signalbox::SignalFlash::Steady);
+  sig->SetState(Signalbox::SignalAspect::Red,Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( red->Get() );
   BOOST_CHECK( !yellow1->Get() );
@@ -390,7 +390,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   auto checkForTime = std::chrono::seconds(2);
   
   // Set to flashing green
-  sig->SetState(Signalbox::SignalState::Green, Signalbox::SignalFlash::Flashing);
+  sig->SetState(Signalbox::SignalAspect::Green, Signalbox::SignalFlash::Flashing);
   PauseForSignal();
   auto start = std::chrono::system_clock::now();
   do {
@@ -416,7 +416,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   
   // And flashing red
   seenGreenOn = seenGreenOff = seenRedOn = seenRedOff = false;
-  sig->SetState(Signalbox::SignalState::Red, Signalbox::SignalFlash::Flashing);
+  sig->SetState(Signalbox::SignalAspect::Red, Signalbox::SignalFlash::Flashing);
   PauseForSignal();
   start = std::chrono::system_clock::now();
   do {
@@ -465,13 +465,13 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sig->Activate();
 
   // Attempt to set incorrect aspects
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow, Signalbox::SignalFlash::Steady),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalAspect::Yellow, Signalbox::SignalFlash::Steady),
 		     std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::Yellow, Signalbox::SignalFlash::Flashing),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalAspect::Yellow, Signalbox::SignalFlash::Flashing),
 		     std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Steady),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalAspect::DoubleYellow, Signalbox::SignalFlash::Steady),
 		     std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Flashing),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalAspect::DoubleYellow, Signalbox::SignalFlash::Flashing),
 		     std::range_error );
 }
 
@@ -496,9 +496,9 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   sig->Activate();
 
   // Attempt to set incorrect aspects
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Steady),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalAspect::DoubleYellow, Signalbox::SignalFlash::Steady),
 		     std::range_error );
-  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalState::DoubleYellow, Signalbox::SignalFlash::Flashing),
+  BOOST_CHECK_THROW( sig->SetState(Signalbox::SignalAspect::DoubleYellow, Signalbox::SignalFlash::Flashing),
 		     std::range_error );
 }
 

@@ -3,25 +3,25 @@
 #include <map>
 #include <string>
 
-#include "controlleditem.hpp"
+#include "controlleditemdata.hpp"
 
 #include "signalheadpins.hpp"
 
 namespace Signalbox {
-  class SignalHeadData : public ControlledItem {
+  class SignalHeadData : public ControlledItemData {
   public:
-    SignalHeadData() : ControlledItem(),
+    SignalHeadData() : ControlledItemData(),
 		       aspectCount(0),
 		       pinData() {}
     
     char aspectCount;
     std::map<SignalHeadPins,std::string> pinData;
 
-    virtual std::vector<ControlledItemError> GetErrors() const override;
+    virtual std::vector<ControlledItemDataError> GetErrors() const override;
 
   private:
-    std::vector<ControlledItemError> GetAspectErrors() const;
+    std::vector<ControlledItemDataError> GetAspectErrors() const;
 
-    std::vector<ControlledItemError> GetPinErrors() const;
+    std::vector<ControlledItemDataError> GetPinErrors() const;
   };
 }

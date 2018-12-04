@@ -9,8 +9,8 @@ namespace Signalbox {
       // The mutex ensures that the spawning thread has
       // reached the cv.wait()
       std::lock_guard<std::mutex> lg(this->mtx);
-      this->state = SignalState::Red;
-      this->UpdatePinActivation( this->state );
+      this->aspect = SignalAspect::Red;
+      this->UpdatePinActivation( this->aspect );
     }
     this->cv.notify_one();
 
@@ -30,8 +30,8 @@ namespace Signalbox {
       auto endtimepoint = std::chrono::steady_clock::now() + this->flashInterval;
       
       this->savedFlash = this->flash;
-      this->savedState = this->state;
-      this->UpdatePinActivation( this->state );
+      this->savedAspect = this->aspect;
+      this->UpdatePinActivation( this->aspect );
 
       if( this->savedFlash == SignalFlash::Steady ) {
 	this->TurnPinsOnOff( true );
@@ -41,38 +41,38 @@ namespace Signalbox {
 	this->cv.wait_until( lck, endtimepoint, [this](){return this->HaveUpdateOrDone();} );
 	isFlashOn = !isFlashOn;
       }
-    } while( this->state != SignalState::Done );
+    } while( this->aspect != SignalAspect::Done );
   }
   
-  void SignalHead::UpdatePinActivation( const SignalState s ) {
+  void SignalHead::UpdatePinActivation( const SignalAspect a ) {
     // Flag everything as off
     for( auto it = this->pins.begin(); it!=this->pins.end(); ++it ) {
       it->second.isActive = false;
     }
 
     // Flag appropriate pins as on
-    switch( s ) {
-    case SignalState::Done: // From race condition in RunSignal
-    case SignalState::Red:
+    switch( a ) {
+    case SignalAspect::Done: // From race condition in RunSignal
+    case SignalAspect::Red:
       this->pins[SignalHeadPins::Red].isActive = true;
       break;
       
-    case SignalState::Green:
+    case SignalAspect::Green:
       this->pins[SignalHeadPins::Green].isActive = true;
       break;
 	  
-    case SignalState::Yellow:
+    case SignalAspect::Yellow:
       this->pins[SignalHeadPins::Yellow1].isActive = true;
       break;
 	
-    case SignalState::DoubleYellow:
+    case SignalAspect::DoubleYellow:
       this->pins[SignalHeadPins::Yellow1].isActive = true;
       this->pins[SignalHeadPins::Yellow2].isActive = true;
       break;
       
     default:
       std::stringstream errMsg;
-      errMsg << __FUNCTION__ << ": Called with " << s;
+      errMsg << __FUNCTION__ << ": Called with " << a;
       throw std::runtime_error(errMsg.str());
     }
   }
@@ -89,10 +89,10 @@ namespace Signalbox {
   }
 
   bool SignalHead::HaveUpdateOrDone() const {
-    bool stateChange = this->savedState != this->state;
+    bool aspectChange = this->savedAspect != this->aspect;
     bool flashChange = this->savedFlash != this->flash;
-    bool isDone = this->state == SignalState::Done;
-    return stateChange || flashChange || isDone;
+    bool isDone = this->aspect == SignalAspect::Done;
+    return aspectChange || flashChange || isDone;
   }
   
   std::unique_ptr<SignalHead> SignalHead::create( const SignalHeadData* sd, PinManager* pm ) {
@@ -103,10 +103,10 @@ namespace Signalbox {
 
     // Add pins
     for( auto it=sd->pinData.begin(); it!=sd->pinData.end(); ++it ) {
-      auto aspect = (*it).first;
+      auto lamp = (*it).first;
       auto pinId = (*it).second;
-      res->pins[aspect] = PinSwitch(false, pm->CreateDigitalOutputPin(pinId));
-      res->pins[aspect].pin->TurnOff();
+      res->pins[lamp] = PinSwitch(false, pm->CreateDigitalOutputPin(pinId));
+      res->pins[lamp].pin->TurnOff();
     }
     // Turn red on
     auto p = &res->pins[SignalHeadPins::Red];

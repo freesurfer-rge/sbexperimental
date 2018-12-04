@@ -3,9 +3,9 @@
 #include <string>
 
 namespace Signalbox {
-  class ControlledItemError {
+  class ControlledItemDataError {
   public:
-    ControlledItemError() : message() {}
+    ControlledItemDataError() : message() {}
     
     std::string message;
   };
