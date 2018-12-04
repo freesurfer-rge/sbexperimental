@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( ReadSingleSignal )
 {
   Signalbox::ConfigReader cr(singlesignalfile);
 
-  std::vector< std::unique_ptr<Signalbox::ControlledItem> > configItems;
+  std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
 
   cr.ReadConfiguration( configItems );
 
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE( ReadSingleSignal )
   Signalbox::ItemId expectedId;
   expectedId.Parse("00:00:00:01");
 
-  Signalbox::ControlledItem* item = configItems.at(0).get();
+  Signalbox::ControlledItemData* item = configItems.at(0).get();
   BOOST_CHECK_EQUAL( item->id, expectedId );
 
   Signalbox::SignalHeadData* sig;
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE( ReadTwoSignals )
 {
   Signalbox::ConfigReader cr(twosignalfile);
 
-  std::vector< std::unique_ptr<Signalbox::ControlledItem> > configItems;
+  std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
 
   cr.ReadConfiguration( configItems );
 

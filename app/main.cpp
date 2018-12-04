@@ -29,7 +29,7 @@ int main(int ac, char* av[]) {
     // -----
 
     Signalbox::ConfigReader cr(opts.configFilePath);
-    std::vector< std::unique_ptr<Signalbox::ControlledItem> > configItems;
+    std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
     cr.ReadConfiguration( configItems );
 
     std::cout << "Read config file" << std::endl;
@@ -43,7 +43,7 @@ int main(int ac, char* av[]) {
     for( auto it=configItems.begin();
 	 it!= configItems.end();
 	 ++it ) {
-      Signalbox::ControlledItem* ci = (*it).get();
+      Signalbox::ControlledItemData* ci = (*it).get();
       Signalbox::SignalHeadData* sd = dynamic_cast<Signalbox::SignalHeadData*>( ci );
       if( sd == NULL ) {
 	throw std::runtime_error("Could not convert to SignalHeadData");

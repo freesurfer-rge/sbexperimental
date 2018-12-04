@@ -8,7 +8,7 @@
 
 #include "xercesguard.hpp"
 #include "xercesstringdeleter.hpp"
-#include "controlleditem.hpp"
+#include "controlleditemdata.hpp"
 
 #include "signalheaddata.hpp"
 
@@ -17,7 +17,7 @@ namespace Signalbox {
   public:
     ConfigReader( const std::string& filename );
 
-    void ReadConfiguration( std::vector< std::unique_ptr<ControlledItem> >& items );
+    void ReadConfiguration( std::vector< std::unique_ptr<ControlledItemData> >& items );
   private:
     std::unique_ptr<xercesc::XercesDOMParser> configFileParser;
 
@@ -29,8 +29,8 @@ namespace Signalbox {
     std::unique_ptr<XMLCh,xercesstringdeleter> ATTR_OutputPin_control;
 
     void ReadControlledItems(xercesc::DOMElement* elementSignalbox,
-			     std::vector<std::unique_ptr<ControlledItem>>& items );
-    ControlledItem* ReadSignalHead(xercesc::DOMElement* currentElement );
+			     std::vector<std::unique_ptr<ControlledItemData>>& items );
+    ControlledItemData* ReadSignalHead(xercesc::DOMElement* currentElement );
     void ReadSignalHeadOutputPin( xercesc::DOMElement* currentPin, SignalHeadData* signal );
   };
 }
