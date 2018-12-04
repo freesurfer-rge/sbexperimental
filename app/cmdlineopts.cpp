@@ -15,7 +15,7 @@ namespace bpo = boost::program_options;
 namespace Signalbox {
   void CmdLineOpts::Populate( int argc, char* argv[] ) {
     std::string configOpt = "configuration-file";
-    std::string outputOpt = "output";
+    std::string outputOpt = "pinmanager";
 
     bpo::options_description desc("Allowed Options");
     desc.add_options()
@@ -24,9 +24,9 @@ namespace Signalbox {
       ;
     
     std::string outputDests = OutputSelector::ListOutputSelectors();
-    std::string outputDesc = std::string("Output destination (") + outputDests + ")";
+    std::string outputDesc = std::string("Choice of PinManager (") + outputDests + ")";
     desc.add_options()
-      ((outputOpt+",o").c_str(), bpo::value<std::string>(&(this->outputDestination)), outputDesc.c_str());
+      ((outputOpt+",p").c_str(), bpo::value<std::string>(&(this->outputDestination)), outputDesc.c_str());
     
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
