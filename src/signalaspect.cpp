@@ -1,27 +1,27 @@
 #include <boost/bimap.hpp>
 
-#include "signalstate.hpp"
+#include "signalaspect.hpp"
 
 namespace Signalbox {
-  static boost::bimap<SignalState,std::string> convertor;
+  static boost::bimap<SignalAspect,std::string> convertor;
 
   static void initconvertor() {
     typedef decltype(convertor)::value_type pos;
-    convertor.insert( pos(SignalState::Inactive, "Inactive") );
-    convertor.insert( pos(SignalState::Done, "Done") );
-    convertor.insert( pos(SignalState::Red, "Red") );
-    convertor.insert( pos(SignalState::Yellow, "Yellow") );
-    convertor.insert( pos(SignalState::DoubleYellow, "DoubleYellow") );
-    convertor.insert( pos(SignalState::Green, "Green") );
+    convertor.insert( pos(SignalAspect::Inactive, "Inactive") );
+    convertor.insert( pos(SignalAspect::Done, "Done") );
+    convertor.insert( pos(SignalAspect::Red, "Red") );
+    convertor.insert( pos(SignalAspect::Yellow, "Yellow") );
+    convertor.insert( pos(SignalAspect::DoubleYellow, "DoubleYellow") );
+    convertor.insert( pos(SignalAspect::Green, "Green") );
   }
   
-  std::ostream& operator<<( std::ostream& os, const SignalState s ) {
+  std::ostream& operator<<( std::ostream& os, const SignalAspect s ) {
     os << ToString( s );
     
     return os;
   }
 
-  std::string ToString( const SignalState s ) {
+  std::string ToString( const SignalAspect s ) {
     if( convertor.empty() ) {
       initconvertor();
     }
@@ -32,7 +32,7 @@ namespace Signalbox {
     }
     catch( std::out_of_range& e ) {
       std::stringstream msg;
-      msg << "Unrecognised SignalState: ";
+      msg << "Unrecognised SignalAspect: ";
       msg << static_cast<int>(s);
       throw std::runtime_error(msg.str());
     }
@@ -40,7 +40,7 @@ namespace Signalbox {
     return res;
   }
 
-  void Parse( const std::string str, SignalState& s ) {
+  void Parse( const std::string str, SignalAspect& s ) {
     if( convertor.empty() ) {
       initconvertor();
     }
@@ -52,7 +52,7 @@ namespace Signalbox {
       std::stringstream msg;
       msg << "Could not parse '";
       msg << str;
-      msg << "' to SignalState";
+      msg << "' to SignalAspect";
       throw std::out_of_range(msg.str());
     }
   }

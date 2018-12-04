@@ -9,7 +9,7 @@
 #include "signalheaddata.hpp"
 #include "pinmanager.hpp"
 #include "digitaloutputpin.hpp"
-#include "signalstate.hpp"
+#include "signalaspect.hpp"
 #include "signalflash.hpp"
 
 namespace Signalbox {
@@ -17,7 +17,7 @@ namespace Signalbox {
   public:
     ~SignalHead() {
       if( this->t.joinable() ) {
-	this->SetState(SignalState::Done,SignalFlash::Steady);
+	this->SetState(SignalAspect::Done,SignalFlash::Steady);
 	this->t.join();
       }
     }
@@ -34,7 +34,7 @@ namespace Signalbox {
       this->t = std::thread(&SignalHead::RunSignal, this);
 
       // Apparently, CVs can get spurious wakeups
-      while( this->state == SignalState::Inactive ) {
+      while( this->aspect == SignalAspect::Inactive ) {
 	// Wait for the signal's thread to be ready
 	this->cv.wait(lck);
       }
@@ -42,17 +42,17 @@ namespace Signalbox {
 
     void RunSignal();
 
-    void SetState(const SignalState s, const SignalFlash f) {
-      if( (s == SignalState::Yellow) && (this->pins.size() < 3) ) {
+    void SetState(const SignalAspect a, const SignalFlash f) {
+      if( (a == SignalAspect::Yellow) && (this->pins.size() < 3) ) {
 	throw std::range_error("Not enough pins for Yellow");
       }
-      if( (s == SignalState::DoubleYellow) && (this->pins.size() < 4) ) {
+      if( (a == SignalAspect::DoubleYellow) && (this->pins.size() < 4) ) {
 	throw std::range_error("Not enough pins for DoubleYellow");
       }
 
       {
 	std::lock_guard<std::mutex> lg(this->mtx);
-	this->state = s;
+	this->aspect = a;
 	this->flash = f;
       }
       this->cv.notify_one();
@@ -70,7 +70,7 @@ namespace Signalbox {
     };
     
     ItemId id;
-    SignalState state, savedState;
+    SignalAspect aspect, savedAspect;
     SignalFlash flash, savedFlash;
 
     std::map<SignalHeadPins,PinSwitch> pins;
@@ -82,7 +82,7 @@ namespace Signalbox {
     
     SignalHead(const ItemId sigId) :
       id(sigId),
-      state(SignalState::Inactive), savedState(SignalState::Inactive),
+      aspect(SignalAspect::Inactive), savedAspect(SignalAspect::Inactive),
       flash(SignalFlash::Steady), savedFlash(SignalFlash::Steady),
       pins(),
       t(),
@@ -90,7 +90,7 @@ namespace Signalbox {
       cv(),
       flashInterval(std::chrono::seconds(1)) {}
 
-    void UpdatePinActivation( const SignalState s );
+    void UpdatePinActivation( const SignalAspect a );
 
     void TurnPinsOnOff( const bool allowOn );
 
