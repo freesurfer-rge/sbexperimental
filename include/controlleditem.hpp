@@ -7,6 +7,8 @@ namespace Signalbox {
   public:
     ControlledItem(const ItemId sigId) :
       id(sigId) {}
+
+    virtual ~ControlledItem() {}
     
     ItemId getId() const {
       return this->id;

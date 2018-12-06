@@ -7,6 +7,7 @@ LIST(APPEND srcs mockpinmanagertest.cpp)
 LIST(APPEND srcs signalheadtest.cpp)
 LIST(APPEND srcs signalaspecttest.cpp)
 LIST(APPEND srcs signalflashtest.cpp)
+LIST(APPEND srcs signalheadfactorytest.cpp)
 
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpiodpinmanagertest.cpp)

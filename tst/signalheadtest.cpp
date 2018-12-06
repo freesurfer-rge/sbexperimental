@@ -16,7 +16,6 @@ void PauseForSignal() {
 
 // =========================================
 
-
 BOOST_FIXTURE_TEST_SUITE( SignalHead, MockPinManagerFixture )
 
 // =========================================
