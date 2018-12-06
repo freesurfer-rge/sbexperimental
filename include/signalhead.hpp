@@ -5,6 +5,8 @@
 #include <mutex>
 #include <condition_variable>
 
+#include "controlleditem.hpp"
+
 #include "signalheadpins.hpp"
 #include "signalheaddata.hpp"
 #include "pinmanager.hpp"
@@ -13,17 +15,13 @@
 #include "signalflash.hpp"
 
 namespace Signalbox {
-  class SignalHead {
+  class SignalHead : public ControlledItem {
   public:
     ~SignalHead() {
       if( this->t.joinable() ) {
 	this->SetState(SignalAspect::Done,SignalFlash::Steady);
 	this->t.join();
       }
-    }
-    
-    ItemId getId() const {
-      return this->id;
     }
 
     void Activate() {
@@ -69,7 +67,6 @@ namespace Signalbox {
       PinSwitch( bool a, DigitalOutputPin *p ) : isActive(a), pin(p) {}
     };
     
-    ItemId id;
     SignalAspect aspect, savedAspect;
     SignalFlash flash, savedFlash;
 
@@ -81,7 +78,7 @@ namespace Signalbox {
     std::chrono::duration<int,std::milli> flashInterval;
     
     SignalHead(const ItemId sigId) :
-      id(sigId),
+      ControlledItem(sigId),
       aspect(SignalAspect::Inactive), savedAspect(SignalAspect::Inactive),
       flash(SignalFlash::Steady), savedFlash(SignalFlash::Steady),
       pins(),
