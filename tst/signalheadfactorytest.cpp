@@ -7,11 +7,12 @@
 
 // =========================================
 #include "mockpinmanagerfixture.hpp"
+#include "exceptionmessagecheck.hpp"
 // =========================================
 
 BOOST_FIXTURE_TEST_SUITE( SignalHeadFactory, MockPinManagerFixture )
 
-BOOST_AUTO_TEST_CASE( SimpleConstruct )
+BOOST_AUTO_TEST_CASE( TwoAspect )
 {
   Signalbox::SignalHeadFactory shf(&(this->mpm));
 
@@ -43,6 +44,25 @@ BOOST_AUTO_TEST_CASE( SimpleConstruct )
   auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
   BOOST_REQUIRE( green );
   BOOST_CHECK( !green->Get() );
+}
+
+BOOST_AUTO_TEST_CASE( BadData )
+{
+  class BadData : public Signalbox::ControlledItemData {
+  public:
+    virtual std::vector<Signalbox::ControlledItemDataError> GetErrors() const override {
+      return std::vector<Signalbox::ControlledItemDataError>();
+    }
+  };
+  
+  BadData bd;
+
+  Signalbox::SignalHeadFactory shf(&(this->mpm));
+
+  std::string msg("Failed to cast ControlledItemData to SignalHeadData");
+  BOOST_CHECK_EXCEPTION( shf.Manufacture(&bd),
+			 std::runtime_error,
+			 GetExceptionMessageChecker<std::runtime_error>(msg) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

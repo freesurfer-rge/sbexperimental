@@ -13,6 +13,7 @@
 #include "digitaloutputpin.hpp"
 #include "signalaspect.hpp"
 #include "signalflash.hpp"
+#include "signalheadfactory.hpp"
 
 namespace Signalbox {
   class SignalHead : public ControlledItem {
@@ -58,6 +59,8 @@ namespace Signalbox {
     
     static std::unique_ptr<SignalHead> create( const SignalHeadData* sd, PinManager* pm ); 
   private:
+    friend class SignalHeadFactory;
+    
     struct PinSwitch {
       bool isActive;
       DigitalOutputPin* pin;
