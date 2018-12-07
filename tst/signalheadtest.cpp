@@ -2,7 +2,7 @@
 
 #include "signalhead.hpp"
 
-#include "mockpinmanagerfixture.hpp"
+#include "mocksignalheadfactoryfixture.hpp"
 
 // =========================================
 
@@ -16,7 +16,7 @@ void PauseForSignal() {
 
 // =========================================
 
-BOOST_FIXTURE_TEST_SUITE( SignalHead, MockPinManagerFixture )
+BOOST_FIXTURE_TEST_SUITE( SignalHead, MockSignalHeadFactoryFixture )
 
 // =========================================
 
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd, this->pm);
+  sig = this->CreateSignal(sd);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd, this->pm);
+  sig = this->CreateSignal(sd);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd, this->pm);
+  sig = this->CreateSignal(sd);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd, this->pm);
+  sig = this->CreateSignal(sd);
   BOOST_REQUIRE( sig );
   BOOST_CHECK_EQUAL( sig->getId(), sd.id );
 
@@ -339,7 +339,7 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd, this->pm);
+  sig = this->CreateSignal(sd);
   BOOST_REQUIRE( sig );
 
   BOOST_TEST_CHECKPOINT("Signal constructed");
@@ -372,7 +372,7 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   sd.pinData[Signalbox::SignalHeadPins::Green] = greenPin;
   
   std::unique_ptr<Signalbox::SignalHead> sig;
-  sig = Signalbox::SignalHead::create(&sd, this->pm);
+  sig = this->CreateSignal(sd);
   BOOST_REQUIRE( sig );
 
   // Activate the signal
