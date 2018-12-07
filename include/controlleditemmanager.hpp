@@ -19,7 +19,11 @@ namespace Signalbox {
     virtual ControlledItemFactory* GetTurnoutMotorFactory() override;
 
     virtual ControlledItemFactory* GetTrackCircuitMonitorFactory() override;
-    
+
+
+    // Remove copy constructor and operator=
+    ControlledItemManager(ControlledItemManager&) = delete;
+    ControlledItemManager& operator=(ControlledItemManager&) = delete;
   private:
     PinManager* pinManager;
 

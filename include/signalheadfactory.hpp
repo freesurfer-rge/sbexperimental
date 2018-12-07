@@ -12,6 +12,9 @@ namespace Signalbox {
     
     virtual std::unique_ptr<ControlledItem> Manufacture(const ControlledItemData* cid) override;
 
+    // Remove copy constructor and operator=
+    SignalHeadFactory(SignalHeadFactory&) = delete;
+    SignalHeadFactory& operator=(SignalHeadFactory&) = delete;
   private:
     PinManager* pinManager;
   };
