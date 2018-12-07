@@ -9,7 +9,6 @@
 
 #include "signalheadpins.hpp"
 #include "signalheaddata.hpp"
-#include "pinmanager.hpp"
 #include "digitaloutputpin.hpp"
 #include "signalaspect.hpp"
 #include "signalflash.hpp"
@@ -56,8 +55,6 @@ namespace Signalbox {
       }
       this->cv.notify_one();
     }
-    
-    static std::unique_ptr<SignalHead> create( const SignalHeadData* sd, PinManager* pm ); 
   private:
     friend class SignalHeadFactory;
     
