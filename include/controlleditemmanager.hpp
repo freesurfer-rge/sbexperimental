@@ -20,6 +20,7 @@ namespace Signalbox {
 
     virtual ControlledItemFactory* GetTrackCircuitMonitorFactory() override;
 
+    std::unique_ptr<ControlledItem> CreateItem(const ControlledItemData* data);
 
     // Remove copy constructor and operator=
     ControlledItemManager(ControlledItemManager&) = delete;

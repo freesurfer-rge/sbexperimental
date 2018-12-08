@@ -21,4 +21,10 @@ namespace Signalbox {
 	<< ": Not implemented";
     throw std::runtime_error(msg.str());
   }
+
+  std::unique_ptr<ControlledItem> ControlledItemManager::CreateItem(const ControlledItemData* data) {
+    auto itemFactory = data->GetFactory(this);
+
+    return itemFactory->Manufacture(data);
+  }
 }
