@@ -1,5 +1,12 @@
 #pragma once
 
+namespace Signalbox {
+  class ControlledItem;
+  class ControlledItemData;
+  class ControlledItemFactory;
+  class ControlledItemFactorySelector;
+}
+
 #include "controlleditemfactory.hpp"
 
 namespace Signalbox {

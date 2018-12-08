@@ -92,4 +92,8 @@ namespace Signalbox {
     
     return result;
   }
+
+  ControlledItemFactory* SignalHeadData::GetFactory(ControlledItemFactorySelector* factorySelector) const {
+    return factorySelector->GetSignalHeadFactory();
+  }
 }

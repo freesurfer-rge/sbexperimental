@@ -146,6 +146,10 @@ BOOST_AUTO_TEST_CASE( BadData )
     virtual std::vector<Signalbox::ControlledItemDataError> GetErrors() const override {
       return std::vector<Signalbox::ControlledItemDataError>();
     }
+
+    virtual Signalbox::ControlledItemFactory* GetFactory(Signalbox::ControlledItemFactorySelector* factorySelector) const override {
+      throw std::runtime_error("BadData::GetFactory Not Implemented!");
+    }
   };
   
   BadData bd;
