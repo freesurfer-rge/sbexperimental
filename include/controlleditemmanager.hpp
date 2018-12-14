@@ -12,7 +12,8 @@ namespace Signalbox {
   public:
     ControlledItemManager( PinManager* pm ) :
       pinManager(pm),
-      signalHeadFactory(pm) {}
+      signalHeadFactory(pm),
+      items() {}
     
     virtual ControlledItemFactory* GetSignalHeadFactory() override;
 
@@ -22,6 +23,8 @@ namespace Signalbox {
 
     std::unique_ptr<ControlledItem> CreateItem(const ControlledItemData* data);
 
+    size_t PopulateItems(const std::vector< std::unique_ptr<ControlledItemData> >& items);
+    
     // Remove copy constructor and operator=
     ControlledItemManager(ControlledItemManager&) = delete;
     ControlledItemManager& operator=(ControlledItemManager&) = delete;
@@ -29,6 +32,7 @@ namespace Signalbox {
     PinManager* pinManager;
 
     SignalHeadFactory signalHeadFactory;
-    
+
+    std::map<ItemId,std::unique_ptr<ControlledItem>> items;   
   };
 }

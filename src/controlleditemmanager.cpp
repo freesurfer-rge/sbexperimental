@@ -27,4 +27,19 @@ namespace Signalbox {
 
     return itemFactory->Manufacture(data);
   }
+
+  size_t ControlledItemManager::PopulateItems(const std::vector<std::unique_ptr<ControlledItemData>>& items) {
+    this->items.empty();
+
+    for( auto it=items.begin(); it!=items.end(); ++it ) {
+      if( this->items.count((*it)->id) ) {
+	std::stringstream msg;
+	msg << "Detected duplicate id: " << (*it)->id;
+	throw std::runtime_error(msg.str());
+      }
+      this->items[(*it)->id] = this->CreateItem(it->get());
+    }
+
+    return this->items.size();
+  }
 }
