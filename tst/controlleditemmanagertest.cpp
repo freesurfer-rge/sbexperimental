@@ -7,11 +7,11 @@
 #include "mockpinmanager.hpp"
 
 // =========================================
-#include "mockpinmanagerfixture.hpp"
+#include "mockpinmanagerfactoryfixture.hpp"
 #include "exceptionmessagecheck.hpp"
 // =========================================
 
-BOOST_FIXTURE_TEST_SUITE( ControlledItemManager, MockPinManagerFixture )
+BOOST_FIXTURE_TEST_SUITE( ControlledItemManager, MockPinManagerFactoryFixture )
 
 // =========================================
 
@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_SUITE( ControlledItemFactorySelector )
 
 BOOST_AUTO_TEST_CASE( GetSignalHeadFactory )
 {
-  Signalbox::ControlledItemManager cim(this->pm);
+  Signalbox::ControlledItemManager cim(&(this->mpmf));
 
   auto res = cim.GetSignalHeadFactory();
   BOOST_REQUIRE(res);
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_SUITE( CreateItem )
 
 BOOST_AUTO_TEST_CASE( CreateSignal )
 {
-  Signalbox::ControlledItemManager cim(this->pm);
+  Signalbox::ControlledItemManager cim(&(this->mpmf));
 
   const std::string redPin = "12";
   const std::string greenPin = "15";
@@ -56,15 +56,15 @@ BOOST_AUTO_TEST_CASE( CreateSignal )
   sig = dynamic_cast<Signalbox::SignalHead*>(ci.get());
   BOOST_REQUIRE(sig);
  // Check both pins have been created
-  BOOST_CHECK_EQUAL( this->mpm.DigitalOutputPinCount(), 2 );
+  BOOST_CHECK_EQUAL( this->mpmf.mpm->DigitalOutputPinCount(), 2 );
 
   // Red pin as expected - and on
-  auto red = this->mpm.FetchMockDigitalOutputPin(redPin);
+  auto red = this->mpmf.mpm->FetchMockDigitalOutputPin(redPin);
   BOOST_REQUIRE( red );
   BOOST_CHECK( red->Get() );
 
   // Green pin as expected - and off
-  auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
+  auto green = this->mpmf.mpm->FetchMockDigitalOutputPin(greenPin);
   BOOST_REQUIRE( green );
   BOOST_CHECK( !green->Get() );
 }
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_SUITE( PopulateItems )
 
 BOOST_AUTO_TEST_CASE( SingleSignal )
 {
-  Signalbox::ControlledItemManager cim(this->pm);
+  Signalbox::ControlledItemManager cim(&(this->mpmf));
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
   data.push_back(std::unique_ptr<Signalbox::SignalHeadData>(new Signalbox::SignalHeadData()));
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE( SingleSignal )
 
 BOOST_AUTO_TEST_CASE( TwoSignals )
 {
-  Signalbox::ControlledItemManager cim(this->pm);
+  Signalbox::ControlledItemManager cim(&(this->mpmf));
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
   const int baseId = 123;
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE( TwoSignals )
 
 BOOST_AUTO_TEST_CASE( DuplicateId )
 {
-  Signalbox::ControlledItemManager cim(this->pm);
+  Signalbox::ControlledItemManager cim(&(this->mpmf));
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
   const int duplicateId = 123;

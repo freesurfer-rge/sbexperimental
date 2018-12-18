@@ -5,14 +5,15 @@
 
 #include "controlleditemfactoryselector.hpp"
 #include "pinmanager.hpp"
+#include "pinmanagerfactory.hpp"
 #include "signalheadfactory.hpp"
 
 namespace Signalbox {
   class ControlledItemManager : public ControlledItemFactorySelector {
   public:
-    ControlledItemManager( PinManager* pm ) :
-      pinManager(pm),
-      signalHeadFactory(pm),
+    ControlledItemManager( PinManagerFactory* pm ) :
+      pinManager(pm->Create()),
+      signalHeadFactory(this->pinManager.get()),
       items() {}
     
     virtual ControlledItemFactory* GetSignalHeadFactory() override;
@@ -29,7 +30,7 @@ namespace Signalbox {
     ControlledItemManager(ControlledItemManager&) = delete;
     ControlledItemManager& operator=(ControlledItemManager&) = delete;
   private:
-    PinManager* pinManager;
+    std::unique_ptr<PinManager> pinManager;
 
     SignalHeadFactory signalHeadFactory;
 

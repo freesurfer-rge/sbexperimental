@@ -1,6 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "mockpinmanager.hpp"
+#include "mockpinmanagerfactory.hpp"
 #include "controlleditemmanager.hpp"
 
 #include "signalheaddata.hpp"
@@ -177,8 +178,8 @@ BOOST_AUTO_TEST_CASE( GetFactory )
 {
   Signalbox::SignalHeadData sd;
 
-  Signalbox::MockPinManager mpm;
-  Signalbox::ControlledItemManager cim(&mpm);
+  Signalbox::MockPinManagerFactory mpmf;
+  Signalbox::ControlledItemManager cim(&mpmf);
 
   auto cif = sd.GetFactory(&cim);
   BOOST_REQUIRE(cif);
