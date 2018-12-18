@@ -23,5 +23,9 @@ namespace Signalbox {
     }
 
     MockPinManager* mpm;
+
+    // Delete copy constructor and operator= due to pointer member
+    MockPinManagerFactory(MockPinManagerFactory&) = delete;
+    MockPinManagerFactory& operator=(MockPinManagerFactory&) = delete;
   };
 }
