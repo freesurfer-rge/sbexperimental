@@ -42,4 +42,13 @@ namespace Signalbox {
 
     return this->items.size();
   }
+
+  ControlledItem* ControlledItemManager::GetById(const ItemId id) {
+    if( this->items.count(id) == 0 ) {
+      std::stringstream msg;
+      msg << "Item not found: " << id;
+      throw std::runtime_error(msg.str());
+    }
+    return this->items.at(id).get();
+  }
 }

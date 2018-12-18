@@ -150,4 +150,58 @@ BOOST_AUTO_TEST_SUITE_END()
 
 // =========================================
 
+BOOST_AUTO_TEST_SUITE( GetById )
+
+BOOST_AUTO_TEST_CASE( GetTwoItems )
+{
+  Signalbox::ControlledItemManager cim(&(this->mpmf));
+
+  std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
+  const int baseId = 123;
+  const std::string redPinBase = "18";
+  const std::string greenPinBase = "02";
+  for( int i=0; i<2; i++ ) {
+    data.push_back(std::unique_ptr<Signalbox::SignalHeadData>(new Signalbox::SignalHeadData()));
+    auto sd = dynamic_cast<Signalbox::SignalHeadData*>(data.at(i).get());
+    BOOST_REQUIRE(sd);
+
+    const std::string redPin = redPinBase+std::to_string(i);
+    const std::string greenPin = greenPinBase+std::to_string(i);
+    sd->aspectCount = 2;
+    sd->id = Signalbox::ItemId(baseId+i);
+    sd->pinData[Signalbox::SignalHeadPins::Red] = redPin;
+    sd->pinData[Signalbox::SignalHeadPins::Green] = greenPin;
+  }
+  BOOST_REQUIRE_EQUAL( data.size(), 2 );
+  
+  auto res = cim.PopulateItems(data);
+  BOOST_CHECK_EQUAL( res, 2 );
+
+  for( int i=0; i<2; i++ ) {
+    Signalbox::ItemId target(baseId+i);
+
+    auto ci = cim.GetById(target);
+    BOOST_REQUIRE(ci);
+    BOOST_CHECK_EQUAL( ci->getId(), target );
+
+    auto sh = dynamic_cast<Signalbox::SignalHead*>(ci);
+    BOOST_REQUIRE(sh);
+  }
+}
+
+BOOST_AUTO_TEST_CASE( GetNonExistant )
+{
+  Signalbox::ControlledItemManager cim(&(this->mpmf));
+
+  const Signalbox::ItemId anyId(10);
+
+  std::stringstream msg;
+  msg << "Item not found: " << anyId;
+  BOOST_CHECK_EXCEPTION( cim.GetById(anyId),
+			 std::runtime_error,
+			 GetExceptionMessageChecker<std::runtime_error>(msg.str()) );
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+  
 BOOST_AUTO_TEST_SUITE_END()
