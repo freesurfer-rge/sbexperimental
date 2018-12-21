@@ -26,6 +26,8 @@ namespace Signalbox {
 
     size_t PopulateItems(const std::vector< std::unique_ptr<ControlledItemData> >& items);
 
+    size_t ActivateItems();
+    
     ControlledItem* GetById(const ItemId id);
     
     // Remove copy constructor and operator=

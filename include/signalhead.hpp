@@ -24,7 +24,7 @@ namespace Signalbox {
       }
     }
 
-    void Activate() {
+    virtual void Activate() override {
       // Lock mutex before spawning the signal's thread
       std::unique_lock<std::mutex> lck(this->mtx);
 

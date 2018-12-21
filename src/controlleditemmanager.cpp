@@ -43,6 +43,16 @@ namespace Signalbox {
     return this->items.size();
   }
 
+  size_t ControlledItemManager::ActivateItems() {
+    size_t count = 0;
+    for( auto it=this->items.begin(); it!=this->items.end(); ++it ) {
+      it->second->Activate();
+      count++;
+    }
+
+    return count;
+  }
+
   ControlledItem* ControlledItemManager::GetById(const ItemId id) {
     if( this->items.count(id) == 0 ) {
       std::stringstream msg;

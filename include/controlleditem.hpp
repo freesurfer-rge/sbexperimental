@@ -13,6 +13,8 @@ namespace Signalbox {
     ItemId getId() const {
       return this->id;
     }
+
+    virtual void Activate() {};
     
   private:
     ItemId id;
