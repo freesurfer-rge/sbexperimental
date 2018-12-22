@@ -1,13 +1,20 @@
 #pragma once
+
+#include "pigpiodpinmanagerfactory.hpp"
+
+
 #include "outputselector.hpp"
 
 namespace Signalbox {
   class PiGPIOdOutputSelector : public OutputSelector {
   public:
-    PiGPIOdOutputSelector() {
+    PiGPIOdOutputSelector() :
+      pgdpmf() {
       this->AddSelector( std::string("pigpiod"), this );
     }
 
-    virtual std::unique_ptr<PinManager> CreatePinManager() override;
+    virtual PinManagerFactory* GetPinManagerFactory() override;
+  private:
+    PiGPIOdPinManagerFactory pgdpmf;
   };
 }
