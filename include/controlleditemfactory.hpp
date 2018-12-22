@@ -2,12 +2,7 @@
 
 #include <memory>
 
-namespace Signalbox {
-  class ControlledItem;
-  class ControlledItemData;
-  class ControlledItemFactory;
-  class ControlledItemFactorySelector;
-}
+#include "controlleditemdeclarations.hpp"
   
 #include "pinmanager.hpp"
 

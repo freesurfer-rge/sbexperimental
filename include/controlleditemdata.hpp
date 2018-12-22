@@ -2,12 +2,7 @@
 
 #include <vector>
 
-namespace Signalbox {
-  class ControlledItem;
-  class ControlledItemData;
-  class ControlledItemFactory;
-  class ControlledItemFactorySelector;
-}
+#include "controlleditemdeclarations.hpp"
 
 #include "itemid.hpp"
 
