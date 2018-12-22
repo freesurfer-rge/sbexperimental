@@ -47,30 +47,8 @@ int main(int ac, char* av[]) {
 
     auto nActivate = cim.ActivateItems();
     std::cout << "Activated " << nActivate << " items" << std::endl;
-#if 0
-    std::map<Signalbox::ItemId,std::unique_ptr<Signalbox::SignalHead>> sigs;
-    for( auto it=configItems.begin();
-	 it!= configItems.end();
-	 ++it ) {
-      Signalbox::ControlledItemData* ci = (*it).get();
-      Signalbox::SignalHeadData* sd = dynamic_cast<Signalbox::SignalHeadData*>( ci );
-      if( sd == NULL ) {
-	throw std::runtime_error("Could not convert to SignalHeadData");
-      }
-      auto nxt = Signalbox::SignalHead::create(sd, pm.get());
-      sigs[nxt->getId()]= std::move(nxt);
-    }
 
-    std::cout << "Signals created" << std::endl;
-
-    for( auto it=sigs.begin(); it!=sigs.end(); ++it ) {
-      (*it).second->Activate();
-    }
-
-    std::cout << "Signals activated" << std::endl;
-
-    consoleloop( sigs );
-#endif
+    consoleloop( &cim );
   }
   catch(std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;
