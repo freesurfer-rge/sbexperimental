@@ -148,6 +148,7 @@ BOOST_AUTO_TEST_CASE( BadData )
     }
 
     virtual Signalbox::ControlledItemFactory* GetFactory(Signalbox::ControlledItemFactorySelector* factorySelector) const override {
+      BOOST_WARN( factorySelector );
       throw std::runtime_error("BadData::GetFactory Not Implemented!");
     }
   };
