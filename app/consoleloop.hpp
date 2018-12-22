@@ -1,8 +1,8 @@
 #pragma once
 #include <map>
 
-#include "signalhead.hpp"
+#include "controlleditemmanager.hpp"
 
 namespace Signalbox {
-  void consoleloop( std::map<ItemId,std::unique_ptr<SignalHead>>& sigs );
+  void consoleloop( ControlledItemManager* cim );
 }

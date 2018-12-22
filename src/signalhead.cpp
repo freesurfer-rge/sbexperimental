@@ -94,25 +94,4 @@ namespace Signalbox {
     bool isDone = this->aspect == SignalAspect::Done;
     return aspectChange || flashChange || isDone;
   }
-  
-  std::unique_ptr<SignalHead> SignalHead::create( const SignalHeadData* sd, PinManager* pm ) {
-    // Skip input validation for now
-
-    std::unique_ptr<SignalHead> res;
-    res.reset( new SignalHead(sd->id) );
-
-    // Add pins
-    for( auto it=sd->pinData.begin(); it!=sd->pinData.end(); ++it ) {
-      auto lamp = (*it).first;
-      auto pinId = (*it).second;
-      res->pins[lamp] = PinSwitch(false, pm->CreateDigitalOutputPin(pinId));
-      res->pins[lamp].pin->TurnOff();
-    }
-    // Turn red on
-    auto p = &res->pins[SignalHeadPins::Red];
-    p->isActive = true;
-    p->pin->TurnOn();
-    
-    return res;
-  }
 }

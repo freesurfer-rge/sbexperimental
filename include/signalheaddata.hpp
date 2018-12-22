@@ -19,6 +19,7 @@ namespace Signalbox {
 
     virtual std::vector<ControlledItemDataError> GetErrors() const override;
 
+    virtual ControlledItemFactory* GetFactory(ControlledItemFactorySelector* factorySelector) const override;
   private:
     std::vector<ControlledItemDataError> GetAspectErrors() const;
 

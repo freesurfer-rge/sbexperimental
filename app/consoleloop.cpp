@@ -2,6 +2,8 @@
 #include <sstream>
 #include <locale>
 
+#include "signalhead.hpp"
+
 #include "consoleloop.hpp"
 
 namespace Signalbox {
@@ -28,7 +30,7 @@ namespace Signalbox {
   }
 
   
-  void consoleloop( std::map<ItemId,std::unique_ptr<SignalHead>>& sigs ) {
+  void consoleloop( ControlledItemManager* cim ) {
     bool done = false;
 
     while( !done ) {
@@ -56,16 +58,20 @@ namespace Signalbox {
 	  target.Parse(tokens.at(0));
 	  Parse(tokens.at(1), aspect);
 	  Parse(tokens.at(2), flash);
+
+	  auto ci = cim->GetById(target);
+
+	  auto sig = dynamic_cast<SignalHead*>(ci);
+
+	  if( sig != NULL ) {
+	    sig->SetState(aspect,flash);
+	  } else {
+	    std::cerr << "Could not cast to SignalHead" << std::endl;
+	  }
 	}
 	catch( std::exception& e ) {
 	  std::cerr << e.what() << std::endl;
 	  continue;
-	}
-
-	if( sigs.count(target) != 0 ) {
-	  sigs[target]->SetState(aspect,flash);
-	} else {
-	  std::cerr << "Unrecognised Id: " << target << std::endl;
 	}
       }
     }

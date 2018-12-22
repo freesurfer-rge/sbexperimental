@@ -1,5 +1,9 @@
 #include <boost/test/unit_test.hpp>
 
+#include "mockpinmanager.hpp"
+#include "mockpinmanagerfactory.hpp"
+#include "controlleditemmanager.hpp"
+
 #include "signalheaddata.hpp"
 
 BOOST_AUTO_TEST_SUITE( SignalHeadData )
@@ -169,5 +173,18 @@ BOOST_AUTO_TEST_CASE( DuplicatePins )
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+  
+BOOST_AUTO_TEST_CASE( GetFactory )
+{
+  Signalbox::SignalHeadData sd;
+
+  Signalbox::MockPinManagerFactory mpmf;
+  Signalbox::ControlledItemManager cim(&mpmf);
+
+  auto cif = sd.GetFactory(&cim);
+  BOOST_REQUIRE(cif);
+  auto shf = dynamic_cast<Signalbox::SignalHeadFactory*>(cif);
+  BOOST_REQUIRE(shf);
+}
 
 BOOST_AUTO_TEST_SUITE_END()

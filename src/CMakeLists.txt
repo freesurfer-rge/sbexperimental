@@ -11,6 +11,8 @@ LIST(APPEND srcs signalhead.cpp)
 LIST(APPEND srcs signalflash.cpp)
 LIST(APPEND srcs mockpinmanager.cpp)
 LIST(APPEND srcs mockdigitaloutputpin.cpp)
+LIST(APPEND srcs signalheadfactory.cpp)
+LIST(APPEND srcs controlleditemmanager.cpp)
 
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpioddigitaloutputpin.cpp)

@@ -26,8 +26,9 @@ namespace Signalbox {
     PiGPIOdPinManager(PiGPIOdPinManager&) = delete;
     PiGPIOdPinManager& operator=(PiGPIOdPinManager&) = delete;
   private:
+    static bool exists;
+    
     int piId;
     std::map<int,std::unique_ptr<PiGPIOdDigitalOutputPin>> outputPins;
-
   };
 }

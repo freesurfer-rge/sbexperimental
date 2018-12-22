@@ -5,15 +5,17 @@
 #include <mutex>
 #include <condition_variable>
 
+#include "controlleditem.hpp"
+
 #include "signalheadpins.hpp"
 #include "signalheaddata.hpp"
-#include "pinmanager.hpp"
 #include "digitaloutputpin.hpp"
 #include "signalaspect.hpp"
 #include "signalflash.hpp"
+#include "signalheadfactory.hpp"
 
 namespace Signalbox {
-  class SignalHead {
+  class SignalHead : public ControlledItem {
   public:
     ~SignalHead() {
       if( this->t.joinable() ) {
@@ -21,12 +23,8 @@ namespace Signalbox {
 	this->t.join();
       }
     }
-    
-    ItemId getId() const {
-      return this->id;
-    }
 
-    void Activate() {
+    virtual void Activate() override {
       // Lock mutex before spawning the signal's thread
       std::unique_lock<std::mutex> lck(this->mtx);
 
@@ -57,9 +55,9 @@ namespace Signalbox {
       }
       this->cv.notify_one();
     }
-    
-    static std::unique_ptr<SignalHead> create( const SignalHeadData* sd, PinManager* pm ); 
   private:
+    friend class SignalHeadFactory;
+    
     struct PinSwitch {
       bool isActive;
       DigitalOutputPin* pin;
@@ -69,7 +67,6 @@ namespace Signalbox {
       PinSwitch( bool a, DigitalOutputPin *p ) : isActive(a), pin(p) {}
     };
     
-    ItemId id;
     SignalAspect aspect, savedAspect;
     SignalFlash flash, savedFlash;
 
@@ -81,7 +78,7 @@ namespace Signalbox {
     std::chrono::duration<int,std::milli> flashInterval;
     
     SignalHead(const ItemId sigId) :
-      id(sigId),
+      ControlledItem(sigId),
       aspect(SignalAspect::Inactive), savedAspect(SignalAspect::Inactive),
       flash(SignalFlash::Steady), savedFlash(SignalFlash::Steady),
       pins(),
