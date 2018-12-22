@@ -6,6 +6,23 @@
 
 BOOST_AUTO_TEST_SUITE( PiGPIOdPinMananger )
 
+BOOST_AUTO_TEST_CASE( NoDoubleConstruct )
+{
+  Signalbox::PiGPIOdPinManager pm;
+
+  std::string msg("PiGPIOdPinManager already exists");
+  BOOST_CHECK_EXCEPTION( Signalbox::PiGPIOdPinManager(),
+			 std::runtime_error,
+			 GetExceptionMessageChecker<std::runtime_error>(msg) );
+}
+
+BOOST_AUTO_TEST_CASE( ConstructAfterDestruct )
+{
+  BOOST_CHECK_NO_THROW( Signalbox::PiGPIOdPinManager() );
+  
+  BOOST_CHECK_NO_THROW( Signalbox::PiGPIOdPinManager() );
+}
+
 BOOST_AUTO_TEST_CASE( ParseId )
 {
   Signalbox::PiGPIOdPinManager pm;

@@ -7,16 +7,23 @@
 #include "pigpiodpinmanager.hpp"
 
 namespace Signalbox {
+  bool PiGPIOdPinManager::exists = false;
+  
   PiGPIOdPinManager::PiGPIOdPinManager() :
       piId(-1),
       outputPins() {
+    if( PiGPIOdPinManager::exists ) {
+      throw std::runtime_error("PiGPIOdPinManager already exists");
+    }
+    
     this->piId = pigpio_start(NULL, NULL);
-      if( this->piId < 0 ) {
-	std::stringstream msg;
-	msg << "Could not connect to pigpiod."
-	    << "Have you run 'sudo pigpiod' ?";
-	throw std::runtime_error(msg.str());
-      }
+    if( this->piId < 0 ) {
+      std::stringstream msg;
+      msg << "Could not connect to pigpiod."
+	  << "Have you run 'sudo pigpiod' ?";
+      throw std::runtime_error(msg.str());
+    }
+    PiGPIOdPinManager::exists = true;
   }
 
   PiGPIOdPinManager::~PiGPIOdPinManager() {
@@ -24,6 +31,7 @@ namespace Signalbox {
     if( this->piId >= 0 ) {
       pigpio_stop(this->piId);
     }
+    PiGPIOdPinManager::exists = false;
   }
   
   int PiGPIOdPinManager::ParseId(const std::string pinId) const {
