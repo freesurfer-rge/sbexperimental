@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-#include "pinmanager.hpp"
+#include "pinmanagerfactory.hpp"
 
 namespace Signalbox {
   /*
@@ -32,7 +32,7 @@ namespace Signalbox {
     
     virtual ~OutputSelector() {}
 
-    virtual std::unique_ptr<PinManager> CreatePinManager() = 0;
+    virtual PinManagerFactory* GetPinManagerFactory() = 0;
   protected:
     void AddSelector(std::string name, OutputSelector* s) {
       OutputSelector::selectors[name] = s;

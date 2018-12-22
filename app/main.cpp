@@ -9,6 +9,8 @@
 #include "signalheaddata.hpp"
 #include "signalhead.hpp"
 
+#include "controlleditemmanager.hpp"
+
 #include "consoleloop.hpp"
 
 #include "cmdlineopts.hpp"
@@ -37,8 +39,15 @@ int main(int ac, char* av[]) {
     // -----
 
     Signalbox::OutputSelector* dest = Signalbox::OutputSelector::GetSelector(opts.outputDestination);
-    std::unique_ptr<Signalbox::PinManager> pm = dest->CreatePinManager();
+    Signalbox::PinManagerFactory* pmf = dest->GetPinManagerFactory();
+    Signalbox::ControlledItemManager cim(pmf);
 
+    auto nPopulate = cim.PopulateItems( configItems );
+    std::cout << "Populated " << nPopulate << " items" << std::endl;
+
+    auto nActivate = cim.ActivateItems();
+    std::cout << "Activated " << nActivate << " items" << std::endl;
+#if 0
     std::map<Signalbox::ItemId,std::unique_ptr<Signalbox::SignalHead>> sigs;
     for( auto it=configItems.begin();
 	 it!= configItems.end();
@@ -61,6 +70,7 @@ int main(int ac, char* av[]) {
     std::cout << "Signals activated" << std::endl;
 
     consoleloop( sigs );
+#endif
   }
   catch(std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;

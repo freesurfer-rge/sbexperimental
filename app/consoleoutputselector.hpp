@@ -1,13 +1,19 @@
 #pragma once
 #include "outputselector.hpp"
 
+#include "consolepinmanagerfactory.hpp"
+
 namespace Signalbox {
   class ConsoleOutputSelector : public OutputSelector {
   public:
-    ConsoleOutputSelector() {
+    ConsoleOutputSelector() :
+      cpmf() {
       this->AddSelector( std::string("console"), this );
     }
 
-    virtual std::unique_ptr<PinManager> CreatePinManager() override;
+    virtual PinManagerFactory* GetPinManagerFactory() override;
+
+  private:
+    ConsolePinManagerFactory cpmf;
   };
 }
