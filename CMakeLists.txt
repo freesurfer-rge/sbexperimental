@@ -20,6 +20,12 @@ IF(pigpio_FOUND)
   INCLUDE_DIRECTORIES(SYSTEM ${pigpio_INCLUDE_DIR})
 ENDIF()
 
+# Detect CPPCMS
+# Using FindCppCMS.cmake
+# https://github.com/ElektraInitiative/libelektra/blob/master/cmake/Modules/FindCppCMS.cmake
+FIND_PACKAGE(CPPCMS REQUIRED)
+INCLUDE_DIRECTORIES(SYSTEM ${CPPCMS_INCLUDE_DIR})
+
 # Sort out compiler flags
 IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   SET(PLATFORM_CXX_FLAGS "-std=c++11 -Wall -Wextra -Wthread-safety -Wpedantic -Wc++11-compat-pedantic -Weffc++")

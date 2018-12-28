@@ -12,6 +12,7 @@
 #include "controlleditemmanager.hpp"
 
 #include "consoleloop.hpp"
+#include "cppcmsloop.hpp"
 
 #include "cmdlineopts.hpp"
 #include "outputselector.hpp"
@@ -48,7 +49,7 @@ int main(int ac, char* av[]) {
     auto nActivate = cim.ActivateItems();
     std::cout << "Activated " << nActivate << " items" << std::endl;
 
-    consoleloop( &cim );
+    CppCMSLoop( &cim );
   }
   catch(std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;

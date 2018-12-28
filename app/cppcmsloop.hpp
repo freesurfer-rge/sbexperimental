@@ -3,5 +3,5 @@
 #include "controlleditemmanager.hpp"
 
 namespace Signalbox {
-  void consoleloop( ControlledItemManager* cim );
+  void CppCMSLoop( ControlledItemManager* cim );
 }
