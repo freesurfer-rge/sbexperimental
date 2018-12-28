@@ -20,6 +20,7 @@ namespace Signalbox {
     }
 
     void set( int id, int aspect, int flashing ) {
+      std::cout << __PRETTY_FUNCTION__ << ": Starting" << std::endl;
       ItemId myId(id);
 
       auto ci = this->cim->GetById(myId);
@@ -33,12 +34,38 @@ namespace Signalbox {
 
       auto a = static_cast<SignalAspect>(aspect);
       auto f = static_cast<SignalFlash>(flashing);
-      
-      sh->SetState(a, f);
+
+      std::cout << __PRETTY_FUNCTION__
+		<< ": Setting " << myId
+		<< " to " << a
+		<< " and " << f
+		<< std::endl;
+
+      try {
+	sh->SetState(a, f);
+      }
+      catch( std::exception& e ) {
+	std::cerr << "Caught: " << e.what() << std::endl;
+      }
       return_result("State set");
     }
     
     ControlledItemManager* cim;
+  };
+
+  class SignalHeadServiceFactory : public cppcms::application_specific_pool {
+  public:
+    ControlledItemManager* cim;
+
+  protected:
+    virtual cppcms::application* new_application (cppcms::service &srv) override {
+      std::cout << __FUNCTION__ << ": Starting" << std::endl;
+      auto app = new SignalHeadService(srv);
+      app->cim = this->cim;
+
+      return app;
+    }
+
   };
   
   void CppCMSLoop( ControlledItemManager* cim ) {
@@ -49,6 +76,16 @@ namespace Signalbox {
 
       cf >> config;
     }
+
+    booster::shared_ptr<SignalHeadServiceFactory> shsFactory(new SignalHeadServiceFactory());
+    shsFactory->cim = cim;
+
+    // Invoke with calls such as:
+    // curl http://localhost:8080/son" --data '{ "method":"set", "params": [ 1, 5, 0 ], "id" : 1}'
+
+    
     cppcms::service srv(config);
+    srv.applications_pool().mount(shsFactory);
+    srv.run();
   }
 }
