@@ -81,8 +81,7 @@ namespace Signalbox {
     shsFactory->cim = cim;
 
     // Invoke with calls such as:
-    // curl http://localhost:8080/son" --data '{ "method":"set", "params": [ 1, 5, 0 ], "id" : 1}'
-
+    // curl http://localhost:8080/signalhead -H "Content-Type: application/json" --data '{ "method":"set", "params": [ 1, 5, 0 ], "id" : 1}'
     
     cppcms::service srv(config);
     srv.applications_pool().mount(shsFactory);
