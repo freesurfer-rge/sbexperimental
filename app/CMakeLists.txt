@@ -6,11 +6,18 @@ LIST(APPEND srcs consoleloop.cpp)
 LIST(APPEND srcs cmdlineopts.cpp)
 LIST(APPEND srcs outputselector.cpp)
 LIST(APPEND srcs consoleoutputselector.cpp)
-LIST(APPEND srcs cppcmsloop.cpp)
 
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpiodoutputselector.cpp)
 ENDIF()
+
+IF( CPPCMS_FOUND )
+  LIST(APPEND srcs cppcms/cppcmsdriver.cpp)
+  LIST(APPEND srcs cppcms/controlleditemservice.cpp)
+  LIST(APPEND srcs cppcms/controlleditemservicefactory.cpp)
+ENDIF()
+
+INCLUDE_DIRECTORIES( ./ )
 
 ADD_EXECUTABLE(Signalbox ${srcs})
 CONFIGURE_FILE(config.js . COPYONLY)

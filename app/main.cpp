@@ -12,7 +12,7 @@
 #include "controlleditemmanager.hpp"
 
 #include "consoleloop.hpp"
-#include "cppcmsloop.hpp"
+#include "cppcms/cppcmsdriver.hpp"
 
 #include "cmdlineopts.hpp"
 #include "outputselector.hpp"
@@ -49,7 +49,9 @@ int main(int ac, char* av[]) {
     auto nActivate = cim.ActivateItems();
     std::cout << "Activated " << nActivate << " items" << std::endl;
 
-    CppCMSLoop( &cim );
+    Signalbox::CPPCMSDriver drv;
+    
+    drv.Run( &cim );
   }
   catch(std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;

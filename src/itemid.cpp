@@ -83,4 +83,10 @@ namespace Signalbox {
     Signalbox::ItemId::IdType val = std::stoull(str,NULL,16);
     this->Set(val);
   }
+
+  std::string ItemId::ToString() const {
+    std::stringstream s;
+    s << (*this);
+    return s.str();
+  }
 }
