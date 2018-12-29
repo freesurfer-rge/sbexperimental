@@ -37,7 +37,8 @@ BOOST_AUTO_TEST_SUITE( CreateItem )
 BOOST_AUTO_TEST_CASE( CreateSignal )
 {
   Signalbox::ControlledItemManager cim(&(this->mpmf));
-
+  BOOST_REQUIRE_EQUAL( cim.GetAllItems().size(), 0 );
+  
   const std::string redPin = "12";
   const std::string greenPin = "15";
   Signalbox::SignalHeadData sd;
@@ -78,6 +79,7 @@ BOOST_AUTO_TEST_SUITE( PopulateItems )
 BOOST_AUTO_TEST_CASE( SingleSignal )
 {
   Signalbox::ControlledItemManager cim(&(this->mpmf));
+  BOOST_REQUIRE_EQUAL( cim.GetAllItems().size(), 0 );
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
   data.push_back(std::unique_ptr<Signalbox::SignalHeadData>(new Signalbox::SignalHeadData()));
@@ -93,6 +95,13 @@ BOOST_AUTO_TEST_CASE( SingleSignal )
 
   auto res = cim.PopulateItems(data);
   BOOST_CHECK_EQUAL( res, 1 );
+
+  auto items = cim.GetAllItems();
+  BOOST_CHECK_EQUAL( items.size(), 1 );
+  auto ci = items.at(0);
+  BOOST_REQUIRE(ci);
+  auto sh = dynamic_cast<Signalbox::SignalHead*>(ci);
+  BOOST_CHECK_EQUAL( sh->getAspectCount(), 2 );
 }
 
 BOOST_AUTO_TEST_CASE( TwoSignals )
@@ -117,6 +126,7 @@ BOOST_AUTO_TEST_CASE( TwoSignals )
   
   auto res = cim.PopulateItems(data);
   BOOST_CHECK_EQUAL( res, 2 );
+  BOOST_CHECK_EQUAL( cim.GetAllItems().size(), 2 );
 }
 
 BOOST_AUTO_TEST_CASE( DuplicateId )
@@ -177,6 +187,8 @@ BOOST_AUTO_TEST_CASE( TwoSignals )
 
   auto res = cim.ActivateItems();
   BOOST_CHECK_EQUAL( res, 2 );
+  
+  BOOST_CHECK_EQUAL( cim.GetAllItems().size(), 2 );
 }
   
 BOOST_AUTO_TEST_SUITE_END()
@@ -209,6 +221,7 @@ BOOST_AUTO_TEST_CASE( GetTwoItems )
   
   auto res = cim.PopulateItems(data);
   BOOST_CHECK_EQUAL( res, 2 );
+  BOOST_CHECK_EQUAL( cim.GetAllItems().size(), 2 );
 
   for( int i=0; i<2; i++ ) {
     Signalbox::ItemId target(baseId+i);
@@ -225,6 +238,7 @@ BOOST_AUTO_TEST_CASE( GetTwoItems )
 BOOST_AUTO_TEST_CASE( GetNonExistant )
 {
   Signalbox::ControlledItemManager cim(&(this->mpmf));
+  BOOST_CHECK_EQUAL( cim.GetAllItems().size(), 0 );
 
   const Signalbox::ItemId anyId(10);
 
@@ -233,6 +247,7 @@ BOOST_AUTO_TEST_CASE( GetNonExistant )
   BOOST_CHECK_EXCEPTION( cim.GetById(anyId),
 			 std::runtime_error,
 			 GetExceptionMessageChecker<std::runtime_error>(msg.str()) );
+  BOOST_CHECK_EQUAL( cim.GetAllItems().size(), 0 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

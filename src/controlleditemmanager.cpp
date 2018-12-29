@@ -61,4 +61,14 @@ namespace Signalbox {
     }
     return this->items.at(id).get();
   }
+
+  std::vector<ControlledItem*> ControlledItemManager::GetAllItems() {
+    std::vector<ControlledItem*> result;
+
+    for( auto it=this->items.begin(); it!=this->items.end(); ++it ) {
+      result.push_back(it->second.get());
+    }
+    
+    return result;
+  }
 }

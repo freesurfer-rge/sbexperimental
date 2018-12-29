@@ -4,12 +4,13 @@
 #include <memory>
 
 #include "controlleditemfactoryselector.hpp"
+#include "controlleditemfetcher.hpp"
 #include "pinmanager.hpp"
 #include "pinmanagerfactory.hpp"
 #include "signalheadfactory.hpp"
 
 namespace Signalbox {
-  class ControlledItemManager : public ControlledItemFactorySelector {
+  class ControlledItemManager : public ControlledItemFactorySelector, public ControlledItemFetcher {
   public:
     ControlledItemManager( PinManagerFactory* pm ) :
       pinManager(pm->Create()),
@@ -28,7 +29,9 @@ namespace Signalbox {
 
     size_t ActivateItems();
     
-    ControlledItem* GetById(const ItemId id);
+    virtual ControlledItem* GetById(const ItemId id) override;
+
+    virtual std::vector<ControlledItem*> GetAllItems() override;
     
     // Remove copy constructor and operator=
     ControlledItemManager(ControlledItemManager&) = delete;
