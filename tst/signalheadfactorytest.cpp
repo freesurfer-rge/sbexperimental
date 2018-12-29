@@ -44,6 +44,10 @@ BOOST_AUTO_TEST_CASE( TwoAspect )
   auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
   BOOST_REQUIRE( green );
   BOOST_CHECK( !green->Get() );
+
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 2 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Inactive );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 }
 
 BOOST_AUTO_TEST_CASE(ThreeAspect)
@@ -86,6 +90,10 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
   BOOST_REQUIRE( green );
   BOOST_CHECK( !green->Get() );
+
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 3 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Inactive );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 }
 
 BOOST_AUTO_TEST_CASE(FourAspect)
@@ -136,6 +144,10 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   auto green = this->mpm.FetchMockDigitalOutputPin(greenPin);
   BOOST_REQUIRE( green );
   BOOST_CHECK( !green->Get() );
+
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 4 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Inactive );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 }
 
 
