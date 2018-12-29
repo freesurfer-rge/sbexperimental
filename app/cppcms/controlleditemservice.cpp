@@ -46,8 +46,6 @@ namespace Signalbox {
   }
   
   void ControlledItemService::GetSignalHead( ItemId id ) {
-    // Sample call:
-    // curl http://localhost:8080 -H "Content-Type: application/json" --data '{ "method":"getsignal", "params": [ 2 ], "id" : 1}'
     std::cout << __PRETTY_FUNCTION__ << ": Starting" << std::endl;
     
     auto ci = this->cif->GetById(id);
