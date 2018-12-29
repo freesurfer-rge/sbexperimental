@@ -1,4 +1,8 @@
 #include "signalheadjson.hpp"
+#include "signalaspectjson.hpp"
+#include "signalflashjson.hpp"
+#include "itemidjson.hpp"
+
 #include "signalhead.hpp"
 
 #include "controlleditemservice.hpp"
@@ -15,11 +19,8 @@ namespace Signalbox {
 	 method_role);
   }
 
-  void ControlledItemService::SetSignalHead( int id, int aspect, int flashing ) {
-    std::cout << __PRETTY_FUNCTION__ << ": Starting" << std::endl;
-    ItemId myId(id);
-    
-    auto ci = this->cif->GetById(myId);
+  void ControlledItemService::SetSignalHead( ItemId id, SignalAspect aspect, SignalFlash flashing ) {
+    auto ci = this->cif->GetById(id);
     if( ci == NULL ) {
       return_error("No such item");
     }
@@ -28,32 +29,28 @@ namespace Signalbox {
       return_error("Item is not a SignalHead");
     }
     
-    auto a = static_cast<SignalAspect>(aspect);
-    auto f = static_cast<SignalFlash>(flashing);
-    
     std::cout << __PRETTY_FUNCTION__
-	      << ": Setting " << myId
-	      << " to " << a
-	      << " and " << f
+	      << ": Setting " << id
+	      << " to " << aspect
+	      << " and " << flashing
 	      << std::endl;
     
     try {
-      sh->SetState(a, f);
+      sh->SetState(aspect, flashing);
     }
     catch( std::exception& e ) {
       std::cerr << "Caught: " << e.what() << std::endl;
       return_error("An error occurred");
     }
-    return_result("State set");
+    return_result(*sh);
   }
   
-  void ControlledItemService::GetSignalHead( int id ) {
+  void ControlledItemService::GetSignalHead( ItemId id ) {
     // Sample call:
     // curl http://localhost:8080 -H "Content-Type: application/json" --data '{ "method":"getsignal", "params": [ 2 ], "id" : 1}'
     std::cout << __PRETTY_FUNCTION__ << ": Starting" << std::endl;
-    ItemId myId(id);
     
-    auto ci = this->cif->GetById(myId);
+    auto ci = this->cif->GetById(id);
     if( ci == NULL ) {
       return_error("No such item");
     }

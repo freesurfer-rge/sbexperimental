@@ -3,6 +3,10 @@
 #include <cppcms/service.h>
 #include <cppcms/rpc_json.h>
 
+#include "itemid.hpp"
+#include "signalaspect.hpp"
+#include "signalflash.hpp"
+
 #include "controlleditemfetcher.hpp"
 
 namespace Signalbox {
@@ -10,9 +14,9 @@ namespace Signalbox {
   public:
     ControlledItemService(cppcms::service& srv);
 
-    void SetSignalHead( int id, int aspect, int flashing );
+    void SetSignalHead( ItemId id, SignalAspect aspect, SignalFlash flashing );
 
-    void GetSignalHead( int id );
+    void GetSignalHead( ItemId id );
 
     ControlledItemFetcher* cif;
   };
