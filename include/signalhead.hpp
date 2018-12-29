@@ -67,6 +67,10 @@ namespace Signalbox {
     SignalFlash getFlash() const {
       return this->flash;
     }
+
+    virtual std::string getTypeString() const override {
+      return std::string("signalhead");
+    }
   private:
     friend class SignalHeadFactory;
     

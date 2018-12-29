@@ -48,6 +48,7 @@ BOOST_AUTO_TEST_CASE( TwoAspect )
   BOOST_CHECK_EQUAL( sig->getAspectCount(), 2 );
   BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Inactive );
   BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
+  BOOST_CHECK_EQUAL( sig->getTypeString(), "signalhead" );
 }
 
 BOOST_AUTO_TEST_CASE(ThreeAspect)
@@ -94,6 +95,7 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   BOOST_CHECK_EQUAL( sig->getAspectCount(), 3 );
   BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Inactive );
   BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
+  BOOST_CHECK_EQUAL( sig->getTypeString(), "signalhead" );
 }
 
 BOOST_AUTO_TEST_CASE(FourAspect)
@@ -148,6 +150,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK_EQUAL( sig->getAspectCount(), 4 );
   BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Inactive );
   BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
+  BOOST_CHECK_EQUAL( sig->getTypeString(), "signalhead" );
 }
 
 
