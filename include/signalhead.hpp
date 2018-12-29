@@ -55,6 +55,18 @@ namespace Signalbox {
       }
       this->cv.notify_one();
     }
+
+    int getAspectCount() const {
+      return this->pins.size();
+    }
+
+    SignalAspect getAspect() const {
+      return this->aspect;
+    }
+
+    SignalFlash getFlash() const {
+      return this->flash;
+    }
   private:
     friend class SignalHeadFactory;
     

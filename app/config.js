@@ -3,9 +3,6 @@
         "api" : "http",
         "port" : 8080
     },
-    "http" : {
-        "script_names" : [ "/signalhead" ]
-    },
     "logging" : {
 	"level" : "debug",
     },
