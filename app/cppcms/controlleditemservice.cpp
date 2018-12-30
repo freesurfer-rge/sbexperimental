@@ -9,7 +9,8 @@
 
 namespace Signalbox {
   ControlledItemService::ControlledItemService(cppcms::service& srv)
-    : cppcms::rpc::json_rpc_server(srv) {
+    : cppcms::rpc::json_rpc_server(srv),
+      cif(NULL) {
     // SignalHead methods
     bind("setsignalhead",
 	 cppcms::rpc::json_method(&ControlledItemService::SetSignalHead, this),

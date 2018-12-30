@@ -10,11 +10,14 @@ namespace Signalbox {
     ControlledItemServiceFactory( ControlledItemFetcher* cif ) :
       cppcms::application_specific_pool(),
       fetcher(cif) {}
-    
+
+    // Remove copy constructor and assignment to protect pointer member
+    ControlledItemServiceFactory(const ControlledItemServiceFactory&) = delete;
+    ControlledItemServiceFactory operator=(const ControlledItemServiceFactory&) = delete;
   protected:
     virtual cppcms::application* new_application (cppcms::service &srv) override;
     
   private:
     ControlledItemFetcher* fetcher;
   };
-};
+}

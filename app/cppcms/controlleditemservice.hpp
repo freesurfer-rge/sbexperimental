@@ -19,5 +19,9 @@ namespace Signalbox {
     void GetSignalHead( ItemId id );
 
     ControlledItemFetcher* cif;
+
+    // Protect pointer member
+    ControlledItemService(const ControlledItemService&) = delete;
+    ControlledItemService operator=(const ControlledItemService&) = delete;
   };
 }
