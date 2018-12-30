@@ -10,21 +10,28 @@
 			       padding: 1em; }
     </style>
     <script type="text/javascript">
+      
+      function AspectIdString(id) {
+	  return "aspect"+id;
+      }
+
+      function FlashingIdString(id) {
+	  return "flashing"+id;
+      }
+      
       function SetSignal(id) {
 	  console.log(id);
 
 	  var responseId = "response"+id;
 	  
-	  var flashId = "flashing"+id;
-	  var flashing = document.getElementById(flashId);
+	  var flashing = document.getElementById(FlashingIdString(id));
 	  var flash = "Steady";
 	  if( flashing.checked ) {
 	      flash = "Flashing";
 	  }
 	  console.log(flash);
 
-	  var aspectId = "aspect"+id;
-	  var query = "input[name = '" + aspectId + "']:checked";
+	  var query = "input[name = '" + AspectIdString(id) + "']:checked";
 	  var aspect = document.querySelector(query).value;
 	  console.log(aspect);
 
@@ -34,20 +41,16 @@
           xhr.setRequestHeader("Content-Type","application/json");
 	  
           // It is better to use real formatter like JSON.js
-          var request = '{ ';
-	  request += '"method": "setsignalhead", ';
-	  request += '"params": [ "' + id + '", "' + aspect +'", "' + flash +'"]';
-	  request += ', "id": 1 }';
-	  console.log(request);
+          var request = new Object();
+	  request["method"] = "setsignalhead";
+	  request["params"] = [id, aspect, flash];
+	  request["id"] = Math.floor(Math.random() * 32768);
 
 	  xhr.onreadystatechange = function() {
               if (xhr.readyState === 4) {
                   var res;
                   if(xhr.status === 200) {
-		      console.log("Response = " + xhr.responseText);
                       var result = JSON.parse(xhr.responseText);
-		      console.log("Result = " + result.result);
-		      console.log("Error = " + result.error);
                       if(result.error==null) {
                           res = JSON.stringify(result.result);
                       }
@@ -61,7 +64,7 @@
                   document.getElementById(responseId).innerHTML = res;
               }
           }
-          xhr.send(request); 
+          xhr.send(JSON.stringify(request)); 
 	  
 	  return false;
       }
@@ -72,7 +75,7 @@
 
 	  var idString = value+id;
 	  button.setAttribute("type", "radio");
-	  button.setAttribute("name", "aspect"+id);
+	  button.setAttribute("name", AspectIdString(id));
 	  button.setAttribute("value", value);
 	  button.setAttribute("id", idString);
 	  if( value==displayedAspect ) {
@@ -90,7 +93,7 @@
 	  var checkbox = document.createElement("input");
 	  var label = document.createElement("label");
 
-	  var idString = "flashing"+id;
+	  var idString = FlashingIdString(id);
 	  checkbox.setAttribute("type", "checkbox");
 	  checkbox.setAttribute("name", "flash");
 	  checkbox.setAttribute("id", idString);
@@ -165,7 +168,7 @@
 	  var request = new Object();
 	  request['method'] = "getsignalhead";
 	  request['params'] = [ id ];
-	  request['id'] = 1;
+	  request['id'] = Math.floor(Math.random() * 32768);
 	  console.log("HandleSignalHead: Request="+JSON.stringify(request));
 
 	  xhr.onreadystatechange = function() {
@@ -223,7 +226,7 @@
           var request = new Object();
 	  request['method'] = "listitems";
 	  request['params'] = [];
-	  request['id'] = 1;
+	  request['id'] = Math.floor(Math.random() * 32768);;
 	  console.log(JSON.stringify(request));
 
 	  var pageErrorLoc = "pageErrorMessage";
@@ -254,42 +257,6 @@
     </script>
   </head>
   <body onload=LoadInfo()>
-    <form id="ID00:00:00:01"
-	  class="signalheadcontrol"
-	  action=""
-	  onsubmit="return SetSignal('00:00:00:01');" >
-      <h1>SignalHead 00:00:00:01</h1>
-      <p>
-	<input type="radio" name="aspect00:00:00:01"
-	       value="Red"
-	       id="red00:00:00:01" 
-	       checked="checked" />
-	<label for="red00:00:00:01">Red</label>
-	<input type="radio" name="aspect00:00:00:01"
-	       value="Yellow"
-	       id="yellow00:00:00:01" />
-	<label for="yellow00:00:00:01">Yellow</label>
-	<input type="radio" name="aspect00:00:00:01"
-	       value="DoubleYellow"
-	       id="doubleyellow00:00:00:01" />
-	<label for="doubleyellow00:00:00:01">Double Yellow</label>
-	<input type="radio" name="aspect00:00:00:01"
-	       value="Green"
-	       id="green00:00:00:01" />
-	<label for="green00:00:00:01">Green</label>
-      </p>
-      <p>
-	<input type="checkbox" name="flash"
-	       value="flashing"
-	       id="flashing00:00:00:01" />
-	<label for="flashing00:00:00:01">Flashing</label>
-      </p>
-      <p>
-	<input type="submit" value="Submit" />
-      </p>
-      <p id="response00:00:00:01" />
-    </form>
-
     <p id="pageErrorMessage" />
   </body>
 </html>
