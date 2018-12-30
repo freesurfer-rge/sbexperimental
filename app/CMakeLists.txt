@@ -2,10 +2,14 @@ SET( srcs main.cpp )
 
 LIST(APPEND srcs consoledigitaloutputpin.cpp)
 LIST(APPEND srcs consolepinmanager.cpp)
-LIST(APPEND srcs consoleloop.cpp)
 LIST(APPEND srcs cmdlineopts.cpp)
+
 LIST(APPEND srcs outputselector.cpp)
 LIST(APPEND srcs consoleoutputselector.cpp)
+
+LIST(APPEND srcs driverselector.cpp)
+LIST(APPEND srcs consoledriver.cpp)
+LIST(APPEND srcs consoledriverselector.cpp)
 
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpiodoutputselector.cpp)
