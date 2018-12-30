@@ -12,6 +12,8 @@
     <script type="text/javascript">
       function SetSignal(id) {
 	  console.log(id);
+
+	  var responseId = "response"+id;
 	  
 	  var flashId = "flashing"+id;
 	  var flashing = document.getElementById(flashId);
@@ -25,7 +27,43 @@
 	  var query = "input[name = '" + aspectId + "']:checked";
 	  var aspect = document.querySelector(query).value;
 	  console.log(aspect);
-      
+
+	  var xhr = new XMLHttpRequest();
+          xhr.open("post", '/rpc');
+          // Required by JSON-RPC over HTTP
+          xhr.setRequestHeader("Content-Type","application/json");
+	  
+          // It is better to use real formatter like JSON.js
+          var request = '{ ';
+	  request += '"method": "setsignalhead", ';
+	  request += '"params": [ "' + id + '", "' + aspect +'", "' + flash +'"]';
+	  request += ', "id": 1 }';
+	  console.log(request);
+
+	  xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                  var res;
+                  if(xhr.status === 200) {
+                      // Don't call eval in real code use some parser
+		      console.log(xhr.responseText);
+                      var result = JSON.parse(xhr.responseText);
+		      console.log(result.result);
+		      console.log(result.error);
+                      if(result.error==null) {
+                          res = result.result;
+                      }
+                      else {
+                          res = result.error;
+                      }
+                  }
+                  else {
+                      res = 'Invalid Status ' + xhr.status;
+                  }
+                  document.getElementById(responseId).innerHTML = res;
+              }
+          }
+          xhr.send(request); 
+	  
 	  return false;
       }
     </script>
@@ -64,6 +102,7 @@
       <p>
 	<input type="submit" value="Submit" />
       </p>
+      <p id="response00:00:00:01" />
     </form>
   </body>
 </html>
