@@ -14,8 +14,9 @@ namespace Signalbox {
   public:
     ControlledItemService(cppcms::service& srv);
 
+    void ListControlledItems();
+    
     void SetSignalHead( ItemId id, SignalAspect aspect, SignalFlash flashing );
-
     void GetSignalHead( ItemId id );
 
     ControlledItemFetcher* cif;
