@@ -5,6 +5,8 @@
 
 namespace Signalbox {
   struct ItemInfo {
+    ItemInfo() : id(), type() {}
+    
     ItemId id;
     std::string type;
   };
