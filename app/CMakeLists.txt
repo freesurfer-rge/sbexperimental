@@ -23,6 +23,7 @@ IF( CPPCMS_FOUND )
   LIST(APPEND srcs cppcms/signalheadjson.cpp)
   LIST(APPEND srcs cppcms/signalaspectjson.cpp)
   LIST(APPEND srcs cppcms/signalflashjson.cpp)
+  LIST(APPEND srcs cppcms/cppcmsdriverselector.cpp)
 ENDIF()
 
 INCLUDE_DIRECTORIES( ./ )

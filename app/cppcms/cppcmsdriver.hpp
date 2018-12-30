@@ -3,7 +3,7 @@
 #include "controlleditemdriver.hpp"
 
 namespace Signalbox {
-  class CPPCMSDriver : ControlledItemDriver {
+  class CPPCMSDriver : public ControlledItemDriver {
   public:
     // Some sample commands:
     // curl http://loki:8080 -H "Content-Type: application/json" --data '{ "method":"setsignalhead", "params": [ "00:00:00:02", "Yellow", "Steady" ], "id" : 1}'

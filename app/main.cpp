@@ -11,9 +11,6 @@
 
 #include "controlleditemmanager.hpp"
 
-
-#include "cppcms/cppcmsdriver.hpp"
-
 #include "cmdlineopts.hpp"
 #include "outputselector.hpp"
 #include "driverselector.hpp"
