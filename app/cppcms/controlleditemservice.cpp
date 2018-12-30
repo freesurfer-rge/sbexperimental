@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "signalheadjson.hpp"
 #include "signalaspectjson.hpp"
 #include "signalflashjson.hpp"
@@ -38,12 +40,15 @@ namespace Signalbox {
     
     try {
       sh->SetState(aspect, flashing);
+      return_result(*sh);
     }
     catch( std::exception& e ) {
       std::cerr << "Caught: " << e.what() << std::endl;
-      return_error("An error occurred");
+      std::stringstream msg;
+      msg << "An error occurred: "
+	  << e.what();
+      return_error(msg.str());
     }
-    return_result(*sh);
   }
   
   void ControlledItemService::GetSignalHead( ItemId id ) {

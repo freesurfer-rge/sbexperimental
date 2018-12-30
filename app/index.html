@@ -45,12 +45,12 @@
                   var res;
                   if(xhr.status === 200) {
                       // Don't call eval in real code use some parser
-		      console.log(xhr.responseText);
+		      console.log("Response = " + xhr.responseText);
                       var result = JSON.parse(xhr.responseText);
-		      console.log(result.result);
-		      console.log(result.error);
+		      console.log("Result = " + result.result);
+		      console.log("Error = " + result.error);
                       if(result.error==null) {
-                          res = result.result;
+                          res = JSON.stringify(result.result);
                       }
                       else {
                           res = result.error;
