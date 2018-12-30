@@ -9,33 +9,62 @@
       form.signalheadcontrol { border-style: solid;
 			       padding: 1em; }
     </style>
+    <script type="text/javascript">
+      function call(id) {
+	  console.log(id);
+
+	  var formID= "ID"+id;
+	  console.log(formID);
+
+	  var flashId = "flashing"+id;
+	  var flashing = document.getElementById(flashId);
+	  var flash = "Steady";
+	  if( flashing.checked ) {
+	      flash = "Flashing";
+	  }
+	  console.log(flash);
+
+	  var aspectId = "aspect"+id;
+	  var query = "input[name = '" + aspectId + "']:checked";
+	  var aspect = document.querySelector(query).value;
+	  console.log(aspect);
+      
+	  return false;
+      }
+    </script>
   </head>
   <body>
     <form id="ID00:00:00:01"
 	  class="signalheadcontrol"
-	  action="http://tbd">
+	  action=""
+	  onsubmit="return call('00:00:00:01');" >
       <h1>SignalHead 00:00:00:01</h1>
       <p>
-	<input type="radio" name="aspect"
+	<input type="radio" name="aspect00:00:00:01"
 	       value="Red"
 	       id="red00:00:00:01" 
 	       checked="checked" />
 	<label for="red00:00:00:01">Red</label>
-	<input type="radio" name="aspect"
+	<input type="radio" name="aspect00:00:00:01"
 	       value="Yellow"
 	       id="yellow00:00:00:01" />
 	<label for="yellow00:00:00:01">Yellow</label>
-	<input type="radio" name="aspect"
+	<input type="radio" name="aspect00:00:00:01"
 	       value="DoubleYellow"
 	       id="doubleyellow00:00:00:01" />
 	<label for="doubleyellow00:00:00:01">Double Yellow</label>
-	<input type="radio" name="aspect"
+	<input type="radio" name="aspect00:00:00:01"
 	       value="Green"
 	       id="green00:00:00:01" />
 	<label for="green00:00:00:01">Green</label>
       </p>
       <p>
-	<input type="checkbox" name="flash" value="flashing" />Flashing
+	<input type="checkbox" name="flash"
+	       value="flashing"
+	       id="flashing00:00:00:01" />Flashing
+      </p>
+      <p>
+	<input type="submit" value="Submit" />
       </p>
     </form>
   </body>
