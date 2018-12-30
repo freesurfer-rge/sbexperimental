@@ -11,10 +11,9 @@
 
 #include "controlleditemmanager.hpp"
 
-#include "consoleloop.hpp"
-
 #include "cmdlineopts.hpp"
 #include "outputselector.hpp"
+#include "driverselector.hpp"
 
 // ===================================================
 
@@ -48,7 +47,10 @@ int main(int ac, char* av[]) {
     auto nActivate = cim.ActivateItems();
     std::cout << "Activated " << nActivate << " items" << std::endl;
 
-    consoleloop( &cim );
+    Signalbox::DriverSelector *drvSelector = Signalbox::DriverSelector::GetSelector(opts.driver);
+    Signalbox::ControlledItemDriver* drv = drvSelector->GetDriver();
+    
+    drv->Run( &cim );
   }
   catch(std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;

@@ -56,18 +56,27 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   // Verify we're still in the right state
   BOOST_CHECK( red->Get() );
   BOOST_CHECK( !green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 2 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Red );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
   
   // Change signal to steady green
   sig->SetState(Signalbox::SignalAspect::Green, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 2 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Green );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 
   // Change back to steady Red
   sig->SetState(Signalbox::SignalAspect::Red, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( red->Get() );
   BOOST_CHECK( !green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 2 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Red );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 }
 
 BOOST_AUTO_TEST_CASE(ThreeAspect)
@@ -113,6 +122,9 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   BOOST_CHECK( red->Get() );
   BOOST_CHECK( !yellow1->Get() );
   BOOST_CHECK( !green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 3 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Red );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 
   // Set steady yellow
   sig->SetState(Signalbox::SignalAspect::Yellow, Signalbox::SignalFlash::Steady);
@@ -120,20 +132,29 @@ BOOST_AUTO_TEST_CASE(ThreeAspect)
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( yellow1->Get() );
   BOOST_CHECK( !green->Get() );
-
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 3 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Yellow );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
+  
   // Set steady green
   sig->SetState(Signalbox::SignalAspect::Green, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( !red->Get() );
   BOOST_CHECK( !yellow1->Get() );
   BOOST_CHECK( green->Get() );
-
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 3 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Green );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
+  
   // Back to steady red
   sig->SetState(Signalbox::SignalAspect::Red, Signalbox::SignalFlash::Steady);
   PauseForSignal();
   BOOST_CHECK( red->Get() );
   BOOST_CHECK( !yellow1->Get() );
   BOOST_CHECK( !green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 3 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Red );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 }
 
 BOOST_AUTO_TEST_CASE(FourAspect)
@@ -187,6 +208,9 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !yellow1->Get() );
   BOOST_CHECK( !yellow2->Get() );
   BOOST_CHECK( !green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 4 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Red );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
   
   // Set steady yellow
   sig->SetState(Signalbox::SignalAspect::Yellow, Signalbox::SignalFlash::Steady);
@@ -195,6 +219,9 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( yellow1->Get() );
   BOOST_CHECK( !yellow2->Get() );
   BOOST_CHECK( !green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 4 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Yellow );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 
   // Set steady double yellow
   sig->SetState(Signalbox::SignalAspect::DoubleYellow, Signalbox::SignalFlash::Steady);
@@ -203,6 +230,9 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( yellow1->Get() );
   BOOST_CHECK( yellow2->Get() );
   BOOST_CHECK( !green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 4 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::DoubleYellow );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 
   // Set steady green
   sig->SetState(Signalbox::SignalAspect::Green,Signalbox::SignalFlash::Steady);
@@ -211,6 +241,9 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !yellow1->Get() );
   BOOST_CHECK( !yellow2->Get() );
   BOOST_CHECK( green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 4 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Green );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 
   // Back to steady red
   sig->SetState(Signalbox::SignalAspect::Red,Signalbox::SignalFlash::Steady);
@@ -219,6 +252,9 @@ BOOST_AUTO_TEST_CASE(FourAspect)
   BOOST_CHECK( !yellow1->Get() );
   BOOST_CHECK( !yellow2->Get() );
   BOOST_CHECK( !green->Get() );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 4 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Red );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -260,6 +296,10 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   // Activate the signal
   sig->Activate();
 
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 2 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Red );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Steady );
+  
   // Hard to do checks on the flashes, since we have no
   // access to the internal state
   // The following are imprecise
@@ -294,6 +334,9 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   BOOST_CHECK( seenGreenOn );
   BOOST_CHECK( seenRedOff );
   BOOST_CHECK( !seenRedOn );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 2 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Green );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Flashing );
 
   BOOST_TEST_CHECKPOINT("Flashing green complete");
   
@@ -320,6 +363,9 @@ BOOST_AUTO_TEST_CASE(TwoAspect)
   BOOST_CHECK( !seenGreenOn );
   BOOST_CHECK( seenRedOff );
   BOOST_CHECK( seenRedOn );
+  BOOST_CHECK_EQUAL( sig->getAspectCount(), 2 );
+  BOOST_CHECK_EQUAL( sig->getAspect(), Signalbox::SignalAspect::Red );
+  BOOST_CHECK_EQUAL( sig->getFlash(), Signalbox::SignalFlash::Flashing );
 }
   
 BOOST_AUTO_TEST_SUITE_END()

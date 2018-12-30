@@ -55,6 +55,22 @@ namespace Signalbox {
       }
       this->cv.notify_one();
     }
+
+    int getAspectCount() const {
+      return this->pins.size();
+    }
+
+    SignalAspect getAspect() const {
+      return this->aspect;
+    }
+
+    SignalFlash getFlash() const {
+      return this->flash;
+    }
+
+    virtual std::string getTypeString() const override {
+      return std::string("signalhead");
+    }
   private:
     friend class SignalHeadFactory;
     

@@ -35,6 +35,8 @@ namespace Signalbox {
       return !((*this)==item);
     }
 
+    std::string ToString() const;
+
     static ItemId Nil() {
       return ItemId();
     }

@@ -15,7 +15,8 @@ namespace Signalbox {
     }
 
     virtual void Activate() {};
-    
+
+    virtual std::string getTypeString() const = 0;
   private:
     ItemId id;
   };
