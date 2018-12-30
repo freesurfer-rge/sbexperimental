@@ -10,12 +10,9 @@
 			       padding: 1em; }
     </style>
     <script type="text/javascript">
-      function call(id) {
+      function SetSignal(id) {
 	  console.log(id);
-
-	  var formID= "ID"+id;
-	  console.log(formID);
-
+	  
 	  var flashId = "flashing"+id;
 	  var flashing = document.getElementById(flashId);
 	  var flash = "Steady";
@@ -37,7 +34,7 @@
     <form id="ID00:00:00:01"
 	  class="signalheadcontrol"
 	  action=""
-	  onsubmit="return call('00:00:00:01');" >
+	  onsubmit="return SetSignal('00:00:00:01');" >
       <h1>SignalHead 00:00:00:01</h1>
       <p>
 	<input type="radio" name="aspect00:00:00:01"
@@ -61,7 +58,8 @@
       <p>
 	<input type="checkbox" name="flash"
 	       value="flashing"
-	       id="flashing00:00:00:01" />Flashing
+	       id="flashing00:00:00:01" />
+	<label for="flashing00:00:00:01">Flashing</label>
       </p>
       <p>
 	<input type="submit" value="Submit" />

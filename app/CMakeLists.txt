@@ -24,6 +24,8 @@ IF( CPPCMS_FOUND )
   LIST(APPEND srcs cppcms/signalaspectjson.cpp)
   LIST(APPEND srcs cppcms/signalflashjson.cpp)
   LIST(APPEND srcs cppcms/cppcmsdriverselector.cpp)
+  FILE(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html)
+  CONFIGURE_FILE(index.html ./html/ COPYONLY)
 ENDIF()
 
 INCLUDE_DIRECTORIES( ./ )
