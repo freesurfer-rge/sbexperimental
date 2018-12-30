@@ -1,3 +1,7 @@
+#include <sstream>
+
+#include "iteminfo.hpp"
+#include "iteminfojson.hpp"
 #include "signalheadjson.hpp"
 #include "signalaspectjson.hpp"
 #include "signalflashjson.hpp"
@@ -11,6 +15,11 @@ namespace Signalbox {
   ControlledItemService::ControlledItemService(cppcms::service& srv)
     : cppcms::rpc::json_rpc_server(srv),
       cif(NULL) {
+    // Item methods
+    bind("listitems",
+	 cppcms::rpc::json_method(&ControlledItemService::ListControlledItems, this),
+	 method_role);
+    
     // SignalHead methods
     bind("setsignalhead",
 	 cppcms::rpc::json_method(&ControlledItemService::SetSignalHead, this),
@@ -18,6 +27,21 @@ namespace Signalbox {
     bind("getsignalhead",
 	 cppcms::rpc::json_method(&ControlledItemService::GetSignalHead, this),
 	 method_role);
+  }
+
+  void ControlledItemService::ListControlledItems() {
+    std::cout << __FUNCTION__ << ": Starting" << std::endl;
+    auto items = this->cif->GetAllItems();
+
+    std::vector<ItemInfo> result;
+    for( auto it=items.begin(); it!=items.end(); ++it ) {
+      ItemInfo nxt;
+      nxt.id = (*it)->getId();
+      nxt.type = (*it)->getTypeString();
+      result.push_back(nxt);
+    }
+    std::cout << __FUNCTION__ << ": Result constructed" << std::endl;
+    return_result(result);
   }
 
   void ControlledItemService::SetSignalHead( ItemId id, SignalAspect aspect, SignalFlash flashing ) {
@@ -38,12 +62,15 @@ namespace Signalbox {
     
     try {
       sh->SetState(aspect, flashing);
+      return_result(*sh);
     }
     catch( std::exception& e ) {
       std::cerr << "Caught: " << e.what() << std::endl;
-      return_error("An error occurred");
+      std::stringstream msg;
+      msg << "An error occurred: "
+	  << e.what();
+      return_error(msg.str());
     }
-    return_result(*sh);
   }
   
   void ControlledItemService::GetSignalHead( ItemId id ) {

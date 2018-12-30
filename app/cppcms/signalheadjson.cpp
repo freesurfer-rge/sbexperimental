@@ -2,7 +2,6 @@
 
 #include "signalheadjson.hpp"
 
-
 namespace cppcms {
   namespace json {
     Signalbox::SignalHead traits<Signalbox::SignalHead>::get(value const& v) {

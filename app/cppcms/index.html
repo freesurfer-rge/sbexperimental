@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Signalbox</title>
+    <style type="text/css">
+      form.signalheadcontrol { border-style: solid;
+			       padding: 1em; }
+    </style>
+    <script type="text/javascript">
+      
+      function AspectIdString(id) {
+	  return "aspect"+id;
+      }
+
+      function FlashingIdString(id) {
+	  return "flashing"+id;
+      }
+      
+      function SetSignal(id) {
+	  console.log(id);
+
+	  var responseId = "response"+id;
+	  
+	  var flashing = document.getElementById(FlashingIdString(id));
+	  var flash = "Steady";
+	  if( flashing.checked ) {
+	      flash = "Flashing";
+	  }
+	  console.log(flash);
+
+	  var query = "input[name = '" + AspectIdString(id) + "']:checked";
+	  var aspect = document.querySelector(query).value;
+	  console.log(aspect);
+
+	  var xhr = new XMLHttpRequest();
+          xhr.open("post", '/rpc');
+          // Required by JSON-RPC over HTTP
+          xhr.setRequestHeader("Content-Type","application/json");
+	  
+          // It is better to use real formatter like JSON.js
+          var request = new Object();
+	  request["method"] = "setsignalhead";
+	  request["params"] = [id, aspect, flash];
+	  request["id"] = Math.floor(Math.random() * 32768);
+
+	  xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                  var res;
+                  if(xhr.status === 200) {
+                      var result = JSON.parse(xhr.responseText);
+                      if(result.error==null) {
+                          res = JSON.stringify(result.result);
+                      }
+                      else {
+                          res = result.error;
+                      }
+                  }
+                  else {
+                      res = 'Invalid Status ' + xhr.status;
+                  }
+                  document.getElementById(responseId).innerHTML = res;
+              }
+          }
+          xhr.send(JSON.stringify(request)); 
+	  
+	  return false;
+      }
+
+      function AspectRadio(parent, id, value, displayedAspect) {
+	  var button = document.createElement("input");
+	  var label = document.createElement("label");
+
+	  var idString = value+id;
+	  button.setAttribute("type", "radio");
+	  button.setAttribute("name", AspectIdString(id));
+	  button.setAttribute("value", value);
+	  button.setAttribute("id", idString);
+	  if( value==displayedAspect ) {
+	      button.setAttribute("checked", "checked");
+	  }
+
+	  label.setAttribute("for",idString);
+	  label.innerHTML=value;
+	  
+	  parent.appendChild(button);
+	  parent.appendChild(label);
+      }
+
+      function FlashCheckbox(parent, id, flash) {
+	  var checkbox = document.createElement("input");
+	  var label = document.createElement("label");
+
+	  var idString = FlashingIdString(id);
+	  checkbox.setAttribute("type", "checkbox");
+	  checkbox.setAttribute("name", "flash");
+	  checkbox.setAttribute("id", idString);
+	  if( flash=="Flashing" ) {
+	      checkbox.setAttribute("checked", "checked");
+	  }
+
+	  label.setAttribute("for",idString);
+	  label.innerHTML="Flashing";
+	  
+	  parent.appendChild(checkbox);
+	  parent.appendChild(label);
+      }
+      
+      function RenderSignalHeadForm(sh) {
+	  console.log("Starting RenderSignalHead for "+JSON.stringify(sh));
+
+	  // Create the form
+	  f = document.createElement("form");
+	  f.setAttribute("id", "ID"+sh.id);
+	  f.setAttribute("class", "signalheadcontrol");
+	  f.setAttribute("action", "");
+	  f.setAttribute("onsubmit", "return SetSignal('"+sh.id+"');");
+
+	  // Title
+	  var h = document.createElement("h1");
+	  h.innerHTML = "SignalHead "+sh.id;
+	  f.appendChild(h);
+
+	  // The radio buttons for the aspects
+	  var aspectPara = document.createElement("p");
+	  AspectRadio(aspectPara, sh.id, "Red", sh.aspect);
+	  if( sh.aspectCount >= 3 ) {
+	      AspectRadio(aspectPara, sh.id, "Yellow", sh.aspect);
+	  }
+	  if( sh.aspectCount == 4 ) {
+	      AspectRadio(aspectPara, sh.id, "DoubleYellow", sh.aspect);
+	  }
+	  AspectRadio(aspectPara, sh.id, "Green", sh.aspect);
+	  f.appendChild(aspectPara);
+
+	  // The checkbox for Flash
+	  var flashPara = document.createElement("p");
+	  FlashCheckbox(flashPara, sh.id, sh.flash);
+	  f.appendChild(flashPara);
+
+	  // The submit button
+	  var submitPara = document.createElement("p");
+	  var button = document.createElement("input");
+	  button.setAttribute("type", "submit");
+	  button.setAttribute("value", "Submit");
+	  submitPara.appendChild(button);
+	  f.appendChild(submitPara);
+
+	  // And the error line
+	  var errorPara = document.createElement("p");
+	  errorPara.setAttribute("id", "response"+sh.id);
+	  f.appendChild(errorPara);
+
+	  // Insert into document
+	  document.getElementsByTagName('body')[0].appendChild(f);
+      }
+      
+      function HandleSignalHead(id) {
+	  console.log("Starting HandleSignalHead for "+id);
+
+	  var xhr = new XMLHttpRequest();
+          xhr.open("post", '/rpc');
+          // Required by JSON-RPC over HTTP
+          xhr.setRequestHeader("Content-Type","application/json");
+
+	  var request = new Object();
+	  request['method'] = "getsignalhead";
+	  request['params'] = [ id ];
+	  request['id'] = Math.floor(Math.random() * 32768);
+	  console.log("HandleSignalHead: Request="+JSON.stringify(request));
+
+	  xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                  var res;
+                  if(xhr.status === 200) {
+		      console.log("HandleSignalHead: Response = " + xhr.responseText);
+                      var result = JSON.parse(xhr.responseText);
+		      console.log("HandleSignalHead: Result = " + JSON.stringify(result.result));
+		      console.log("HandleSignalHead: Error = " + result.error);
+                      if(result.error==null) {
+                          RenderSignalHeadForm(result.result);
+                      }
+                      else {
+                          document.getElementById(pageErrorLoc).innerHTML = result.error;
+                      }
+                  }
+                  else {
+                      document.getElementById(pageErrorLoc).innerHTML = 'Invalid Status ' + xhr.status;
+                  }
+              }
+          }
+          xhr.send(JSON.stringify(request));
+      }
+      
+      function HandleItem(item) {
+	  console.log("Starting HandleItem for "+JSON.stringify(item));
+	  switch(item.type) {
+	  case "signalhead":
+	      HandleSignalHead(item.id);
+	      break;
+	      
+	  default:
+	      console.log("Unrecognised type: "+item.type);
+	  }
+      }
+      
+      function HandleItemList(items) {
+	  console.log("Starting HandleItemList");
+
+	  for( var i=0; i<items.length; i++ ) {
+	      HandleItem(items[i]);
+	  }
+      }
+      
+      function LoadInfo() {
+	  console.log("Starting LoadInfo");
+	  
+	  var xhr = new XMLHttpRequest();
+          xhr.open("post", '/rpc');
+          // Required by JSON-RPC over HTTP
+          xhr.setRequestHeader("Content-Type","application/json");
+	  
+          // It is better to use real formatter like JSON.js
+          var request = new Object();
+	  request['method'] = "listitems";
+	  request['params'] = [];
+	  request['id'] = Math.floor(Math.random() * 32768);;
+	  console.log(JSON.stringify(request));
+
+	  var pageErrorLoc = "pageErrorMessage";
+	  xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                  var res;
+                  if(xhr.status === 200) {
+		      console.log("Response = " + xhr.responseText);
+                      var result = JSON.parse(xhr.responseText);
+		      console.log("Result = " + JSON.stringify(result.result));
+		      console.log("Error = " + result.error);
+                      if(result.error==null) {
+                          HandleItemList(result.result);
+                      }
+                      else {
+                          document.getElementById(pageErrorLoc).innerHTML = result.error;
+                      }
+                  }
+                  else {
+                      document.getElementById(pageErrorLoc).innerHTML = 'Invalid Status ' + xhr.status;
+                  }
+              }
+          }
+          xhr.send(JSON.stringify(request));
+	  
+	  console.log("Completed LoadInfo");
+      }
+    </script>
+  </head>
+  <body onload=LoadInfo()>
+    <p id="pageErrorMessage" />
+  </body>
+</html>
