@@ -10,6 +10,7 @@ namespace Signalbox {
   }
 
   void DigitalInputPin::NotifyOneUpdate() {
+    std::lock_guard<std::mutex> lg(this->mtx);
     this->cv.notify_one();
   }
 }

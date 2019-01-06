@@ -72,8 +72,59 @@ BOOST_AUTO_TEST_CASE( DuplicateCreateOutputPin )
   auto dop = pm.CreateDigitalOutputPin(pinId);
   BOOST_REQUIRE( dop );
 
-  std::string msg("Pin 'AnyId' already exists");
+  std::string msg("Pin 'AnyId' already exists as OutputPin");
   BOOST_CHECK_EXCEPTION( pm.CreateDigitalOutputPin(pinId),
+			 std::runtime_error,
+			 GetExceptionMessageChecker<std::runtime_error>(msg) );
+}
+
+BOOST_AUTO_TEST_CASE( CreateInputPin )
+{
+  Signalbox::MockPinManager pm;
+
+  const std::string pinId = "AnyId";
+
+  auto dip = pm.CreateDigitalInputPin(pinId);
+  BOOST_REQUIRE( dip );
+
+  auto mdip = dynamic_cast<Signalbox::MockDigitalInputPin*>(dip);
+  BOOST_CHECK( mdip );
+  BOOST_CHECK_EQUAL( mdip->Get(), false );
+}
+
+BOOST_AUTO_TEST_CASE( CreateTwoInputPins )
+{
+  Signalbox::MockPinManager pm;
+
+  const std::string pinId1 = "AnyId1";
+  const std::string pinId2 = "AnyId2";
+
+  auto dip1 = pm.CreateDigitalInputPin(pinId1);
+  auto dip2 = pm.CreateDigitalInputPin(pinId2);
+  BOOST_REQUIRE( dip1 );
+  BOOST_REQUIRE( dip1 );
+  BOOST_REQUIRE_NE( dip1, dip2 );
+
+  auto mdip1 = dynamic_cast<Signalbox::MockDigitalInputPin*>(dip1);
+  auto mdip2 = dynamic_cast<Signalbox::MockDigitalInputPin*>(dip2);
+  BOOST_CHECK( mdip1 );
+  BOOST_CHECK( mdip2 );
+  BOOST_CHECK_NE( mdip1, mdip2 );
+  BOOST_CHECK_EQUAL( mdip1->Get(), false );
+  BOOST_CHECK_EQUAL( mdip2->Get(), false );
+}
+
+BOOST_AUTO_TEST_CASE( DuplicateCreateInputPin )
+{
+  Signalbox::MockPinManager pm;
+
+  const std::string pinId = "AnyId";
+
+  auto dip = pm.CreateDigitalInputPin(pinId);
+  BOOST_REQUIRE( dip );
+
+  std::string msg("Pin 'AnyId' already exists as InputPin");
+  BOOST_CHECK_EXCEPTION( pm.CreateDigitalInputPin(pinId),
 			 std::runtime_error,
 			 GetExceptionMessageChecker<std::runtime_error>(msg) );
 }
