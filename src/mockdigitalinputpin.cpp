@@ -6,6 +6,6 @@ namespace Signalbox {
   }
 
   void MockDigitalInputPin::Set(const bool level) {
-    throw std::runtime_error("Not implemented");
+    this->state = level;
   }
 }
