@@ -7,5 +7,6 @@ namespace Signalbox {
 
   void MockDigitalInputPin::Set(const bool level) {
     this->state = level;
+    this->NotifyOneUpdate();
   }
 }
