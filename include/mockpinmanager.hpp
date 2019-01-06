@@ -12,7 +12,8 @@ namespace Signalbox {
   class MockPinManager : public PinManager {
   public:
     MockPinManager() :
-      outputPins() {}
+      outputPins(),
+      inputPins() {}
     
     virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) override;
 

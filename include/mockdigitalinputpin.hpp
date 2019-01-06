@@ -19,4 +19,4 @@ namespace Signalbox {
 
     bool state;
   };
-};
+}
