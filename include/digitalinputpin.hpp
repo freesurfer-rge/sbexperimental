@@ -9,17 +9,19 @@ namespace Signalbox {
   public:
     DigitalInputPin() :
       mtx(),
-      cv(),
-      last() {}
+      cv() {}
     
     virtual ~DigitalInputPin() {}
 
     virtual bool Get() const = 0;
 
     bool Wait();
+
+  protected:
+    void NotifyOneUpdate();
+    
   private:
     std::mutex mtx;
     std::condition_variable cv;
-    std::atomic<bool> last;
   };
 }
