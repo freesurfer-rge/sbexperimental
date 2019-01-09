@@ -9,16 +9,16 @@ namespace Signalbox {
 
   class ConsoleDigitalInputPin : public DigitalInputPin {
   public:
+    ConsoleDigitalInputPin() :
+      DigitalInputPin(),
+      state(false),
+      id() {}
+    
     virtual bool Get() const override;
 
     void Set(const bool level);
   private:
     friend class ConsolePinManager;
-
-    ConsoleDigitalInputPin() :
-      DigitalInputPin(),
-      state(false),
-      id() {}
 
     bool state;
     std::string id;

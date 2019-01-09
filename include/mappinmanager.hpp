@@ -2,6 +2,7 @@
 
 #include <map>
 #include <memory>
+#include <sstream>
 
 #include "pinmanager.hpp"
 

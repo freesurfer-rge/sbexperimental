@@ -1,8 +1,5 @@
 #pragma once
 
-#include <map>
-#include <memory>
-
 #include "pinmanager.hpp"
 #include "mappinmanager.hpp"
 

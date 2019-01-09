@@ -1,37 +1,22 @@
 #pragma once
-#include <map>
-#include <memory>
-#include <sstream>
 
 #include "pinmanager.hpp"
+#include "mappinmanager.hpp"
 
 #include "consoledigitaloutputpin.hpp"
 #include "consoledigitalinputpin.hpp"
 
 namespace Signalbox {
-  class ConsolePinManager : public PinManager {
+  class ConsolePinManager : public MapPinManager<std::string,ConsoleDigitalInputPin,ConsoleDigitalOutputPin> {
   public:
     ConsolePinManager() :
-      outputPins() {}
+      MapPinManager() {}
     
-    virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) override;
-    
-    virtual DigitalInputPin* CreateDigitalInputPin(const std::string pinId) override;
-  private:
-    std::map<std::string,std::unique_ptr<ConsoleDigitalOutputPin>> outputPins;
-    std::map<std::string,std::unique_ptr<ConsoleDigitalInputPin>> inputPins;
+  protected:
+    virtual std::string parsePinId( const std::string idString ) const override;
 
-    void checkIfPinExists( const std::string pinId ) const {
-      if( this->outputPins.count(pinId) != 0 ) {
-	std::stringstream msg;
-	msg << "Pin '" << pinId << "' already exists as OutputPin";
-	throw std::runtime_error(msg.str());
-      }
-      if( this->inputPins.count(pinId) != 0 ) {
-	std::stringstream msg;
-	msg << "Pin '" << pinId << "' already exists as InputPin";
-	throw std::runtime_error(msg.str());
-      }
-    }
+    virtual void setupInputPin( ConsoleDigitalInputPin* pin, const std::string pinId ) const override;
+
+    virtual void setupOutputPin( ConsoleDigitalOutputPin* pin, const std::string pinId ) const override;
   };
 }
