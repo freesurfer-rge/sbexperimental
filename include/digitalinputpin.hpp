@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
@@ -17,6 +18,16 @@ namespace Signalbox {
 
     bool Wait();
 
+    template<class Rep, class Period>
+    bool WaitFor(const std::chrono::duration<Rep,Period>& waitTime ) {
+      std::atomic<bool> last;
+      std::unique_lock<std::mutex> lck(this->mtx);
+      last = this->Get();
+      this->cv.wait_for( lck,
+			 waitTime,
+			 [this,&last](){ return last != this->Get(); } );
+      return this->Get();
+    }
   protected:
     void NotifyOneUpdate();
     
