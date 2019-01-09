@@ -7,15 +7,15 @@ namespace Signalbox {
 
   class MockDigitalInputPin : public DigitalInputPin {
   public:
+    MockDigitalInputPin() :
+      DigitalInputPin(),
+      state(false) {}
+    
     virtual bool Get() const override;
 
     void Set(const bool level);
   private:
     friend class MockPinManager;
-
-    MockDigitalInputPin() :
-      DigitalInputPin(),
-      state(false) {}
 
     bool state;
   };

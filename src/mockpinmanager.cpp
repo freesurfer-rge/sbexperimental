@@ -4,30 +4,28 @@
 #include "mockpinmanager.hpp"
 
 namespace Signalbox {
-  DigitalOutputPin* MockPinManager::CreateDigitalOutputPin(const std::string pinId) {
-    this->checkIfPinExists(pinId);
-    
-    auto nxt = std::unique_ptr<MockDigitalOutputPin>(new MockDigitalOutputPin());
-    this->outputPins[pinId] = std::move(nxt);
-
-    return this->outputPins[pinId].get();
-  }
-
-  DigitalInputPin* MockPinManager::CreateDigitalInputPin(const std::string pinId) {
-    this->checkIfPinExists(pinId);
-
-    auto nxt = std::unique_ptr<MockDigitalInputPin>(new MockDigitalInputPin());
-
-    this->inputPins[pinId] = std::move(nxt);
-
-    return this->inputPins[pinId].get();
-  }
 
   MockDigitalOutputPin* MockPinManager::FetchMockDigitalOutputPin(const std::string pinId) const {
-    return this->outputPins.at(pinId).get();
+    return this->getOutputPin(pinId);
   }
 
   MockDigitalInputPin* MockPinManager::FetchMockDigitalInputPin(const std::string pinId) const {
-    throw std::runtime_error("Not yet implemented");
+    std::stringstream msg;
+    msg << __FUNCTION__
+	<< ": Not implemented"
+	<< " (" << pinId << ")";
+    throw std::runtime_error(msg.str());
+  }
+
+  std::string MockPinManager::parsePinId( const std::string idString ) const {
+    return idString;
+  }
+
+  void MockPinManager::setupInputPin( MockDigitalInputPin* pin, const std::string pinId ) const {
+    // Nothing to do
+  }
+
+  void MockPinManager::setupOutputPin( MockDigitalOutputPin* pin, const std::string pinId ) const {
+    // Nothing to do
   }
 }
