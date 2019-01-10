@@ -4,11 +4,13 @@
 
 
 #include "pinmanager.hpp"
+#include "mappinmanager.hpp"
 
 #include "pigpioddigitaloutputpin.hpp"
+#include "pigpioddigitalinputpin.hpp"
 
 namespace Signalbox {
-  class PiGPIOdPinManager : public PinManager {
+  class PiGPIOdPinManager : public MapPinManager<int,PiGPIOdDigitalInputPin,PiGPIOdDigitalOutputPin> {
   public:
     PiGPIOdPinManager();
 
@@ -16,7 +18,9 @@ namespace Signalbox {
 
     virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) override;
 
-    int ParseId(const std::string pinId) const;
+    int ParseId(const std::string pinId) const {
+      return this->parsePinId(pinId);
+    }
 
     int GetPiId() const {
       return this->piId;
@@ -25,10 +29,16 @@ namespace Signalbox {
     // Remove copy constructor and operator=
     PiGPIOdPinManager(PiGPIOdPinManager&) = delete;
     PiGPIOdPinManager& operator=(PiGPIOdPinManager&) = delete;
+  protected:
+    virtual int parsePinId( const std::string idString ) const override;
+
+    virtual void setupInputPin( PiGPIOdDigitalInputPin* pin, const int pinId ) const override;
+
+    virtual void setupOutputPin( PiGPIOdDigitalOutputPin* pin, const int pinId ) const override;
+    
   private:
     static bool exists;
     
     int piId;
-    std::map<int,std::unique_ptr<PiGPIOdDigitalOutputPin>> outputPins;
   };
 }

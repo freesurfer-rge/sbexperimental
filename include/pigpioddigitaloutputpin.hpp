@@ -7,6 +7,11 @@ namespace Signalbox {
 
   class PiGPIOdDigitalOutputPin : public DigitalOutputPin {
   public:
+    PiGPIOdDigitalOutputPin() :
+      DigitalOutputPin(),
+      piId(-1),
+      pinId(-1) {};
+    
     virtual void Set(const bool level) override;
 
     virtual bool Get() const override;
@@ -21,14 +26,8 @@ namespace Signalbox {
   private:
     friend class PiGPIOdPinManager;
 
-    PiGPIOdDigitalOutputPin() :
-      piId(-1),
-      pinId(-1) {}
+    int piId;
 
-    PiGPIOdDigitalOutputPin(const int pi, const int pin);
-
-    const int piId;
-
-    const int pinId;
+    int pinId;
   };
 }

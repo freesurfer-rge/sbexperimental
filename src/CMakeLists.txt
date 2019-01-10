@@ -18,6 +18,7 @@ LIST(APPEND srcs mockdigitalinputpin.cpp)
 
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpioddigitaloutputpin.cpp)
+  LIST(APPEND srcs pigpioddigitalinputpin.cpp)
   LIST(APPEND srcs pigpiodpinmanager.cpp)
 ENDIF()
 

@@ -24,9 +24,9 @@ namespace Signalbox {
       auto nxt = std::unique_ptr<DigitalInputPinType>(new DigitalInputPinType());
       this->setupInputPin(nxt.get(), parsedId);
 
-      this->inputPins[pinId] = std::move(nxt);
+      this->inputPins[parsedId] = std::move(nxt);
 
-      return this->inputPins[pinId].get();
+      return this->inputPins[parsedId].get();
     }
 
     DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) {
@@ -36,9 +36,9 @@ namespace Signalbox {
       auto nxt = std::unique_ptr<DigitalOutputPinType>(new DigitalOutputPinType());
       this->setupOutputPin(nxt.get(), parsedId);
 
-      this->outputPins[pinId] = std::move(nxt);
+      this->outputPins[parsedId] = std::move(nxt);
 
-      return this->outputPins[pinId].get();
+      return this->outputPins[parsedId].get();
     }
     
   protected:
