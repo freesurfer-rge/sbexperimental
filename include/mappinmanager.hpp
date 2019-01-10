@@ -17,7 +17,7 @@ namespace Signalbox {
       outputPins(),
       inputPins() {}
 
-    DigitalInputPin* CreateDigitalInputPin(const std::string pinId) {
+    virtual DigitalInputPin* CreateDigitalInputPin(const std::string pinId) override {
       const PinIdType parsedId = this->parsePinId(pinId);
       this->throwIfPinExists(parsedId);
 
@@ -29,7 +29,7 @@ namespace Signalbox {
       return this->inputPins[parsedId].get();
     }
 
-    DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) {
+    virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) override {
       const PinIdType parsedId = this->parsePinId(pinId);
       this->throwIfPinExists(parsedId);
 

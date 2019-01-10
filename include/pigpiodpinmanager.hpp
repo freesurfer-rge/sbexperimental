@@ -15,9 +15,7 @@ namespace Signalbox {
     PiGPIOdPinManager();
 
     ~PiGPIOdPinManager();
-
-    virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) override;
-
+    
     int ParseId(const std::string pinId) const {
       return this->parsePinId(pinId);
     }
