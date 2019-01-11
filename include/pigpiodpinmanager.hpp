@@ -2,6 +2,7 @@
 #include <map>
 #include <memory>
 
+#include <pigpiod_if2.h>
 
 #include "pinmanager.hpp"
 #include "mappinmanager.hpp"
@@ -35,7 +36,9 @@ namespace Signalbox {
     virtual void setupOutputPin( PiGPIOdDigitalOutputPin* pin, const int pinId ) const override;
     
   private:
-    static bool exists;
+    static PiGPIOdPinManager* singleton;
+
+    static void callBackDispatch(int pi, unsigned int user_gpio, unsigned int level, uint32_t tick);
     
     int piId;
   };

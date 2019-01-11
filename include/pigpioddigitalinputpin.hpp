@@ -8,7 +8,9 @@ namespace Signalbox {
   class PiGPIOdDigitalInputPin : public DigitalInputPin {
   public:
     PiGPIOdDigitalInputPin() :
-      DigitalInputPin() {}
+      DigitalInputPin(),
+      piId(-1),
+      pinId(-1) {}
     
     virtual bool Get() const override;
 
@@ -17,5 +19,9 @@ namespace Signalbox {
 
   private:
     friend class PiGPIOdPinManager;
+
+    int piId;
+
+    int pinId;
   };
 }

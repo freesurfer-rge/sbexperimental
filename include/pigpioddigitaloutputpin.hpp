@@ -10,7 +10,7 @@ namespace Signalbox {
     PiGPIOdDigitalOutputPin() :
       DigitalOutputPin(),
       piId(-1),
-      pinId(-1) {};
+      pinId(-1) {}
     
     virtual void Set(const bool level) override;
 

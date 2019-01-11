@@ -7,12 +7,31 @@
 #include "pigpiodpinmanager.hpp"
 
 namespace Signalbox {
-  bool PiGPIOdPinManager::exists = false;
+  // Note that this is not an owning pointer
+  PiGPIOdPinManager* PiGPIOdPinManager::singleton = NULL;
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+  void PiGPIOdPinManager::callBackDispatch(int pi,
+					   unsigned int user_gpio,
+					   unsigned int level,
+					   uint32_t tick) {
+    if( pi != singleton->piId ) {
+      std::stringstream msg;
+      msg << __FUNCTION__
+	  << ": Bad pi = " << pi;
+      throw std::runtime_error(msg.str());
+    }
+
+    auto dip = singleton->getInputPin(user_gpio);
+    dip->NotifyOneUpdate();
+  }
+#pragma GCC diagnostic pop
   
   PiGPIOdPinManager::PiGPIOdPinManager() :
     MapPinManager(),
     piId(-1) {
-    if( PiGPIOdPinManager::exists ) {
+    if( PiGPIOdPinManager::singleton != NULL ) {
       throw std::runtime_error("PiGPIOdPinManager already exists");
     }
     
@@ -23,7 +42,7 @@ namespace Signalbox {
 	  << "Have you run 'sudo pigpiod' ?";
       throw std::runtime_error(msg.str());
     }
-    PiGPIOdPinManager::exists = true;
+    PiGPIOdPinManager::singleton = this;
   }
 
   PiGPIOdPinManager::~PiGPIOdPinManager() {
@@ -31,7 +50,7 @@ namespace Signalbox {
     if( this->piId >= 0 ) {
       pigpio_stop(this->piId);
     }
-    PiGPIOdPinManager::exists = false;
+    PiGPIOdPinManager::singleton = NULL;
   }
   
   int PiGPIOdPinManager::parsePinId(const std::string pinId) const {
@@ -42,6 +61,31 @@ namespace Signalbox {
   }
   
   void PiGPIOdPinManager::setupInputPin( PiGPIOdDigitalInputPin* pin, const int pinId ) const {
+    pin->piId = this->piId;
+    pin->pinId = pinId;
+
+    int err = set_mode(pin->piId, pin->pinId, PI_INPUT);
+    if( err != 0 ) {
+      std::stringstream msg;
+      msg << "set_mode failed for Pi: "
+	  << pin->piId
+	  << " pin: " << pin->pinId
+	  << " error: " << err;
+      throw std::runtime_error(msg.str());
+    }
+
+    int callbackId = callback(this->piId,pin->pinId, EITHER_EDGE, &PiGPIOdPinManager::callBackDispatch );
+    if( (callbackId==pigif_bad_malloc) ||
+	(callbackId==pigif_duplicate_callback) ||
+	(callbackId==pigif_bad_callback) ) {
+      std::stringstream msg;
+      msg << "callback failed for Pi: "
+	  << pin->piId
+	  << " pin: " << pin->pinId
+	  << " error: " << callbackId;
+      throw std::runtime_error(msg.str());
+    }
+    
     throw std::runtime_error("PiGPIOdPinManager::setupInputPin not yet implemented");
   }
 
