@@ -4,6 +4,8 @@
 #include <memory>
 #include <sstream>
 
+#include <boost/predef.h>
+
 #include "pinmanager.hpp"
 
 namespace Signalbox {
@@ -65,9 +67,21 @@ namespace Signalbox {
 
     virtual PinIdType parsePinId( const std::string idString ) const = 0;
 
-    virtual void setupInputPin( DigitalInputPinType* pin, const PinIdType pinId ) const = 0;
+#if defined(BOOST_COMP_GNUC)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#elif defined(BOOST_COMP_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
+    virtual void setupInputPin( DigitalInputPinType* pin, const PinIdType pinId ) const {}
 
-    virtual void setupOutputPin( DigitalOutputPinType* pin, const PinIdType pinId ) const = 0;
+    virtual void setupOutputPin( DigitalOutputPinType* pin, const PinIdType pinId ) const {}
+#if defined(BOOST_COMP_GNUC)
+#pragma GCC diagnostic pop
+#elif defined(BOOST_COMP_CLANG)
+#pragma clange diagnostic pop
+#endif
     
   private:
     std::map<PinIdType,std::unique_ptr<DigitalOutputPinType>> outputPins;

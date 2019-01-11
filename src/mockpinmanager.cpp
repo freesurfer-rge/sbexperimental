@@ -20,12 +20,4 @@ namespace Signalbox {
   std::string MockPinManager::parsePinId( const std::string idString ) const {
     return idString;
   }
-
-  void MockPinManager::setupInputPin( MockDigitalInputPin* pin, const std::string pinId ) const {
-    // Nothing to do
-  }
-
-  void MockPinManager::setupOutputPin( MockDigitalOutputPin* pin, const std::string pinId ) const {
-    // Nothing to do
-  }
 }
