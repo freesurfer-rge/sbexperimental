@@ -26,10 +26,5 @@ namespace Signalbox {
 
   protected:
     virtual std::string parsePinId( const std::string idString ) const override;
-
-    virtual void setupInputPin( MockDigitalInputPin* pin, const std::string pinId ) const override;
-
-    virtual void setupOutputPin( MockDigitalOutputPin* pin, const std::string pinId ) const override;
-    
   };
 }
