@@ -7,13 +7,13 @@ namespace Signalbox {
   
   class ConsoleDigitalOutputPin : public DigitalOutputPin {
   public:
+    ConsoleDigitalOutputPin() : id() {}
+    
     virtual void Set(const bool level ) override;
 
     virtual bool Get() const override;
   private:
     friend class ConsolePinManager;
-
-    ConsoleDigitalOutputPin() :id() {}
 
     std::string id;
   };

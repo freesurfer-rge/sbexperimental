@@ -1,20 +1,22 @@
 #pragma once
-#include <map>
-#include <memory>
 
 #include "pinmanager.hpp"
+#include "mappinmanager.hpp"
 
 #include "consoledigitaloutputpin.hpp"
+#include "consoledigitalinputpin.hpp"
 
 namespace Signalbox {
-  class ConsolePinManager : public PinManager {
+  class ConsolePinManager : public MapPinManager<std::string,ConsoleDigitalInputPin,ConsoleDigitalOutputPin> {
   public:
     ConsolePinManager() :
-      outputPins() {}
+      MapPinManager() {}
     
-    virtual DigitalOutputPin* CreateDigitalOutputPin(const std::string pinId) override;
+  protected:
+    virtual std::string parsePinId( const std::string idString ) const override;
 
-  private:
-    std::map<std::string,std::unique_ptr<ConsoleDigitalOutputPin>> outputPins;
+    virtual void setupInputPin( ConsoleDigitalInputPin* pin, const std::string pinId ) const override;
+
+    virtual void setupOutputPin( ConsoleDigitalOutputPin* pin, const std::string pinId ) const override;
   };
 }

@@ -6,20 +6,6 @@
 #include "pigpioddigitaloutputpin.hpp"
 
 namespace Signalbox {
-  PiGPIOdDigitalOutputPin::PiGPIOdDigitalOutputPin(const int pi, const int pin) :
-    piId(pi),
-    pinId(pin) {
-    int err = set_mode(this->piId, this->pinId, PI_OUTPUT);
-    if( err != 0 ) {
-      std::stringstream msg;
-      msg << "set_mode failed for Pi: "
-	  << this->piId
-	  << " pin: " << this->pinId
-	  << " error: " << err;
-      throw std::runtime_error(msg.str());
-    }
-    this->Set(false);
-  }
   
   void PiGPIOdDigitalOutputPin::Set(const bool level) {
     int res;

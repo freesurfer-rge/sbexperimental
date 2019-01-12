@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE( DuplicateCreateOutputPin )
   auto dop = pm.CreateDigitalOutputPin(pinId);
   BOOST_REQUIRE( dop );
 
-  std::string msg("Pin 'GPIO02' already exists");
+  std::string msg("Pin '2' already exists as OutputPin");
   BOOST_CHECK_EXCEPTION( pm.CreateDigitalOutputPin(pinId),
 			 std::runtime_error,
 			 GetExceptionMessageChecker<std::runtime_error>(msg) );

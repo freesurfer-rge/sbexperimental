@@ -4,17 +4,15 @@
 #include "consolepinmanager.hpp"
 
 namespace Signalbox {
-  DigitalOutputPin* ConsolePinManager::CreateDigitalOutputPin(const std::string pinId) {
-    if( this->outputPins.count(pinId) != 0 ) {
-      std::stringstream msg;
-      msg << "Pin '" << pinId << "' already exists";
-      throw std::runtime_error(msg.str());
-    }
-    
-    auto nxt = std::unique_ptr<ConsoleDigitalOutputPin>(new ConsoleDigitalOutputPin());
-    nxt->id = pinId;
-    this->outputPins[pinId] = std::move(nxt);
+  std::string ConsolePinManager::parsePinId( const std::string idString ) const {
+    return idString;
+  }
 
-    return this->outputPins[pinId].get();
+  void ConsolePinManager::setupInputPin( ConsoleDigitalInputPin* pin, const std::string pinId ) const {
+    pin->id = pinId;
+  }
+
+  void ConsolePinManager::setupOutputPin( ConsoleDigitalOutputPin* pin, const std::string pinId ) const {
+    pin->id = pinId;
   }
 }
