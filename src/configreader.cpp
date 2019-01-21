@@ -26,7 +26,6 @@ namespace Signalbox {
   ConfigReader::ConfigReader( const std::string& filename ) : configFileParser(),
 							      ATTR_id(),
 							      ATTR_aspectCount(),
-							      TAG_OutputPin(),
 							      ATTR_OutputPin_control() {
     if( !boost::filesystem::exists(filename) ) {
       throw std::runtime_error( filename + " NOT FOUND" );

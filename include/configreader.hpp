@@ -25,7 +25,6 @@ namespace Signalbox {
 
     std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> ATTR_aspectCount;
     
-    std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> TAG_OutputPin;
     std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> ATTR_OutputPin_control;
 
     void ReadControlledItems(xercesc::DOMElement* elementSignalbox,
