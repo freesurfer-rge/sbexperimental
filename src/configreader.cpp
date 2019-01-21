@@ -45,8 +45,7 @@ namespace Signalbox {
     this->ATTR_id = Configuration::GetTranscoded("id");
 
     this->ATTR_aspectCount = Configuration::GetTranscoded("aspectCount");
-
-    this->TAG_OutputPin = Configuration::GetTranscoded("OutputPin");
+    
     this->ATTR_OutputPin_control = Configuration::GetTranscoded("control");
   }
 
@@ -134,7 +133,7 @@ namespace Signalbox {
 	// Cast node to an element
 	auto currentPin = dynamic_cast<xercesc::DOMElement*>(pinNode);
 	
-	if( xercesc::XMLString::equals(currentPin->getTagName(), this->TAG_OutputPin.get() ) ) {
+	if( Configuration::IsOutputPin(currentPin) ) {
 	  this->ReadSignalHeadOutputPin( currentPin, signal.get() );
 	}
       }
