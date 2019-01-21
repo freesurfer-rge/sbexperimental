@@ -21,9 +21,9 @@
 
 namespace Signalbox {
 
-  std::unique_ptr<XMLCh,xercesstringdeleter> GetTranscoded( const std::string& str ) {
+  std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> GetTranscoded( const std::string& str ) {
     XMLCh* tc = xercesc::XMLString::transcode(str.c_str());
-    return std::unique_ptr<XMLCh,xercesstringdeleter>(tc,xercesstringdeleter());
+    return std::unique_ptr<XMLCh,Configuration::xercesstringdeleter>(tc,Configuration::xercesstringdeleter());
   }
   
   ConfigReader::ConfigReader( const std::string& filename ) : configFileParser(),
@@ -107,7 +107,7 @@ namespace Signalbox {
 	
 	// Common code to sort out the id attribute
 	auto id_attr = currentElement->getAttribute(this->ATTR_id.get());
-	auto idchars = std::unique_ptr<char,xercesstringdeleter>(xercesc::XMLString::transcode(id_attr),xercesstringdeleter());
+	auto idchars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(id_attr),Configuration::xercesstringdeleter());
 	item->id.Parse(std::string(idchars.get()));
       }
       
@@ -149,12 +149,12 @@ namespace Signalbox {
 
   void ConfigReader::ReadSignalHeadOutputPin( xercesc::DOMElement* currentPin, SignalHeadData* signal ) {
     auto id_attr = currentPin->getAttribute(this->ATTR_id.get());
-    auto idchars = std::unique_ptr<char,xercesstringdeleter>(xercesc::XMLString::transcode(id_attr),xercesstringdeleter());
+    auto idchars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(id_attr),Configuration::xercesstringdeleter());
 	  
     auto idstring = std::string(idchars.get());
 	  
     auto control_attr = currentPin->getAttribute(this->ATTR_OutputPin_control.get());
-    auto controlchars = std::unique_ptr<char,xercesstringdeleter>(xercesc::XMLString::transcode(control_attr),xercesstringdeleter());
+    auto controlchars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(control_attr),Configuration::xercesstringdeleter());
     auto controlstring = std::string(controlchars.get());
     
     auto controlPin = StringToSignalHeadPins(controlstring);
