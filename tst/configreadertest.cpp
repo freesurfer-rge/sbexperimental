@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE( ReadSingleSignal )
 
   std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
 
-  cr.ReadConfiguration( configItems );
+  cr.ReadControlledItems( configItems );
 
   BOOST_CHECK_EQUAL( configItems.size(), 1 );
   
@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE( ReadTwoSignals )
 
   std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
 
-  cr.ReadConfiguration( configItems );
+  cr.ReadControlledItems( configItems );
 
   BOOST_CHECK_EQUAL( configItems.size(), 2 );
 

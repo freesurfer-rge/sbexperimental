@@ -17,12 +17,11 @@ namespace Signalbox {
   public:
     ConfigReader( const std::string& filename );
 
-    void ReadConfiguration( std::vector< std::unique_ptr<ControlledItemData> >& items );
+    void ReadControlledItems( std::vector< std::unique_ptr<ControlledItemData>>& items );
   private:
     std::unique_ptr<xercesc::XercesDOMParser> configFileParser;
 
-    void ReadControlledItems(xercesc::DOMElement* elementSignalbox,
-			     std::vector<std::unique_ptr<ControlledItemData>>& items );
+    xercesc::DOMElement* GetSignalBoxElement();
     ControlledItemData* ReadSignalHead(xercesc::DOMElement* currentElement );
   };
 }

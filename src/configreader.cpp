@@ -41,25 +41,13 @@ namespace Signalbox {
     this->configFileParser->parse( filename.c_str() );
   }
 
-  void ConfigReader::ReadConfiguration( std::vector< std::unique_ptr<ControlledItemData> >& items ) {
+  void ConfigReader::ReadControlledItems( std::vector<std::unique_ptr<ControlledItemData>>& items ) {
     // Make sure we have an empty list
     items.clear();
 
-    auto TAG_SignalBox = Configuration::GetTranscoded("SignalBox");
+    // Get the root element of the document
+    xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
     
-    // The following remains owned by the parser object
-    auto xmlDoc = this->configFileParser->getDocument();
-
-    auto elementSignalbox = xmlDoc->getDocumentElement();
-    if( elementSignalbox == nullptr ) {
-      throw std::runtime_error("Empty document");
-    }
-
-    this->ReadControlledItems( elementSignalbox, items );
-  }
-
-  void ConfigReader::ReadControlledItems( xercesc::DOMElement* elementSignalbox,
-					  std::vector<std::unique_ptr<ControlledItemData>>& items ) {
     auto TAG_ControlledItems = Configuration::GetTranscoded("ControlledItems");
     auto TAG_SignalHead = Configuration::GetTranscoded("SignalHead");
     
@@ -102,6 +90,24 @@ namespace Signalbox {
 	items.push_back(std::move(item));
       }
     }
+  }
+  
+  xercesc::DOMElement* ConfigReader::GetSignalBoxElement() {
+    auto TAG_SignalBox = Configuration::GetTranscoded("SignalBox");
+    
+    // The following remains owned by the parser object
+    auto xmlDoc = this->configFileParser->getDocument();
+
+    auto docElement = xmlDoc->getDocumentElement();
+    if( docElement == nullptr ) {
+      throw std::runtime_error("Empty document");
+    }
+
+    if( !xercesc::XMLString::equals(docElement->getTagName(), TAG_SignalBox.get()) ) {
+      throw std::runtime_error("Root element is not SignalBox");
+    }
+
+    return docElement;
   }
   
   ControlledItemData* ConfigReader::ReadSignalHead(xercesc::DOMElement* currentElement ) {
