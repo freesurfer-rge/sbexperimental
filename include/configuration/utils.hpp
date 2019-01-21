@@ -10,8 +10,12 @@
 
 namespace Signalbox {
   namespace Configuration {
-    std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> GetTranscoded( const std::string& str );
+    std::unique_ptr<XMLCh,xercesstringdeleter> GetTranscoded( const std::string& str );
 
+    std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name );
+    
+    std::string GetIdAttribute( const xercesc::DOMElement* element );
+    
     bool IsOutputPin( const xercesc::DOMElement* element );
   }
 }

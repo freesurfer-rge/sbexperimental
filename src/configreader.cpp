@@ -19,6 +19,7 @@
 
 #include "configreader.hpp"
 
+#include "outputpindata.hpp"
 #include "signalheaddata.hpp"
 
 namespace Signalbox {
@@ -143,18 +144,11 @@ namespace Signalbox {
   }
 
   void ConfigReader::ReadSignalHeadOutputPin( xercesc::DOMElement* currentPin, SignalHeadData* signal ) {
-    auto id_attr = currentPin->getAttribute(this->ATTR_id.get());
-    auto idchars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(id_attr),Configuration::xercesstringdeleter());
-	  
-    auto idstring = std::string(idchars.get());
-	  
-    auto control_attr = currentPin->getAttribute(this->ATTR_OutputPin_control.get());
-    auto controlchars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(control_attr),Configuration::xercesstringdeleter());
-    auto controlstring = std::string(controlchars.get());
+    OutputPinData pin(currentPin);
     
-    auto controlPin = StringToSignalHeadPins(controlstring);
+    auto controlPin = StringToSignalHeadPins(pin.getControl());
 	  	  
-    signal->pinData[controlPin] = idstring;
+    signal->pinData[controlPin] = pin.getId();
   }
   
 }

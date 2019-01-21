@@ -2,9 +2,22 @@
 
 namespace Signalbox {
   namespace Configuration {
-    std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> GetTranscoded( const std::string& str ) {
+    std::unique_ptr<XMLCh,xercesstringdeleter> GetTranscoded( const std::string& str ) {
       XMLCh* tc = xercesc::XMLString::transcode(str.c_str());
-      return std::unique_ptr<XMLCh,Configuration::xercesstringdeleter>(tc,Configuration::xercesstringdeleter());
+      return std::unique_ptr<XMLCh,xercesstringdeleter>(tc, xercesstringdeleter());
+    }
+
+    std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name ) {
+      auto tcName = GetTranscoded(name);
+      auto attr = element->getAttribute(tcName.get());
+      auto attrChars = std::unique_ptr<char,xercesstringdeleter>(xercesc::XMLString::transcode(attr),
+								 xercesstringdeleter());
+	  
+      return std::string(attrChars.get());
+    }
+
+    std::string GetIdAttribute( const xercesc::DOMElement* element ) {
+      return GetAttributeByName(element, "id");
     }
 
     bool IsOutputPin( const xercesc::DOMElement* element ) {
