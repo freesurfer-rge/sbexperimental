@@ -19,7 +19,7 @@
 
 #include "configreader.hpp"
 
-#include "outputpindata.hpp"
+#include "digitaloutputpindata.hpp"
 #include "signalheaddata.hpp"
 
 namespace Signalbox {
@@ -139,7 +139,7 @@ namespace Signalbox {
   }
 
   void ConfigReader::ReadSignalHeadOutputPin( xercesc::DOMElement* currentPin, SignalHeadData* signal ) {
-    OutputPinData pin(currentPin);
+    DigitalOutputPinData pin(currentPin);
     
     auto controlPin = StringToSignalHeadPins(pin.getControl());
 	  	  

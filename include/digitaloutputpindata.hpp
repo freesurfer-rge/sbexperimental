@@ -5,9 +5,9 @@
 #include <xercesc/dom/DOMElement.hpp>
 
 namespace Signalbox {
-  class OutputPinData {
+  class DigitalOutputPinData {
   public:
-    OutputPinData( const xercesc::DOMElement* xmlElement );
+    DigitalOutputPinData( const xercesc::DOMElement* xmlElement );
 
     std::string getId() const;
 

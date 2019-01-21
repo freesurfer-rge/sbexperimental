@@ -2,25 +2,25 @@
 
 #include "configuration/utils.hpp"
 
-#include "outputpindata.hpp"
+#include "digitaloutputpindata.hpp"
 
 namespace Signalbox {
-  OutputPinData::OutputPinData( const xercesc::DOMElement* xmlElement ) :
+  DigitalOutputPinData::DigitalOutputPinData( const xercesc::DOMElement* xmlElement ) :
     id(),
     control() {
     if( !Configuration::IsOutputPin(xmlElement) ) {
-      throw std::runtime_error("OutputPinData given non-OutputPin XML fragment");
+      throw std::runtime_error("DigitalOutputPinData given non-OutputPin XML fragment");
     }
 
     this->id = Configuration::GetIdAttribute(xmlElement);
     this->control = Configuration::GetAttributeByName(xmlElement, "control");
   }
     
-  std::string OutputPinData::getId() const {
+  std::string DigitalOutputPinData::getId() const {
     return this->id;
   }
 
-  std::string OutputPinData::getControl() const {
+  std::string DigitalOutputPinData::getControl() const {
     return this->control;
   }
 }
