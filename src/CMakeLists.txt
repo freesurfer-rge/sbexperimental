@@ -2,6 +2,7 @@ SET( srcs )
 
 LIST(APPEND srcs xercesguard.cpp)
 LIST(APPEND srcs configuration/xercesstringdeleter.cpp)
+LIST(APPEND srcs configuration/utils.cpp)
 LIST(APPEND srcs itemid.cpp)
 LIST(APPEND srcs configreader.cpp)
 LIST(APPEND srcs signalheaddata.cpp)

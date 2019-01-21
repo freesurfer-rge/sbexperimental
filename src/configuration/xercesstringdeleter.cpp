@@ -1,5 +1,3 @@
-#include <xercesc/util/XMLString.hpp>
-
 #include "configuration/xercesstringdeleter.hpp"
 
 namespace Signalbox {

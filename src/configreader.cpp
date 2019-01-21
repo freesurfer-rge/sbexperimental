@@ -15,16 +15,13 @@
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/util/XMLUni.hpp>
 
+#include "configuration/utils.hpp"
+
 #include "configreader.hpp"
 
 #include "signalheaddata.hpp"
 
 namespace Signalbox {
-
-  std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> GetTranscoded( const std::string& str ) {
-    XMLCh* tc = xercesc::XMLString::transcode(str.c_str());
-    return std::unique_ptr<XMLCh,Configuration::xercesstringdeleter>(tc,Configuration::xercesstringdeleter());
-  }
   
   ConfigReader::ConfigReader( const std::string& filename ) : configFileParser(),
 							      ATTR_id(),
@@ -45,19 +42,19 @@ namespace Signalbox {
 
     this->configFileParser->parse( filename.c_str() );
 
-    this->ATTR_id = GetTranscoded("id");
+    this->ATTR_id = Configuration::GetTranscoded("id");
 
-    this->ATTR_aspectCount = GetTranscoded("aspectCount");
+    this->ATTR_aspectCount = Configuration::GetTranscoded("aspectCount");
 
-    this->TAG_OutputPin = GetTranscoded("OutputPin");
-    this->ATTR_OutputPin_control = GetTranscoded("control");
+    this->TAG_OutputPin = Configuration::GetTranscoded("OutputPin");
+    this->ATTR_OutputPin_control = Configuration::GetTranscoded("control");
   }
 
   void ConfigReader::ReadConfiguration( std::vector< std::unique_ptr<ControlledItemData> >& items ) {
     // Make sure we have an empty list
     items.clear();
 
-    auto TAG_SignalBox = GetTranscoded("SignalBox");
+    auto TAG_SignalBox = Configuration::GetTranscoded("SignalBox");
     
     // The following remains owned by the parser object
     auto xmlDoc = this->configFileParser->getDocument();
@@ -72,8 +69,8 @@ namespace Signalbox {
 
   void ConfigReader::ReadControlledItems( xercesc::DOMElement* elementSignalbox,
 					  std::vector<std::unique_ptr<ControlledItemData>>& items ) {
-    auto TAG_ControlledItems = GetTranscoded("ControlledItems");
-    auto TAG_SignalHead = GetTranscoded("SignalHead");
+    auto TAG_ControlledItems = Configuration::GetTranscoded("ControlledItems");
+    auto TAG_SignalHead = Configuration::GetTranscoded("SignalHead");
     
     auto elementListControlledItems = elementSignalbox->getElementsByTagName( TAG_ControlledItems.get() );
     if( elementListControlledItems == nullptr ) {
