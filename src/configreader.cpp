@@ -120,7 +120,10 @@ namespace Signalbox {
 	auto currentPin = dynamic_cast<xercesc::DOMElement*>(pinNode);
 	
 	if( Configuration::IsOutputPin(currentPin) ) {
-	  this->ReadSignalHeadOutputPin( currentPin, signal.get() );
+	  DigitalOutputPinData pin(currentPin);
+    
+	  auto controlPin = StringToSignalHeadPins(pin.getControl());	  
+	  signal->pinData[controlPin] = pin.getId();
 	}
       }
     }
@@ -128,13 +131,4 @@ namespace Signalbox {
     // This gets the raw pointer, and stops the unique_ptr from managing it
     return signal.release();
   }
-
-  void ConfigReader::ReadSignalHeadOutputPin( xercesc::DOMElement* currentPin, SignalHeadData* signal ) {
-    DigitalOutputPinData pin(currentPin);
-    
-    auto controlPin = StringToSignalHeadPins(pin.getControl());
-	  	  
-    signal->pinData[controlPin] = pin.getId();
-  }
-  
 }

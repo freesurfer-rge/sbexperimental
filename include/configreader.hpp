@@ -24,6 +24,5 @@ namespace Signalbox {
     void ReadControlledItems(xercesc::DOMElement* elementSignalbox,
 			     std::vector<std::unique_ptr<ControlledItemData>>& items );
     ControlledItemData* ReadSignalHead(xercesc::DOMElement* currentElement );
-    void ReadSignalHeadOutputPin( xercesc::DOMElement* currentPin, SignalHeadData* signal );
   };
 }
