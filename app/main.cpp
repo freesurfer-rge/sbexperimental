@@ -31,7 +31,7 @@ int main(int ac, char* av[]) {
 
     Signalbox::ConfigReader cr(opts.configFilePath);
     std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
-    cr.ReadConfiguration( configItems );
+    cr.ReadControlledItems( configItems );
 
     std::cout << "Read config file" << std::endl;
     
