@@ -24,8 +24,6 @@ namespace Signalbox {
     std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> ATTR_id;
 
     std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> ATTR_aspectCount;
-    
-    std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> ATTR_OutputPin_control;
 
     void ReadControlledItems(xercesc::DOMElement* elementSignalbox,
 			     std::vector<std::unique_ptr<ControlledItemData>>& items );

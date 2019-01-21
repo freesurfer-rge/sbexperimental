@@ -26,8 +26,7 @@ namespace Signalbox {
   
   ConfigReader::ConfigReader( const std::string& filename ) : configFileParser(),
 							      ATTR_id(),
-							      ATTR_aspectCount(),
-							      ATTR_OutputPin_control() {
+							      ATTR_aspectCount() {
     if( !boost::filesystem::exists(filename) ) {
       throw std::runtime_error( filename + " NOT FOUND" );
     }
@@ -45,8 +44,6 @@ namespace Signalbox {
     this->ATTR_id = Configuration::GetTranscoded("id");
 
     this->ATTR_aspectCount = Configuration::GetTranscoded("aspectCount");
-    
-    this->ATTR_OutputPin_control = Configuration::GetTranscoded("control");
   }
 
   void ConfigReader::ReadConfiguration( std::vector< std::unique_ptr<ControlledItemData> >& items ) {
@@ -102,9 +99,7 @@ namespace Signalbox {
 	}
 	
 	// Common code to sort out the id attribute
-	auto id_attr = currentElement->getAttribute(this->ATTR_id.get());
-	auto idchars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(id_attr),Configuration::xercesstringdeleter());
-	item->id.Parse(std::string(idchars.get()));
+	item->id.Parse(Configuration::GetIdAttribute(currentElement));
       }
       
       // Add to the list
