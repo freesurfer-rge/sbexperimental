@@ -19,7 +19,12 @@ namespace Signalbox {
     std::string GetIdAttribute( const xercesc::DOMElement* element ) {
       return GetAttributeByName(element, "id");
     }
-
+    
+    bool IsElementNode( const xercesc::DOMNode* node ) {
+      return (node->getNodeType()) &&
+	(node->getNodeType() == xercesc::DOMNode::ELEMENT_NODE );
+    }
+      
     bool IsOutputPin( const xercesc::DOMElement* element ) {
       auto TAG_OutputPin = GetTranscoded("OutputPin");
       

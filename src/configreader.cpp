@@ -24,9 +24,8 @@
 
 namespace Signalbox {
   
-  ConfigReader::ConfigReader( const std::string& filename ) : configFileParser(),
-							      ATTR_id(),
-							      ATTR_aspectCount() {
+  ConfigReader::ConfigReader( const std::string& filename ) : XercesGuard(),
+							      configFileParser() {
     if( !boost::filesystem::exists(filename) ) {
       throw std::runtime_error( filename + " NOT FOUND" );
     }
@@ -40,10 +39,6 @@ namespace Signalbox {
     this->configFileParser->setLoadExternalDTD( false );
 
     this->configFileParser->parse( filename.c_str() );
-
-    this->ATTR_id = Configuration::GetTranscoded("id");
-
-    this->ATTR_aspectCount = Configuration::GetTranscoded("aspectCount");
   }
 
   void ConfigReader::ReadConfiguration( std::vector< std::unique_ptr<ControlledItemData> >& items ) {
@@ -86,8 +81,7 @@ namespace Signalbox {
       std::unique_ptr<ControlledItemData> item(nullptr);
       auto currentNode = controlledItems->item(i);
 
-      if( (currentNode->getNodeType()) &&
-	  (currentNode->getNodeType() == xercesc::DOMNode::ELEMENT_NODE ) ) {
+      if( Configuration::IsElementNode(currentNode) ) {
 	// Cast node to an element
 	auto currentElement = dynamic_cast<xercesc::DOMElement*>(currentNode);
 	
@@ -113,18 +107,15 @@ namespace Signalbox {
   ControlledItemData* ConfigReader::ReadSignalHead(xercesc::DOMElement* currentElement ) {
     std::unique_ptr<SignalHeadData> signal( new SignalHeadData );
 
-    auto aspectCount_attr = currentElement->getAttribute(this->ATTR_aspectCount.get());
-    if( xercesc::XMLString::stringLen(aspectCount_attr) > 0 ) {
-      signal->aspectCount = xercesc::XMLString::parseInt(aspectCount_attr);
-    }
+    auto aspectCount_attr = Configuration::GetAttributeByName(currentElement, "aspectCount");
+    signal->aspectCount = std::stoi(aspectCount_attr);
     
     auto outputPins = currentElement->getChildNodes();
     // For some reason, the length of this list is 9.....
     for( XMLSize_t iPin=0; iPin<outputPins->getLength(); iPin++ ) {
       auto pinNode = outputPins->item(iPin);
       
-      if( (pinNode->getNodeType()) &&
-	  (pinNode->getNodeType() == xercesc::DOMNode::ELEMENT_NODE ) ) {
+      if( Configuration::IsElementNode(pinNode) ) {
 	// Cast node to an element
 	auto currentPin = dynamic_cast<xercesc::DOMElement*>(pinNode);
 	

@@ -21,10 +21,6 @@ namespace Signalbox {
   private:
     std::unique_ptr<xercesc::XercesDOMParser> configFileParser;
 
-    std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> ATTR_id;
-
-    std::unique_ptr<XMLCh,Configuration::xercesstringdeleter> ATTR_aspectCount;
-
     void ReadControlledItems(xercesc::DOMElement* elementSignalbox,
 			     std::vector<std::unique_ptr<ControlledItemData>>& items );
     ControlledItemData* ReadSignalHead(xercesc::DOMElement* currentElement );

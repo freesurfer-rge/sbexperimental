@@ -15,6 +15,8 @@ namespace Signalbox {
     std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name );
     
     std::string GetIdAttribute( const xercesc::DOMElement* element );
+
+    bool IsElementNode( const xercesc::DOMNode* node );
     
     bool IsOutputPin( const xercesc::DOMElement* element );
   }
