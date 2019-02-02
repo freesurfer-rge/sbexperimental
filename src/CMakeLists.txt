@@ -17,6 +17,7 @@ LIST(APPEND srcs signalheadfactory.cpp)
 LIST(APPEND srcs controlleditemmanager.cpp)
 LIST(APPEND srcs digitalinputpin.cpp)
 LIST(APPEND srcs mockdigitalinputpin.cpp)
+LIST(APPEND srcs mockrailtrafficcontrolclient.cpp)
 
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpioddigitaloutputpin.cpp)
