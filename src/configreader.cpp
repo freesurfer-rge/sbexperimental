@@ -54,29 +54,10 @@ namespace Signalbox {
 							     TAG_RailTrafficControl );
 
     // Fetch the host data
-    auto hostElement = Configuration::GetSingleElementByName( rtcElement, TAG_Host );
-
-    // Apparently there are issues with getTextContent, but I don't see an alternative
-    auto host = hostElement->getTextContent();
-    if( host == nullptr ) {
-      throw std::runtime_error("Failed to call hostElement->getTextContent()" );
-    }
-    auto hostChars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(host),
-									      Configuration::xercesstringdeleter());
-    rtcData.host = std::string(hostChars.get());
+    rtcData.host = Configuration::GetSingleElementTextByName( rtcElement, TAG_Host );
 
     // On to the port
-    auto portElement = Configuration::GetSingleElementByName( rtcElement, TAG_Port );
-
-    // Skate around issues with getTextContent
-    auto port = portElement->getTextContent();
-    if( port == nullptr ) {
-      throw std::runtime_error("Failed to call hostElement->getTextContent()");
-    }
-    auto portChars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(port),
-									      Configuration::xercesstringdeleter());
-
-    auto portString = std::string(portChars.get());
+    auto portString = Configuration::GetSingleElementTextByName( rtcElement, TAG_Port );
     rtcData.port = std::stoul(portString);
   }
   

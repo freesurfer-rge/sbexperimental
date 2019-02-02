@@ -38,6 +38,23 @@ namespace Signalbox {
       
       return result;
     }
+
+    std::string GetSingleElementTextByName( const xercesc::DOMElement* parent, const std::string name ) {
+      auto element = GetSingleElementByName(parent, name);
+
+      // Apparently there are issues with getTextContent, but I don't see an alternative
+      auto elementContent = element->getTextContent();
+      if( elementContent == nullptr ) {
+	std::stringstream msg;
+	msg << "Failed call getTextContent on " << name;
+	throw std::runtime_error(msg.str());
+      }
+      
+      auto elementChars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(elementContent),
+									      Configuration::xercesstringdeleter());
+
+      return std::string(elementChars.get());
+    }
   
     std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name ) {
       auto tcName = GetTranscoded(name);

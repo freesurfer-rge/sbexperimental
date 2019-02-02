@@ -13,6 +13,8 @@ namespace Signalbox {
     std::unique_ptr<XMLCh,xercesstringdeleter> GetTranscoded( const std::string& str );
 
     xercesc::DOMElement* GetSingleElementByName( const xercesc::DOMElement* parent, const std::string name );
+
+    std::string GetSingleElementTextByName( const xercesc::DOMElement* parent, const std::string name );
     
     std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name );
     
