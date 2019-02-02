@@ -11,6 +11,12 @@ namespace Signalbox {
       return std::unique_ptr<XMLCh,xercesstringdeleter>(tc, xercesstringdeleter());
     }
 
+    std::string XMLChToStr( const XMLCh* xmlChars ) {
+      auto chars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(xmlChars),
+									    Configuration::xercesstringdeleter());
+      return std::string(chars.get());
+    }
+
     xercesc::DOMElement* GetSingleElementByName( const xercesc::DOMElement* parent, const std::string name ) {
       auto TAG_Name = StrToXMLCh(name);
 
@@ -49,20 +55,13 @@ namespace Signalbox {
 	msg << "Failed call getTextContent on " << name;
 	throw std::runtime_error(msg.str());
       }
-      
-      auto elementChars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(elementContent),
-									      Configuration::xercesstringdeleter());
-
-      return std::string(elementChars.get());
+            return XMLChToStr(elementContent);
     }
   
     std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name ) {
       auto tcName = StrToXMLCh(name);
       auto attr = element->getAttribute(tcName.get());
-      auto attrChars = std::unique_ptr<char,xercesstringdeleter>(xercesc::XMLString::transcode(attr),
-								 xercesstringdeleter());
-	  
-      return std::string(attrChars.get());
+      return XMLChToStr(attr);
     }
 
     std::string GetIdAttribute( const xercesc::DOMElement* element ) {
