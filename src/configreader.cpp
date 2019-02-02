@@ -58,6 +58,10 @@ namespace Signalbox {
 
     // On to the port
     auto portString = Configuration::GetSingleElementTextByName( rtcElement, TAG_Port );
+    auto portNumber = std::stoul(portString);
+    if( portNumber > std::numeric_limits<uint16_t>::max() ) {
+      throw std::runtime_error("Invalid Port for RailTrafficControl");
+    }
     rtcData.port = std::stoul(portString);
   }
   

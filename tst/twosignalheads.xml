@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <SignalBox>
-  <RailTrafficControl>
-    <Host>rtc.local</Host>
-    <Port>8008</Port>
-  </RailTrafficControl>
   <ControlledItems>
     <SignalHead id="00:00:00:01" aspectCount="2" >
       <OutputPin id="GPIO02" control="Red" />
@@ -15,4 +11,8 @@
       <OutputPin id="GPIO06" control="Green" />
     </SignalHead>
   </ControlledItems>
+  <RailTrafficControl>
+    <Host>rtc.local</Host>
+    <Port>800800000</Port>
+  </RailTrafficControl>
 </SignalBox>

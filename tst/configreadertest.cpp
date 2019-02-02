@@ -7,6 +7,8 @@
 #include "signalheaddata.hpp"
 #include "railtrafficcontroldata.hpp"
 
+#include "exceptionmessagecheck.hpp"
+
 // =====================================================
 
 const std::string singlesignalfile = "singlesignalhead.xml";
@@ -101,6 +103,18 @@ BOOST_AUTO_TEST_CASE( ReadRTC )
   
   BOOST_CHECK_EQUAL( rtcData.host, "rtc.local" );
   BOOST_CHECK_EQUAL( rtcData.port, 8008 );
+}
+
+BOOST_AUTO_TEST_CASE( PortTooBig )
+{
+  Signalbox::ConfigReader cr(twosignalfile);
+
+  Signalbox::RailTrafficControlData rtcData;
+
+  std::string msg("Invalid Port for RailTrafficControl");
+  BOOST_CHECK_EXCEPTION( cr.ReadRailTrafficControl( rtcData ),
+			 std::runtime_error,
+			 GetExceptionMessageChecker<std::runtime_error>(msg) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
