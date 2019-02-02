@@ -16,6 +16,7 @@
 #include <xercesc/util/XMLUni.hpp>
 
 #include "configuration/utils.hpp"
+#include "configuration/xercesstringdeleter.hpp"
 
 #include "configreader.hpp"
 
@@ -41,6 +42,29 @@ namespace Signalbox {
     this->configFileParser->parse( filename.c_str() );
   }
 
+  void ConfigReader::ReadRailTrafficControl( RailTrafficControlData& rtcData ) {
+    // Get the root element of the document
+    xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
+
+    auto TAG_RailTrafficControl = std::string("RailTrafficControl");
+    auto TAG_Host = std::string("Host");
+    auto TAG_Port = std::string("Port");
+
+    auto rtcElement = Configuration::GetSingleElementByName( elementSignalbox,
+							     TAG_RailTrafficControl );
+
+    // Fetch the host data
+    rtcData.host = Configuration::GetSingleElementTextByName( rtcElement, TAG_Host );
+
+    // On to the port
+    auto portString = Configuration::GetSingleElementTextByName( rtcElement, TAG_Port );
+    auto portNumber = std::stoul(portString);
+    if( portNumber > std::numeric_limits<uint16_t>::max() ) {
+      throw std::runtime_error("Invalid Port for RailTrafficControl");
+    }
+    rtcData.port = std::stoul(portString);
+  }
+  
   void ConfigReader::ReadControlledItems( std::vector<std::unique_ptr<ControlledItemData>>& items ) {
     // Make sure we have an empty list
     items.clear();
@@ -48,21 +72,11 @@ namespace Signalbox {
     // Get the root element of the document
     xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
     
-    auto TAG_ControlledItems = Configuration::GetTranscoded("ControlledItems");
-    auto TAG_SignalHead = Configuration::GetTranscoded("SignalHead");
+    auto TAG_ControlledItems = std::string("ControlledItems");
+    auto TAG_SignalHead = Configuration::StrToXMLCh("SignalHead");
     
-    auto elementListControlledItems = elementSignalbox->getElementsByTagName( TAG_ControlledItems.get() );
-    if( elementListControlledItems == nullptr ) {
-      throw std::runtime_error("No elementListControlledItem");
-    }
-    if( elementListControlledItems->getLength() != 1 ) {
-      throw std::runtime_error("Bad element count in elementListControlledItem");
-    }
-
-    auto elementControlledItems = elementListControlledItems->item(0);
-    if( elementControlledItems == nullptr ) {
-      throw std::runtime_error("No elementControlledItem");
-    }
+    auto elementControlledItems = Configuration::GetSingleElementByName( elementSignalbox,
+									 TAG_ControlledItems );
 
     auto controlledItems = elementControlledItems->getChildNodes();
     for( XMLSize_t i=0; i<controlledItems->getLength(); ++i ) {
@@ -93,7 +107,7 @@ namespace Signalbox {
   }
   
   xercesc::DOMElement* ConfigReader::GetSignalBoxElement() {
-    auto TAG_SignalBox = Configuration::GetTranscoded("SignalBox");
+    auto TAG_SignalBox = Configuration::StrToXMLCh("SignalBox");
     
     // The following remains owned by the parser object
     auto xmlDoc = this->configFileParser->getDocument();

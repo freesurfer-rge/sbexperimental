@@ -5,6 +5,9 @@
 #include "configreader.hpp"
 
 #include "signalheaddata.hpp"
+#include "railtrafficcontroldata.hpp"
+
+#include "exceptionmessagecheck.hpp"
 
 // =====================================================
 
@@ -24,6 +27,8 @@ BOOST_AUTO_TEST_CASE( ConstructorCompletes )
 {
   BOOST_CHECK_NO_THROW( Signalbox::ConfigReader cr(singlesignalfile) );
 }
+
+BOOST_AUTO_TEST_SUITE( ReadSignalHeadData )
 
 BOOST_AUTO_TEST_CASE( ReadSingleSignal )
 {
@@ -82,4 +87,36 @@ BOOST_AUTO_TEST_CASE( ReadTwoSignals )
   }
 }
 
+BOOST_AUTO_TEST_SUITE_END()
+
+// =============================================================
+
+BOOST_AUTO_TEST_SUITE( ReadRailTrafficControlData )
+  
+BOOST_AUTO_TEST_CASE( ReadRTC )
+{
+  Signalbox::ConfigReader cr(singlesignalfile);
+
+  Signalbox::RailTrafficControlData rtcData;
+
+  cr.ReadRailTrafficControl( rtcData );
+  
+  BOOST_CHECK_EQUAL( rtcData.host, "rtc.local" );
+  BOOST_CHECK_EQUAL( rtcData.port, 8008 );
+}
+
+BOOST_AUTO_TEST_CASE( PortTooBig )
+{
+  Signalbox::ConfigReader cr(twosignalfile);
+
+  Signalbox::RailTrafficControlData rtcData;
+
+  std::string msg("Invalid Port for RailTrafficControl");
+  BOOST_CHECK_EXCEPTION( cr.ReadRailTrafficControl( rtcData ),
+			 std::runtime_error,
+			 GetExceptionMessageChecker<std::runtime_error>(msg) );
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+  
 BOOST_AUTO_TEST_SUITE_END()

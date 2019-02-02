@@ -10,8 +10,13 @@
 
 namespace Signalbox {
   namespace Configuration {
-    std::unique_ptr<XMLCh,xercesstringdeleter> GetTranscoded( const std::string& str );
+    std::unique_ptr<XMLCh,xercesstringdeleter> StrToXMLCh( const std::string& str );
+    std::string XMLChToStr( const XMLCh* xmlChars );
 
+    xercesc::DOMElement* GetSingleElementByName( const xercesc::DOMElement* parent, const std::string name );
+
+    std::string GetSingleElementTextByName( const xercesc::DOMElement* parent, const std::string name );
+    
     std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name );
     
     std::string GetIdAttribute( const xercesc::DOMElement* element );

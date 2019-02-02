@@ -11,4 +11,8 @@
       <OutputPin id="GPIO06" control="Green" />
     </SignalHead>
   </ControlledItems>
+  <RailTrafficControl>
+    <Host>rtc.local</Host>
+    <Port>800800000</Port>
+  </RailTrafficControl>
 </SignalBox>
