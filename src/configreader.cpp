@@ -69,7 +69,7 @@ namespace Signalbox {
     xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
     
     auto TAG_ControlledItems = std::string("ControlledItems");
-    auto TAG_SignalHead = Configuration::GetTranscoded("SignalHead");
+    auto TAG_SignalHead = Configuration::StrToXMLCh("SignalHead");
     
     auto elementControlledItems = Configuration::GetSingleElementByName( elementSignalbox,
 									 TAG_ControlledItems );
@@ -103,7 +103,7 @@ namespace Signalbox {
   }
   
   xercesc::DOMElement* ConfigReader::GetSignalBoxElement() {
-    auto TAG_SignalBox = Configuration::GetTranscoded("SignalBox");
+    auto TAG_SignalBox = Configuration::StrToXMLCh("SignalBox");
     
     // The following remains owned by the parser object
     auto xmlDoc = this->configFileParser->getDocument();

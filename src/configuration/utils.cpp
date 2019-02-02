@@ -6,13 +6,13 @@
 
 namespace Signalbox {
   namespace Configuration {
-    std::unique_ptr<XMLCh,xercesstringdeleter> GetTranscoded( const std::string& str ) {
+    std::unique_ptr<XMLCh,xercesstringdeleter> StrToXMLCh( const std::string& str ) {
       XMLCh* tc = xercesc::XMLString::transcode(str.c_str());
       return std::unique_ptr<XMLCh,xercesstringdeleter>(tc, xercesstringdeleter());
     }
 
     xercesc::DOMElement* GetSingleElementByName( const xercesc::DOMElement* parent, const std::string name ) {
-      auto TAG_Name = GetTranscoded(name);
+      auto TAG_Name = StrToXMLCh(name);
 
       auto elementList = parent->getElementsByTagName( TAG_Name.get() );
       if( elementList == nullptr ) {
@@ -57,7 +57,7 @@ namespace Signalbox {
     }
   
     std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name ) {
-      auto tcName = GetTranscoded(name);
+      auto tcName = StrToXMLCh(name);
       auto attr = element->getAttribute(tcName.get());
       auto attrChars = std::unique_ptr<char,xercesstringdeleter>(xercesc::XMLString::transcode(attr),
 								 xercesstringdeleter());
@@ -75,7 +75,7 @@ namespace Signalbox {
     }
       
     bool IsOutputPin( const xercesc::DOMElement* element ) {
-      auto TAG_OutputPin = GetTranscoded("OutputPin");
+      auto TAG_OutputPin = StrToXMLCh("OutputPin");
       
       return xercesc::XMLString::equals(element->getTagName(), TAG_OutputPin.get());
     }
