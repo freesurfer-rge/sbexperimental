@@ -5,6 +5,7 @@
 #include "configreader.hpp"
 
 #include "signalheaddata.hpp"
+#include "railtrafficcontroldata.hpp"
 
 // =====================================================
 
@@ -24,6 +25,8 @@ BOOST_AUTO_TEST_CASE( ConstructorCompletes )
 {
   BOOST_CHECK_NO_THROW( Signalbox::ConfigReader cr(singlesignalfile) );
 }
+
+BOOST_AUTO_TEST_SUITE( ReadSignalHeadData )
 
 BOOST_AUTO_TEST_CASE( ReadSingleSignal )
 {
@@ -82,4 +85,22 @@ BOOST_AUTO_TEST_CASE( ReadTwoSignals )
   }
 }
 
+BOOST_AUTO_TEST_SUITE_END()
+
+// =============================================================
+
+BOOST_AUTO_TEST_SUITE( ReadRailTrafficControlData )
+  
+BOOST_AUTO_TEST_CASE( ReadRTC )
+{
+  Signalbox::ConfigReader cr(singlesignalfile);
+
+  Signalbox::RailTrafficControlData rtcData;
+
+  BOOST_CHECK_EQUAL( rtcData.host, "rtc.local" );
+  BOOST_CHECK_EQUAL( rtcData.port, 8080 );
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+  
 BOOST_AUTO_TEST_SUITE_END()
