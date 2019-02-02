@@ -1,3 +1,7 @@
+#include <sstream>
+
+#include <xercesc/dom/DOMNodeList.hpp>
+
 #include "configuration/utils.hpp"
 
 namespace Signalbox {
@@ -7,6 +11,34 @@ namespace Signalbox {
       return std::unique_ptr<XMLCh,xercesstringdeleter>(tc, xercesstringdeleter());
     }
 
+    xercesc::DOMElement* GetSingleElementByName( const xercesc::DOMElement* parent, const std::string name ) {
+      auto TAG_Name = GetTranscoded(name);
+
+      auto elementList = parent->getElementsByTagName( TAG_Name.get() );
+      if( elementList == nullptr ) {
+	std::stringstream msg;
+	msg << "Failed getElementsByTagName call for " << name;
+	throw std::runtime_error(msg.str());
+      }
+      
+      if( elementList->getLength() != 1 ) {
+	std::stringstream msg;
+	msg << "Found multiple child elements " << name;
+	throw std::runtime_error(msg.str());
+      }
+      
+      auto result = dynamic_cast<xercesc::DOMElement*>(elementList->item(0));
+      if( result == nullptr ) {
+	std::stringstream msg;
+	msg << "Failed to obtain item "
+	    << name
+	    << " from elementList";
+	throw std::runtime_error(msg.str());
+      }
+      
+      return result;
+    }
+  
     std::string GetAttributeByName( const xercesc::DOMElement* element, const std::string name ) {
       auto tcName = GetTranscoded(name);
       auto attr = element->getAttribute(tcName.get());

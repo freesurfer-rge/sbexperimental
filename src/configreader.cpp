@@ -46,36 +46,15 @@ namespace Signalbox {
     // Get the root element of the document
     xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
 
-    auto TAG_RailTrafficControl = Configuration::GetTranscoded("RailTrafficControl");
-    auto TAG_Host = Configuration::GetTranscoded("Host");
-    auto TAG_Port = Configuration::GetTranscoded("Port");
+    auto TAG_RailTrafficControl = std::string("RailTrafficControl");
+    auto TAG_Host = std::string("Host");
+    auto TAG_Port = std::string("Port");
 
-    auto elementListRTC = elementSignalbox->getElementsByTagName( TAG_RailTrafficControl.get() );
-    if( elementListRTC == nullptr ) {
-      throw std::runtime_error("No elementListRTC");
-    }
-    if( elementListRTC->getLength() != 1 ) {
-      throw std::runtime_error("Found multiple RailTrafficControl tags");
-    }
-
-    auto rtcElement = dynamic_cast<xercesc::DOMElement*>(elementListRTC->item(0));
-    if( rtcElement == nullptr ) {
-      throw std::runtime_error("Failed to obtain rtcElement");
-    }
+    auto rtcElement = Configuration::GetSingleElementByName( elementSignalbox,
+							     TAG_RailTrafficControl );
 
     // Fetch the host data
-    auto elementListHost = rtcElement->getElementsByTagName( TAG_Host.get() );
-    if( elementListHost == nullptr ) {
-      throw std::runtime_error("No elementListHost");
-    }
-    if( elementListHost->getLength() != 1 ) {
-      throw std::runtime_error("Found multiple Host tags");
-    }
-
-    auto hostElement = dynamic_cast<xercesc::DOMElement*>(elementListHost->item(0));
-    if( hostElement == nullptr ) {
-      throw std::runtime_error("Failed to obtain hostElement");
-    }
+    auto hostElement = Configuration::GetSingleElementByName( rtcElement, TAG_Host );
 
     // Apparently there are issues with getTextContent, but I don't see an alternative
     auto host = hostElement->getTextContent();
@@ -87,17 +66,7 @@ namespace Signalbox {
     rtcData.host = std::string(hostChars.get());
 
     // On to the port
-    auto elementListPort = rtcElement->getElementsByTagName( TAG_Port.get() );
-    if( elementListPort == nullptr ) {
-      throw std::runtime_error("No elementListPort");
-    }
-    if( elementListPort->getLength() != 1 ) {
-      throw std::runtime_error("Found multiple Port tags");
-    }
-    auto portElement = dynamic_cast<xercesc::DOMElement*>(elementListPort->item(0));
-    if( portElement == nullptr ) {
-      throw std::runtime_error("Failed to obtain portElement");
-    }
+    auto portElement = Configuration::GetSingleElementByName( rtcElement, TAG_Port );
 
     // Skate around issues with getTextContent
     auto port = portElement->getTextContent();
@@ -118,21 +87,11 @@ namespace Signalbox {
     // Get the root element of the document
     xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
     
-    auto TAG_ControlledItems = Configuration::GetTranscoded("ControlledItems");
+    auto TAG_ControlledItems = std::string("ControlledItems");
     auto TAG_SignalHead = Configuration::GetTranscoded("SignalHead");
     
-    auto elementListControlledItems = elementSignalbox->getElementsByTagName( TAG_ControlledItems.get() );
-    if( elementListControlledItems == nullptr ) {
-      throw std::runtime_error("No elementListControlledItem");
-    }
-    if( elementListControlledItems->getLength() != 1 ) {
-      throw std::runtime_error("Bad element count in elementListControlledItem");
-    }
-
-    auto elementControlledItems = elementListControlledItems->item(0);
-    if( elementControlledItems == nullptr ) {
-      throw std::runtime_error("No elementControlledItem");
-    }
+    auto elementControlledItems = Configuration::GetSingleElementByName( elementSignalbox,
+									 TAG_ControlledItems );
 
     auto controlledItems = elementControlledItems->getChildNodes();
     for( XMLSize_t i=0; i<controlledItems->getLength(); ++i ) {
