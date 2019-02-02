@@ -97,8 +97,10 @@ BOOST_AUTO_TEST_CASE( ReadRTC )
 
   Signalbox::RailTrafficControlData rtcData;
 
+  cr.ReadRailTrafficControl( rtcData );
+  
   BOOST_CHECK_EQUAL( rtcData.host, "rtc.local" );
-  BOOST_CHECK_EQUAL( rtcData.port, 8080 );
+  BOOST_CHECK_EQUAL( rtcData.port, 8008 );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

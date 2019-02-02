@@ -11,12 +11,15 @@
 #include "controlleditemdata.hpp"
 
 #include "signalheaddata.hpp"
+#include "railtrafficcontroldata.hpp"
 
 namespace Signalbox {
   class ConfigReader : private XercesGuard {
   public:
     ConfigReader( const std::string& filename );
 
+    void ReadRailTrafficControl( RailTrafficControlData& rtcData );
+    
     void ReadControlledItems( std::vector< std::unique_ptr<ControlledItemData>>& items );
   private:
     std::unique_ptr<xercesc::XercesDOMParser> configFileParser;

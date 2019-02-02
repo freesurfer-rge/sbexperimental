@@ -16,6 +16,7 @@
 #include <xercesc/util/XMLUni.hpp>
 
 #include "configuration/utils.hpp"
+#include "configuration/xercesstringdeleter.hpp"
 
 #include "configreader.hpp"
 
@@ -41,6 +42,75 @@ namespace Signalbox {
     this->configFileParser->parse( filename.c_str() );
   }
 
+  void ConfigReader::ReadRailTrafficControl( RailTrafficControlData& rtcData ) {
+    // Get the root element of the document
+    xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
+
+    auto TAG_RailTrafficControl = Configuration::GetTranscoded("RailTrafficControl");
+    auto TAG_Host = Configuration::GetTranscoded("Host");
+    auto TAG_Port = Configuration::GetTranscoded("Port");
+
+    auto elementListRTC = elementSignalbox->getElementsByTagName( TAG_RailTrafficControl.get() );
+    if( elementListRTC == nullptr ) {
+      throw std::runtime_error("No elementListRTC");
+    }
+    if( elementListRTC->getLength() != 1 ) {
+      throw std::runtime_error("Found multiple RailTrafficControl tags");
+    }
+
+    auto rtcElement = dynamic_cast<xercesc::DOMElement*>(elementListRTC->item(0));
+    if( rtcElement == nullptr ) {
+      throw std::runtime_error("Failed to obtain rtcElement");
+    }
+
+    // Fetch the host data
+    auto elementListHost = rtcElement->getElementsByTagName( TAG_Host.get() );
+    if( elementListHost == nullptr ) {
+      throw std::runtime_error("No elementListHost");
+    }
+    if( elementListHost->getLength() != 1 ) {
+      throw std::runtime_error("Found multiple Host tags");
+    }
+
+    auto hostElement = dynamic_cast<xercesc::DOMElement*>(elementListHost->item(0));
+    if( hostElement == nullptr ) {
+      throw std::runtime_error("Failed to obtain hostElement");
+    }
+
+    // Apparently there are issues with getTextContent, but I don't see an alternative
+    auto host = hostElement->getTextContent();
+    if( host == nullptr ) {
+      throw std::runtime_error("Failed to call hostElement->getTextContent()" );
+    }
+    auto hostChars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(host),
+									      Configuration::xercesstringdeleter());
+    rtcData.host = std::string(hostChars.get());
+
+    // On to the port
+    auto elementListPort = rtcElement->getElementsByTagName( TAG_Port.get() );
+    if( elementListPort == nullptr ) {
+      throw std::runtime_error("No elementListPort");
+    }
+    if( elementListPort->getLength() != 1 ) {
+      throw std::runtime_error("Found multiple Port tags");
+    }
+    auto portElement = dynamic_cast<xercesc::DOMElement*>(elementListPort->item(0));
+    if( portElement == nullptr ) {
+      throw std::runtime_error("Failed to obtain portElement");
+    }
+
+    // Skate around issues with getTextContent
+    auto port = portElement->getTextContent();
+    if( port == nullptr ) {
+      throw std::runtime_error("Failed to call hostElement->getTextContent()");
+    }
+    auto portChars = std::unique_ptr<char,Configuration::xercesstringdeleter>(xercesc::XMLString::transcode(port),
+									      Configuration::xercesstringdeleter());
+
+    auto portString = std::string(portChars.get());
+    rtcData.port = std::stoul(portString);
+  }
+  
   void ConfigReader::ReadControlledItems( std::vector<std::unique_ptr<ControlledItemData>>& items ) {
     // Make sure we have an empty list
     items.clear();
