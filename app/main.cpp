@@ -5,6 +5,10 @@
 #include <map>
 
 #include "configreader.hpp"
+
+#include "railtrafficcontrolclient.hpp"
+#include "railtrafficcontroldata.hpp"
+
 #include "pinmanager.hpp"
 #include "signalheaddata.hpp"
 #include "signalhead.hpp"
@@ -14,6 +18,7 @@
 #include "cmdlineopts.hpp"
 #include "outputselector.hpp"
 #include "driverselector.hpp"
+#include "rtcselector.hpp"
 
 // ===================================================
 
@@ -33,9 +38,15 @@ int main(int ac, char* av[]) {
     std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
     cr.ReadControlledItems( configItems );
 
+    Signalbox::RailTrafficControlData rtcData;
+    cr.ReadRailTrafficControl( rtcData );
+
     std::cout << "Read config file" << std::endl;
     
     // -----
+    Signalbox::RTCSelector* rtcs = Signalbox::RTCSelector::GetSelector(opts.rtcClient);
+    Signalbox::RailTrafficControlClientFactory* rtcFactory = rtcs->GetRailTrafficControlClientFactory();
+    auto rtcClient = rtcFactory->Create(rtcData);
 
     Signalbox::OutputSelector* dest = Signalbox::OutputSelector::GetSelector(opts.outputDestination);
     Signalbox::PinManagerFactory* pmf = dest->GetPinManagerFactory();

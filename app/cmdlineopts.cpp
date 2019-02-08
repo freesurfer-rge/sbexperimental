@@ -6,6 +6,7 @@
 
 #include "outputselector.hpp"
 #include "driverselector.hpp"
+#include "rtcselector.hpp"
 
 // -------------------------
 
@@ -18,6 +19,7 @@ namespace Signalbox {
     std::string configOpt = "configuration-file";
     std::string outputOpt = "pinmanager";
     std::string driverOpt = "driver";
+    std::string rtcOpt = "rtc";
 
     bpo::options_description desc("Allowed Options");
     desc.add_options()
@@ -34,6 +36,11 @@ namespace Signalbox {
     std::string driverDesc = std::string("Choice of driver (") + drivers + ")";
     desc.add_options()
       ((driverOpt+",d").c_str(), bpo::value<std::string>(&(this->driver)), driverDesc.c_str());
+
+    std::string rtcClients = RTCSelector::ListRTCSelectors();
+    std::string rtcDesc = std::string("Choice of RTC (") + rtcClients + ")";
+    desc.add_options()
+      ((rtcOpt+",r").c_str(), bpo::value<std::string>(&(this->rtcClient)), rtcDesc.c_str());
     
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
@@ -61,6 +68,12 @@ namespace Signalbox {
       std::cout << "Driver: " <<  this->driver << std::endl;
     } else {
       throw std::runtime_error("Driver option not specified");
+    }
+  
+    if( vm.count(rtcOpt.c_str()) ) {
+      std::cout << "RTC: " <<  this->rtcClient << std::endl;
+    } else {
+      throw std::runtime_error("RTC option not specified");
     }
   }
 }
