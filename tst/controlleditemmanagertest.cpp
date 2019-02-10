@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_SUITE( ControlledItemFactorySelector )
 
 BOOST_AUTO_TEST_CASE( GetSignalHeadFactory )
 {
-  Signalbox::ControlledItemManager cim(&(this->mpmf));
+  Signalbox::ControlledItemManager cim(&(this->mpmf), nullptr);
 
   auto res = cim.GetSignalHeadFactory();
   BOOST_REQUIRE(res);
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_SUITE( CreateItem )
 
 BOOST_AUTO_TEST_CASE( CreateSignal )
 {
-  Signalbox::ControlledItemManager cim(&(this->mpmf));
+  Signalbox::ControlledItemManager cim(&(this->mpmf), nullptr);
   BOOST_REQUIRE_EQUAL( cim.GetAllItems().size(), 0 );
   
   const std::string redPin = "12";
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_SUITE( PopulateItems )
 
 BOOST_AUTO_TEST_CASE( SingleSignal )
 {
-  Signalbox::ControlledItemManager cim(&(this->mpmf));
+  Signalbox::ControlledItemManager cim(&(this->mpmf), nullptr);
   BOOST_REQUIRE_EQUAL( cim.GetAllItems().size(), 0 );
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE( SingleSignal )
 
 BOOST_AUTO_TEST_CASE( TwoSignals )
 {
-  Signalbox::ControlledItemManager cim(&(this->mpmf));
+  Signalbox::ControlledItemManager cim(&(this->mpmf), nullptr);
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
   const int baseId = 123;
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE( TwoSignals )
 
 BOOST_AUTO_TEST_CASE( DuplicateId )
 {
-  Signalbox::ControlledItemManager cim(&(this->mpmf));
+  Signalbox::ControlledItemManager cim(&(this->mpmf), nullptr);
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
   const int duplicateId = 123;
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_SUITE( ActivateItems )
 
 BOOST_AUTO_TEST_CASE( TwoSignals )
 {
-  Signalbox::ControlledItemManager cim(&(this->mpmf));
+  Signalbox::ControlledItemManager cim(&(this->mpmf), nullptr);
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
   const int baseId = 123;
@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_SUITE( GetById )
 
 BOOST_AUTO_TEST_CASE( GetTwoItems )
 {
-  Signalbox::ControlledItemManager cim(&(this->mpmf));
+  Signalbox::ControlledItemManager cim(&(this->mpmf), nullptr);
 
   std::vector<std::unique_ptr<Signalbox::ControlledItemData>> data;
   const int baseId = 123;
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE( GetTwoItems )
 
 BOOST_AUTO_TEST_CASE( GetNonExistant )
 {
-  Signalbox::ControlledItemManager cim(&(this->mpmf));
+  Signalbox::ControlledItemManager cim(&(this->mpmf), nullptr);
   BOOST_CHECK_EQUAL( cim.GetAllItems().size(), 0 );
 
   const Signalbox::ItemId anyId(10);

@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE( GetFactory )
   Signalbox::SignalHeadData sd;
 
   Signalbox::MockPinManagerFactory mpmf;
-  Signalbox::ControlledItemManager cim(&mpmf);
+  Signalbox::ControlledItemManager cim(&mpmf, nullptr);
 
   auto cif = sd.GetFactory(&cim);
   BOOST_REQUIRE(cif);
