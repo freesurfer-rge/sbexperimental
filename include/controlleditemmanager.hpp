@@ -9,11 +9,14 @@
 #include "pinmanagerfactory.hpp"
 #include "signalheadfactory.hpp"
 
+#include "railtrafficcontrolclient.hpp"
+
 namespace Signalbox {
   class ControlledItemManager : public ControlledItemFactorySelector, public ControlledItemFetcher {
   public:
-    ControlledItemManager( PinManagerFactory* pm ) :
+    ControlledItemManager( PinManagerFactory* pm, std::shared_ptr<RailTrafficControlClient> rtc ) :
       pinManager(pm->Create()),
+      rtcClient(rtc),
       signalHeadFactory(this->pinManager.get()),
       items() {}
     
@@ -38,6 +41,8 @@ namespace Signalbox {
     ControlledItemManager& operator=(ControlledItemManager&) = delete;
   private:
     std::unique_ptr<PinManager> pinManager;
+    
+    std::shared_ptr<RailTrafficControlClient> rtcClient;
 
     SignalHeadFactory signalHeadFactory;
 

@@ -12,6 +12,10 @@ LIST(APPEND srcs driverselector.cpp)
 LIST(APPEND srcs consoledriver.cpp)
 LIST(APPEND srcs consoledriverselector.cpp)
 
+LIST(APPEND srcs rtcselector.cpp)
+LIST(APPEND srcs consolertcclient.cpp)
+LIST(APPEND srcs consolertcselector.cpp)
+
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpiodoutputselector.cpp)
 ENDIF()

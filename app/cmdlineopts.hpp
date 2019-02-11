@@ -9,12 +9,14 @@ namespace Signalbox {
     CmdLineOpts() : helpMessagePrinted(false),
 		    configFilePath(),
 		    outputDestination(),
-		    driver() {}
+		    driver(),
+		    rtcClient() {}
     
     bool helpMessagePrinted;
     std::string configFilePath;
     std::string outputDestination;
     std::string driver;
+    std::string rtcClient;
 
     void Populate( int argc, char* argv[] );
   };
