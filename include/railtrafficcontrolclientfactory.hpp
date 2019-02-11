@@ -10,6 +10,6 @@ namespace Signalbox {
   public:
     virtual ~RailTrafficControlClientFactory() {}
 
-    virtual std::unique_ptr<RailTrafficControlClient> Create(const RailTrafficControlData rtcData) = 0;
+    virtual std::shared_ptr<RailTrafficControlClient> Create(const RailTrafficControlData rtcData) = 0;
   };
 }

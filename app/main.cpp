@@ -50,7 +50,7 @@ int main(int ac, char* av[]) {
 
     Signalbox::OutputSelector* dest = Signalbox::OutputSelector::GetSelector(opts.outputDestination);
     Signalbox::PinManagerFactory* pmf = dest->GetPinManagerFactory();
-    Signalbox::ControlledItemManager cim(pmf, rtcClient.get());
+    Signalbox::ControlledItemManager cim(pmf, rtcClient);
 
     auto nPopulate = cim.PopulateItems( configItems );
     std::cout << "Populated " << nPopulate << " items" << std::endl;

@@ -14,7 +14,7 @@
 namespace Signalbox {
   class ControlledItemManager : public ControlledItemFactorySelector, public ControlledItemFetcher {
   public:
-    ControlledItemManager( PinManagerFactory* pm, RailTrafficControlClient* rtc ) :
+    ControlledItemManager( PinManagerFactory* pm, std::shared_ptr<RailTrafficControlClient> rtc ) :
       pinManager(pm->Create()),
       rtcClient(rtc),
       signalHeadFactory(this->pinManager.get()),
@@ -42,7 +42,7 @@ namespace Signalbox {
   private:
     std::unique_ptr<PinManager> pinManager;
     
-    RailTrafficControlClient* rtcClient;
+    std::shared_ptr<RailTrafficControlClient> rtcClient;
 
     SignalHeadFactory signalHeadFactory;
 
