@@ -5,6 +5,7 @@
 #include "configreader.hpp"
 
 #include "signalheaddata.hpp"
+#include "trackcircuitdata.hpp"
 #include "railtrafficcontroldata.hpp"
 
 #include "exceptionmessagecheck.hpp"
@@ -103,13 +104,22 @@ BOOST_AUTO_TEST_CASE( SingleTrackCircuit )
 
   cr.ReadControlledItems( configItems );
 
-  BOOST_CHECK_EQUAL( configItems.size(), 1 );
+  BOOST_REQUIRE_EQUAL( configItems.size(), 1 );
   
   Signalbox::ItemId expectedId;
-  expectedId.Parse("00:00:00:01");
+  expectedId.Parse("00:00:00:aa");
 
   Signalbox::ControlledItemData* item = configItems.at(0).get();
   BOOST_CHECK_EQUAL( item->id, expectedId );
+
+  Signalbox::TrackCircuitData* tcd;
+  tcd = dynamic_cast<Signalbox::TrackCircuitData*>(item);
+  BOOST_REQUIRE(tcd);
+
+  BOOST_CHECK_EQUAL( tcd->inputPin.id, "GPIO03" );
+  BOOST_CHECK_EQUAL( tcd->inputPin.sensor, "occupancy" );
+  BOOST_REQUIRE_EQUAL( tcd->inputPin.settings.size(), 1 );
+  BOOST_CHECK_EQUAL( tcd->inputPin.settings.at("GlitchFilter"), "10000" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
