@@ -14,6 +14,8 @@
 const std::string singlesignalfile = "singlesignalhead.xml";
 const std::string twosignalfile = "twosignalheads.xml";
 
+const std::string singletrackcircuitfile = "singletrackcircuit.xml";
+
 // =====================================================
 
 BOOST_AUTO_TEST_SUITE( ConfigReader )
@@ -85,6 +87,29 @@ BOOST_AUTO_TEST_CASE( ReadTwoSignals )
       BOOST_FAIL("Bad ItemId detected");
     }
   }
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+// =============================================================
+
+BOOST_AUTO_TEST_SUITE( ReadTrackCircuitData )
+
+BOOST_AUTO_TEST_CASE( SingleTrackCircuit )
+{
+  Signalbox::ConfigReader cr(singletrackcircuitfile);
+
+  std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
+
+  cr.ReadControlledItems( configItems );
+
+  BOOST_CHECK_EQUAL( configItems.size(), 1 );
+  
+  Signalbox::ItemId expectedId;
+  expectedId.Parse("00:00:00:01");
+
+  Signalbox::ControlledItemData* item = configItems.at(0).get();
+  BOOST_CHECK_EQUAL( item->id, expectedId );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

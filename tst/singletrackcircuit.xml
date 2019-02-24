@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SignalBox>
+  <RailTrafficControl>
+    <Host>rtc.local</Host>
+    <Port>8018</Port>
+  </RailTrafficControl>
+  <ControlledItems>
+    <TrackCircuit id="00:00:00:aa">
+      <InputPin id="GPIO03" sensor="occupancy">
+	<GlitchFilter>10000</GlitchFilter>
+      </InputPin>
+    </TrackCircuit>
+  </ControlledItems>
+</SignalBox>

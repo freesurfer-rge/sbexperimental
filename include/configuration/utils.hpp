@@ -24,5 +24,6 @@ namespace Signalbox {
     bool IsElementNode( const xercesc::DOMNode* node );
     
     bool IsOutputPin( const xercesc::DOMElement* element );
+    bool IsInputPin( const xercesc::DOMElement* element );
   }
 }

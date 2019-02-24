@@ -78,5 +78,11 @@ namespace Signalbox {
       
       return xercesc::XMLString::equals(element->getTagName(), TAG_OutputPin.get());
     }
+
+    bool IsInputPin( const xercesc::DOMElement* element ) {
+      auto TAG_InputPin = StrToXMLCh("InputPin");
+
+      return xercesc::XMLString::equals(element->getTagName(), TAG_InputPin.get());
+    }
   }
 }
