@@ -74,6 +74,7 @@ namespace Signalbox {
     
     auto TAG_ControlledItems = std::string("ControlledItems");
     auto TAG_SignalHead = Configuration::StrToXMLCh("SignalHead");
+    auto TAG_TrackCircuit = Configuration::StrToXMLCh("TrackCircuit");
     
     auto elementControlledItems = Configuration::GetSingleElementByName( elementSignalbox,
 									 TAG_ControlledItems );
@@ -89,7 +90,8 @@ namespace Signalbox {
 	
 	if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_SignalHead.get() ) ) {
 	  item.reset( this->ReadSignalHead(currentElement) );
-
+	} else if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_TrackCircuit.get() ) ) {
+	  item.reset( this->ReadTrackCircuit(currentElement) );
 	} else {
 	  throw std::runtime_error("Unknown tag name");
 	}
@@ -150,5 +152,11 @@ namespace Signalbox {
     
     // This gets the raw pointer, and stops the unique_ptr from managing it
     return signal.release();
+  }
+
+  ControlledItemData* ConfigReader::ReadTrackCircuit(xercesc::DOMElement* currentElement ) {
+    std::unique_ptr<TrackCircuitData> tc( new TrackCircuitData );
+
+    return tc.release();
   }
 }
