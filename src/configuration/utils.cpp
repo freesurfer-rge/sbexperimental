@@ -73,21 +73,15 @@ namespace Signalbox {
       auto children = parent->getChildNodes();
 
       for( XMLSize_t i=0; i<children->getLength(); i++ ) {
-	std::cout << __FUNCTION__
-		  << ": Working on child " << i << std::endl;
 	auto child = children->item(i);
 
 	if( Configuration::IsElementNode(child) ) {
 	  auto settingElement = dynamic_cast<xercesc::DOMElement*>(child);
-	  std::string key = XMLChToStr(settingElement->getTagName());
-	  std::string value = XMLChToStr(settingElement->getNodeValue());
 	  
-	  std::cout << __FUNCTION__
-		    << " "
-		    << key
-		    << " = "
-		    << value
-		    << std::endl;
+	  std::string key = XMLChToStr(settingElement->getTagName());
+	  // Note that the xercesc docs say that getTextContent is buggy
+	  // but are very vague beyond that
+	  std::string value = XMLChToStr(settingElement->getTextContent());
 	  
 	  settings[key] = value;	
 	}
