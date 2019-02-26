@@ -157,6 +157,30 @@ namespace Signalbox {
   ControlledItemData* ConfigReader::ReadTrackCircuit(xercesc::DOMElement* currentElement ) {
     std::unique_ptr<TrackCircuitData> tc( new TrackCircuitData );
 
+    auto children = currentElement->getChildNodes();
+
+    // We don't have a schema defined for the XML document yet, but we
+    // shall expect it to require that a TrackCircuit has a single OutputPin
+    for( XMLSize_t i=0; i<children->getLength(); i++ ) {
+      auto child = children->item(i);
+
+      if( Configuration::IsElementNode(child) ) {
+	auto nxtElement = dynamic_cast<xercesc::DOMElement*>(child);
+
+	if( Configuration::IsInputPin(nxtElement) ) {
+	  DigitalInputPinData pin;
+
+	  pin.id = Configuration::GetIdAttribute(nxtElement);
+	  pin.sensor = Configuration::GetAttributeByName(nxtElement, "sensor");
+
+	  Configuration::PopulateSettingsMap( nxtElement, pin.settings );
+	  
+	  // Put it into the data structure
+	  tc->inputPin = pin;
+	}
+      }
+    }
+    
     return tc.release();
   }
 }

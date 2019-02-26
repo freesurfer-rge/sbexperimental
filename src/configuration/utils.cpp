@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 
 #include <xercesc/dom/DOMNodeList.hpp>
 
@@ -66,6 +67,31 @@ namespace Signalbox {
 
     std::string GetIdAttribute( const xercesc::DOMElement* element ) {
       return GetAttributeByName(element, "id");
+    }
+    
+    void PopulateSettingsMap( const xercesc::DOMElement* parent, std::map<std::string,std::string>& settings ) {
+      auto children = parent->getChildNodes();
+
+      for( XMLSize_t i=0; i<children->getLength(); i++ ) {
+	std::cout << __FUNCTION__
+		  << ": Working on child " << i << std::endl;
+	auto child = children->item(i);
+
+	if( Configuration::IsElementNode(child) ) {
+	  auto settingElement = dynamic_cast<xercesc::DOMElement*>(child);
+	  std::string key = XMLChToStr(settingElement->getTagName());
+	  std::string value = XMLChToStr(settingElement->getNodeValue());
+	  
+	  std::cout << __FUNCTION__
+		    << " "
+		    << key
+		    << " = "
+		    << value
+		    << std::endl;
+	  
+	  settings[key] = value;	
+	}
+      }
     }
     
     bool IsElementNode( const xercesc::DOMNode* node ) {
