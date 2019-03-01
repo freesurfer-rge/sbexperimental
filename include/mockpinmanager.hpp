@@ -14,7 +14,7 @@ namespace Signalbox {
     
     MockDigitalOutputPin* FetchMockDigitalOutputPin(const std::string pinId) const;
     
-    MockDigitalInputPin* FetchMockDigitalInputPin(const std::string pinId) const;
+    MockDigitalInputPin* FetchMockDigitalInputPin(const DigitalInputPinData& data) const;
     
     size_t DigitalOutputPinCount() const {
       return this->getOutputPinCount();
@@ -26,5 +26,6 @@ namespace Signalbox {
 
   protected:
     virtual std::string parsePinId( const std::string idString ) const override;
+    virtual void setupInputPin( MockDigitalInputPin* pin, const DigitalInputPinData& data ) const override;
   };
 }
