@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE( SingleTrackCircuit )
   BOOST_CHECK_EQUAL( tcd->inputPin.id, "GPIO03" );
   BOOST_CHECK_EQUAL( tcd->inputPin.sensor, "occupancy" );
   BOOST_REQUIRE_EQUAL( tcd->inputPin.settings.size(), 1 );
-  BOOST_CHECK_EQUAL( tcd->inputPin.settings.at("GlitchFilter"), "10000" );
+  BOOST_CHECK_EQUAL( tcd->inputPin.settings.at("glitch"), "10000" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
