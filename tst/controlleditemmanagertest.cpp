@@ -4,6 +4,9 @@
 #include "signalheaddata.hpp"
 #include "signalhead.hpp"
 
+#include "trackcircuitmonitordata.hpp"
+#include "trackcircuitmonitor.hpp"
+
 #include "mockpinmanager.hpp"
 
 // =========================================
@@ -79,6 +82,40 @@ BOOST_AUTO_TEST_CASE( CreateSignal )
   auto green = this->mpmf.mpm->FetchMockDigitalOutputPin(greenPin);
   BOOST_REQUIRE( green );
   BOOST_CHECK( !green->Get() );
+}
+
+BOOST_AUTO_TEST_CASE( CreateTrackCircuitMonitor )
+{
+  Signalbox::ControlledItemManager cim(&(this->mpmf), this->rtcClient);
+  BOOST_REQUIRE_EQUAL( cim.GetAllItems().size(), 0 );
+
+  const std::string pinId = "GPIO26";
+  Signalbox::TrackCircuitMonitorData tcmd;
+  tcmd.id = Signalbox::ItemId::Random();
+  tcmd.inputPin.id = pinId;
+  tcmd.inputPin.settings["Setting"] = "Something";
+
+  std::unique_ptr<Signalbox::ControlledItem> ci;
+  ci = cim.CreateItem(&tcmd);
+  BOOST_REQUIRE(ci);
+
+  BOOST_CHECK_EQUAL( ci->getId(), tcmd.id );
+
+  Signalbox::TrackCircuitMonitor* tcm(NULL);
+  tcm = dynamic_cast<Signalbox::TrackCircuitMonitor*>(ci.get());
+  BOOST_REQUIRE(tcm);
+
+  // Check pin created
+  BOOST_CHECK_EQUAL( this->mpmf.mpm->DigitalInputPinCount(), 1 );
+  auto pin = this->mpmf.mpm->FetchMockDigitalInputPin(pinId);
+  BOOST_REQUIRE( pin );
+  BOOST_CHECK_EQUAL( pin->Get(), false );
+  BOOST_CHECK_EQUAL( pin->createSettings.size(), 1 );
+  BOOST_CHECK_EQUAL( pin->createSettings.at("Setting"), "Something" );
+
+  BOOST_CHECK_EQUAL( tcm->Get(), false );
+  BOOST_CHECK_EQUAL( tcm->getTypeString(), "trackcircuitmonitor" );
+  BOOST_CHECK_EQUAL( tcm->getClient(), this->rtcClient.get() );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -6,6 +6,6 @@ namespace Signalbox {
   }
 
   ControlledItemFactory* TrackCircuitMonitorData::GetFactory(ControlledItemFactorySelector* factorySelector) const {
-    throw std::runtime_error("TrackCircuitMonitorData::GetFactory not implemented");
+    return factorySelector->GetTrackCircuitMonitorFactory();
   }
 }
