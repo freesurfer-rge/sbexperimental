@@ -23,6 +23,10 @@ namespace Signalbox {
     bool Get() const;
 
     void Run();
+
+    RailTrafficControlClient* getClient() const {
+      return this->rtc;
+    }
     
     virtual std::string getTypeString() const override {
       return std::string("trackcircuitmonitor");

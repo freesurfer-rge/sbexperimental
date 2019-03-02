@@ -39,9 +39,12 @@ BOOST_AUTO_TEST_CASE( Manufacture )
   auto pin = this->mpm.FetchMockDigitalInputPin(pinId);
   BOOST_REQUIRE( pin );
   BOOST_CHECK_EQUAL( pin->Get(), false );
+  BOOST_CHECK_EQUAL( pin->createSettings.size(), 1 );
+  BOOST_CHECK_EQUAL( pin->createSettings.at("MySetting"), "Something" );
 
   BOOST_CHECK_EQUAL( tcm->Get(), false );
   BOOST_CHECK_EQUAL( tcm->getTypeString(), "trackcircuitmonitor" );
+  BOOST_CHECK_EQUAL( tcm->getClient(), &mockRTC );
 }
 
 BOOST_AUTO_TEST_CASE( BadData )
