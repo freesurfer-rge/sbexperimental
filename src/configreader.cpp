@@ -74,7 +74,7 @@ namespace Signalbox {
     
     auto TAG_ControlledItems = std::string("ControlledItems");
     auto TAG_SignalHead = Configuration::StrToXMLCh("SignalHead");
-    auto TAG_TrackCircuit = Configuration::StrToXMLCh("TrackCircuit");
+    auto TAG_TrackCircuit = Configuration::StrToXMLCh("TrackCircuitMonitor");
     
     auto elementControlledItems = Configuration::GetSingleElementByName( elementSignalbox,
 									 TAG_ControlledItems );

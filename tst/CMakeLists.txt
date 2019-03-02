@@ -25,4 +25,4 @@ ENDIF()
 
 CONFIGURE_FILE(singlesignalhead.xml . COPYONLY)
 CONFIGURE_FILE(twosignalheads.xml . COPYONLY)
-CONFIGURE_FILE(singletrackcircuit.xml . COPYONLY)
+CONFIGURE_FILE(singletrackcircuitmonitor.xml . COPYONLY)

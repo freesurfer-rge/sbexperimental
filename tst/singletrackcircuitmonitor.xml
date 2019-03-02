@@ -5,10 +5,10 @@
     <Port>8018</Port>
   </RailTrafficControl>
   <ControlledItems>
-    <TrackCircuit id="00:00:00:aa">
+    <TrackCircuitMonitor id="00:00:00:aa">
       <InputPin id="GPIO03" sensor="occupancy">
 	<Setting key="glitch" value="10000" />
       </InputPin>
-    </TrackCircuit>
+    </TrackCircuitMonitor>
   </ControlledItems>
 </SignalBox>

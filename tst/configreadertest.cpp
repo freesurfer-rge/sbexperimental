@@ -15,7 +15,7 @@
 const std::string singlesignalfile = "singlesignalhead.xml";
 const std::string twosignalfile = "twosignalheads.xml";
 
-const std::string singletrackcircuitfile = "singletrackcircuit.xml";
+const std::string singletrackcircuitfile = "singletrackcircuitmonitor.xml";
 
 // =====================================================
 
