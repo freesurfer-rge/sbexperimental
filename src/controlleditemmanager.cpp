@@ -16,10 +16,7 @@ namespace Signalbox {
   }
 
   ControlledItemFactory* ControlledItemManager::GetTrackCircuitMonitorFactory() {
-    std::stringstream msg;
-    msg << __PRETTY_FUNCTION__
-	<< ": Not implemented";
-    throw std::runtime_error(msg.str());
+    return &(this->trackCircuitMonitorFactory);
   }
 
   std::unique_ptr<ControlledItem> ControlledItemManager::CreateItem(const ControlledItemData* data) {

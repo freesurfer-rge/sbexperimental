@@ -28,6 +28,17 @@ BOOST_AUTO_TEST_CASE( GetSignalHeadFactory )
   BOOST_REQUIRE(shf);
 }
 
+BOOST_AUTO_TEST_CASE( GetTrackCircuitMonitorFactory )
+{
+  Signalbox::ControlledItemManager cim(&(this->mpmf), this->rtcClient);
+
+  auto res = cim.GetTrackCircuitMonitorFactory();
+  BOOST_REQUIRE(res);
+
+  auto tcmf = dynamic_cast<Signalbox::TrackCircuitMonitorFactory*>(res);
+  BOOST_REQUIRE(tcmf);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 // =========================================
