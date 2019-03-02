@@ -14,7 +14,7 @@ namespace Signalbox {
     
     MockDigitalOutputPin* FetchMockDigitalOutputPin(const std::string pinId) const;
     
-    MockDigitalInputPin* FetchMockDigitalInputPin(const DigitalInputPinData& data) const;
+    MockDigitalInputPin* FetchMockDigitalInputPin(const std::string pinId) const;
     
     size_t DigitalOutputPinCount() const {
       return this->getOutputPinCount();

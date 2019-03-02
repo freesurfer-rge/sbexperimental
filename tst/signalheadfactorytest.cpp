@@ -7,6 +7,7 @@
 
 // =========================================
 #include "mockpinmanagerfixture.hpp"
+#include "badcontrolleditemdata.hpp"
 #include "exceptionmessagecheck.hpp"
 // =========================================
 
@@ -156,19 +157,7 @@ BOOST_AUTO_TEST_CASE(FourAspect)
 
 BOOST_AUTO_TEST_CASE( BadData )
 {
-  class BadData : public Signalbox::ControlledItemData {
-  public:
-    virtual std::vector<Signalbox::ControlledItemDataError> GetErrors() const override {
-      return std::vector<Signalbox::ControlledItemDataError>();
-    }
-
-    virtual Signalbox::ControlledItemFactory* GetFactory(Signalbox::ControlledItemFactorySelector* factorySelector) const override {
-      BOOST_WARN( factorySelector );
-      throw std::runtime_error("BadData::GetFactory Not Implemented!");
-    }
-  };
-  
-  BadData bd;
+  BadControlledItemData bd;
 
   Signalbox::SignalHeadFactory shf(&(this->mpm));
 

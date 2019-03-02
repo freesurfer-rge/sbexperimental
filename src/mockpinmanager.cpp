@@ -9,12 +9,8 @@ namespace Signalbox {
     return this->getOutputPin(pinId);
   }
 
-  MockDigitalInputPin* MockPinManager::FetchMockDigitalInputPin(const DigitalInputPinData& data) const {
-    std::stringstream msg;
-    msg << __FUNCTION__
-	<< ": Not implemented"
-	<< " (" << data.id << ")";
-    throw std::runtime_error(msg.str());
+  MockDigitalInputPin* MockPinManager::FetchMockDigitalInputPin(const std::string pinId) const {
+    return this->getInputPin(pinId);
   }
 
   std::string MockPinManager::parsePinId( const std::string idString ) const {
