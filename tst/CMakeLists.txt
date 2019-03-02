@@ -2,6 +2,7 @@ SET( srcs test.cpp )
 
 LIST(APPEND srcs xercesguardtest.cpp)
 LIST(APPEND srcs signalheaddatatest.cpp)
+LIST(APPEND srcs trackcircuitmonitordatatest.cpp)
 LIST(APPEND srcs configreadertest.cpp)
 LIST(APPEND srcs mockpinmanagertest.cpp)
 LIST(APPEND srcs mockdigitalinputpintest.cpp)
