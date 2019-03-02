@@ -11,7 +11,7 @@
 #include "controlleditemdata.hpp"
 
 #include "signalheaddata.hpp"
-#include "trackcircuitdata.hpp"
+#include "trackcircuitmonitordata.hpp"
 #include "railtrafficcontroldata.hpp"
 
 namespace Signalbox {
@@ -27,6 +27,6 @@ namespace Signalbox {
 
     xercesc::DOMElement* GetSignalBoxElement();
     ControlledItemData* ReadSignalHead(xercesc::DOMElement* currentElement );
-    ControlledItemData* ReadTrackCircuit( xercesc::DOMElement* currentElement );
+    ControlledItemData* ReadTrackCircuitMonitor( xercesc::DOMElement* currentElement );
   };
 }

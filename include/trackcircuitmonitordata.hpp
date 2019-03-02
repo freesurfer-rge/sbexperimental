@@ -6,10 +6,10 @@
 #include "digitalinputpindata.hpp"
 
 namespace Signalbox {
-  class TrackCircuitData : public ControlledItemData {
+  class TrackCircuitMonitorData : public ControlledItemData {
   public:
-    TrackCircuitData() : ControlledItemData(),
-			 inputPin() {}
+    TrackCircuitMonitorData() : ControlledItemData(),
+				inputPin() {}
 
     DigitalInputPinData inputPin;
 

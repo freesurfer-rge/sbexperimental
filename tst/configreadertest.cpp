@@ -5,7 +5,7 @@
 #include "configreader.hpp"
 
 #include "signalheaddata.hpp"
-#include "trackcircuitdata.hpp"
+#include "trackcircuitmonitordata.hpp"
 #include "railtrafficcontroldata.hpp"
 
 #include "exceptionmessagecheck.hpp"
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_SUITE_END()
 
 // =============================================================
 
-BOOST_AUTO_TEST_SUITE( ReadTrackCircuitData )
+BOOST_AUTO_TEST_SUITE( ReadTrackCircuitMonitorData )
 
 BOOST_AUTO_TEST_CASE( SingleTrackCircuit )
 {
@@ -112,14 +112,14 @@ BOOST_AUTO_TEST_CASE( SingleTrackCircuit )
   Signalbox::ControlledItemData* item = configItems.at(0).get();
   BOOST_CHECK_EQUAL( item->id, expectedId );
 
-  Signalbox::TrackCircuitData* tcd;
-  tcd = dynamic_cast<Signalbox::TrackCircuitData*>(item);
-  BOOST_REQUIRE(tcd);
+  Signalbox::TrackCircuitMonitorData* tcmd;
+  tcmd = dynamic_cast<Signalbox::TrackCircuitMonitorData*>(item);
+  BOOST_REQUIRE(tcmd);
 
-  BOOST_CHECK_EQUAL( tcd->inputPin.id, "GPIO03" );
-  BOOST_CHECK_EQUAL( tcd->inputPin.sensor, "occupancy" );
-  BOOST_REQUIRE_EQUAL( tcd->inputPin.settings.size(), 1 );
-  BOOST_CHECK_EQUAL( tcd->inputPin.settings.at("glitch"), "10000" );
+  BOOST_CHECK_EQUAL( tcmd->inputPin.id, "GPIO03" );
+  BOOST_CHECK_EQUAL( tcmd->inputPin.sensor, "occupancy" );
+  BOOST_REQUIRE_EQUAL( tcmd->inputPin.settings.size(), 1 );
+  BOOST_CHECK_EQUAL( tcmd->inputPin.settings.at("glitch"), "10000" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
