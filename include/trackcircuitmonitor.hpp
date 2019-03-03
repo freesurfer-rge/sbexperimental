@@ -31,6 +31,10 @@ namespace Signalbox {
     virtual std::string getTypeString() const override {
       return std::string("trackcircuitmonitor");
     }
+
+    // Remove copy constructor and operator=
+    TrackCircuitMonitor(const TrackCircuitMonitor&) = delete;
+    TrackCircuitMonitor& operator=(const TrackCircuitMonitor&) = delete;
   private:
     friend class TrackCircuitMonitorFactory;
 
@@ -39,7 +43,8 @@ namespace Signalbox {
       done(false),
       pin(),
       rtc(),
-      pollInterval(std::chrono::seconds(2)) {}
+      pollInterval(std::chrono::seconds(2)),
+      t() {}
     
     std::atomic<bool> done;
     DigitalInputPin* pin;
