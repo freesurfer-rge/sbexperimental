@@ -19,6 +19,8 @@ namespace Signalbox {
     void SetSignalHead( ItemId id, SignalAspect aspect, SignalFlash flashing );
     void GetSignalHead( ItemId id );
 
+    void GetTrackCircuitMonitor( ItemId id );
+
     ControlledItemFetcher* cif;
 
     // Protect pointer member
