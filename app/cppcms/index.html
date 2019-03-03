@@ -1,59 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html 
- PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <title>Signalbox</title>
-    <style type="text/css">
+<head>
+<meta name="generator" content=
+"HTML Tidy for Mac OS X (vers 31 October 2006 - Apple Inc. build 16.1), see www.w3.org" />
+<title>Signalbox</title>
+
+<style type="text/css">
+/*<![CDATA[*/
       form.signalheadcontrol { border-style: solid;
-			       padding: 1em; }
+                               padding: 1em; }
       
       form.trackcircuitmonitorcontrol { border-style: dashed;
-					padding: 1em; }
-    </style>
-    <script type="text/javascript">
+                                        padding: 1em; }
+/*]]>*/
+</style>
+
+<script type="text/javascript">
+//<![CDATA[
       
       function AspectIdString(id) {
-	  return "aspect"+id;
+          return "aspect"+id;
       }
 
       function FlashingIdString(id) {
-	  return "flashing"+id;
+          return "flashing"+id;
       }
 
       function TrackCircuitMonitorStatusString(id) {
-	  return "tcmStatus"+id;
+          return "tcmStatus"+id;
       }
       
       function SetSignal(id) {
-	  console.log("Starting SetSignal for "+id);
+          console.log("Starting SetSignal for "+id);
 
-	  var responseId = "response"+id;
-	  
-	  var flashing = document.getElementById(FlashingIdString(id));
-	  var flash = "Steady";
-	  if( flashing.checked ) {
-	      flash = "Flashing";
-	  }
-	  console.log(flash);
+          var responseId = "response"+id;
+          
+          var flashing = document.getElementById(FlashingIdString(id));
+          var flash = "Steady";
+          if( flashing.checked ) {
+              flash = "Flashing";
+          }
+          console.log(flash);
 
-	  var query = "input[name = '" + AspectIdString(id) + "']:checked";
-	  var aspect = document.querySelector(query).value;
-	  console.log(aspect);
+          var query = "input[name = '" + AspectIdString(id) + "']:checked";
+          var aspect = document.querySelector(query).value;
+          console.log(aspect);
 
-	  var xhr = new XMLHttpRequest();
+          var xhr = new XMLHttpRequest();
           xhr.open("post", '/rpc');
           // Required by JSON-RPC over HTTP
           xhr.setRequestHeader("Content-Type","application/json");
-	  
+          
           // It is better to use real formatter like JSON.js
           var request = new Object();
-	  request["method"] = "setsignalhead";
-	  request["params"] = [id, aspect, flash];
-	  request["id"] = Math.floor(Math.random() * 32768);
+          request["method"] = "setsignalhead";
+          request["params"] = [id, aspect, flash];
+          request["id"] = Math.floor(Math.random() * 32768);
 
-	  xhr.onreadystatechange = function() {
+          xhr.onreadystatechange = function() {
               if (xhr.readyState === 4) {
                   var res;
                   if(xhr.status === 200) {
@@ -72,38 +78,38 @@
               }
           }
           xhr.send(JSON.stringify(request));
-	  
-	  console.log("SetSignal complete");
-	  return false;
+          
+          console.log("SetSignal complete");
+          return false;
       }
 
       function GetTrackCircuitMonitorOccupancyString(occupied) {
-	  return "Occupancy status: " + ( occupied ? "Occupied" : "Vacant" );
+          return "Occupancy status: " + ( occupied ? "Occupied" : "Vacant" );
       }
 
       function RefreshTrackCircuitMonitorControl(id) {
-	  console.log("Starting RefreshTrackCircuitMonitorControl for "+id);
+          console.log("Starting RefreshTrackCircuitMonitorControl for "+id);
 
-	  var xhr = new XMLHttpRequest();
+          var xhr = new XMLHttpRequest();
           xhr.open("post", '/rpc');
           // Required by JSON-RPC over HTTP
           xhr.setRequestHeader("Content-Type","application/json");
-	  
+          
           // It is better to use real formatter like JSON.js
           var request = new Object();
-	  request["method"] = "gettrackcircuitmonitor";
-	  request["params"] = [id];
-	  request["id"] = Math.floor(Math.random() * 32768);
+          request["method"] = "gettrackcircuitmonitor";
+          request["params"] = [id];
+          request["id"] = Math.floor(Math.random() * 32768);
 
-	  xhr.onreadystatechange = function() {
+          xhr.onreadystatechange = function() {
               if (xhr.readyState === 4) {
                   var res;
-		  var occupied;
+                  var occupied;
                   if(xhr.status === 200) {
                       var result = JSON.parse(xhr.responseText);
                       if(result.error==null) {
-			  console.log("result: "+JSON.stringify(result));
-			  occupied = result.result.occupied;
+                          console.log("result: "+JSON.stringify(result));
+                          occupied = result.result.occupied;
                       }
                       else {
                           res = result.error;
@@ -112,162 +118,162 @@
                   else {
                       res = 'Invalid Status ' + xhr.status;
                   }
-		  elementId = TrackCircuitMonitorStatusString(id);
-		  txt = GetTrackCircuitMonitorOccupancyString(occupied);
-		  console.log("ElementId: "+elementId);
-		  console.log("txt: "+txt);
+                  elementId = TrackCircuitMonitorStatusString(id);
+                  txt = GetTrackCircuitMonitorOccupancyString(occupied);
+                  console.log("ElementId: "+elementId);
+                  console.log("txt: "+txt);
                   document.getElementById(elementId).innerHTML = txt;
               }
           }
           xhr.send(JSON.stringify(request));
 
-	  console.log("RefreshTrackCircuitMonitorControl complete");
-	  return false;
+          console.log("RefreshTrackCircuitMonitorControl complete");
+          return false;
       }
 
       function AspectRadio(parent, id, value, displayedAspect) {
-	  var button = document.createElement("input");
-	  var label = document.createElement("label");
+          var button = document.createElement("input");
+          var label = document.createElement("label");
 
-	  var idString = value+id;
-	  button.setAttribute("type", "radio");
-	  button.setAttribute("name", AspectIdString(id));
-	  button.setAttribute("value", value);
-	  button.setAttribute("id", idString);
-	  if( value==displayedAspect ) {
-	      button.setAttribute("checked", "checked");
-	  }
+          var idString = value+id;
+          button.setAttribute("type", "radio");
+          button.setAttribute("name", AspectIdString(id));
+          button.setAttribute("value", value);
+          button.setAttribute("id", idString);
+          if( value==displayedAspect ) {
+              button.setAttribute("checked", "checked");
+          }
 
-	  label.setAttribute("for",idString);
-	  label.innerHTML=value;
-	  
-	  parent.appendChild(button);
-	  parent.appendChild(label);
+          label.setAttribute("for",idString);
+          label.innerHTML=value;
+          
+          parent.appendChild(button);
+          parent.appendChild(label);
       }
 
       function FlashCheckbox(parent, id, flash) {
-	  var checkbox = document.createElement("input");
-	  var label = document.createElement("label");
+          var checkbox = document.createElement("input");
+          var label = document.createElement("label");
 
-	  var idString = FlashingIdString(id);
-	  checkbox.setAttribute("type", "checkbox");
-	  checkbox.setAttribute("name", "flash");
-	  checkbox.setAttribute("id", idString);
-	  if( flash=="Flashing" ) {
-	      checkbox.setAttribute("checked", "checked");
-	  }
+          var idString = FlashingIdString(id);
+          checkbox.setAttribute("type", "checkbox");
+          checkbox.setAttribute("name", "flash");
+          checkbox.setAttribute("id", idString);
+          if( flash=="Flashing" ) {
+              checkbox.setAttribute("checked", "checked");
+          }
 
-	  label.setAttribute("for",idString);
-	  label.innerHTML="Flashing";
-	  
-	  parent.appendChild(checkbox);
-	  parent.appendChild(label);
+          label.setAttribute("for",idString);
+          label.innerHTML="Flashing";
+          
+          parent.appendChild(checkbox);
+          parent.appendChild(label);
       }
       
       function RenderSignalHeadForm(sh) {
-	  console.log("Starting RenderSignalHead for "+JSON.stringify(sh));
+          console.log("Starting RenderSignalHead for "+JSON.stringify(sh));
 
-	  // Create the form
-	  f = document.createElement("form");
-	  f.setAttribute("id", "ID"+sh.id);
-	  f.setAttribute("class", "signalheadcontrol");
-	  f.setAttribute("action", "");
-	  f.setAttribute("onsubmit", "return SetSignal('"+sh.id+"');");
+          // Create the form
+          f = document.createElement("form");
+          f.setAttribute("id", "ID"+sh.id);
+          f.setAttribute("class", "signalheadcontrol");
+          f.setAttribute("action", "");
+          f.setAttribute("onsubmit", "return SetSignal('"+sh.id+"');");
 
-	  // Title
-	  var h = document.createElement("h1");
-	  h.innerHTML = "SignalHead "+sh.id;
-	  f.appendChild(h);
+          // Title
+          var h = document.createElement("h1");
+          h.innerHTML = "SignalHead "+sh.id;
+          f.appendChild(h);
 
-	  // The radio buttons for the aspects
-	  var aspectPara = document.createElement("p");
-	  AspectRadio(aspectPara, sh.id, "Red", sh.aspect);
-	  if( sh.aspectCount >= 3 ) {
-	      AspectRadio(aspectPara, sh.id, "Yellow", sh.aspect);
-	  }
-	  if( sh.aspectCount == 4 ) {
-	      AspectRadio(aspectPara, sh.id, "DoubleYellow", sh.aspect);
-	  }
-	  AspectRadio(aspectPara, sh.id, "Green", sh.aspect);
-	  f.appendChild(aspectPara);
+          // The radio buttons for the aspects
+          var aspectPara = document.createElement("p");
+          AspectRadio(aspectPara, sh.id, "Red", sh.aspect);
+          if( sh.aspectCount >= 3 ) {
+              AspectRadio(aspectPara, sh.id, "Yellow", sh.aspect);
+          }
+          if( sh.aspectCount == 4 ) {
+              AspectRadio(aspectPara, sh.id, "DoubleYellow", sh.aspect);
+          }
+          AspectRadio(aspectPara, sh.id, "Green", sh.aspect);
+          f.appendChild(aspectPara);
 
-	  // The checkbox for Flash
-	  var flashPara = document.createElement("p");
-	  FlashCheckbox(flashPara, sh.id, sh.flash);
-	  f.appendChild(flashPara);
+          // The checkbox for Flash
+          var flashPara = document.createElement("p");
+          FlashCheckbox(flashPara, sh.id, sh.flash);
+          f.appendChild(flashPara);
 
-	  // The submit button
-	  var submitPara = document.createElement("p");
-	  var button = document.createElement("input");
-	  button.setAttribute("type", "submit");
-	  button.setAttribute("value", "Submit");
-	  submitPara.appendChild(button);
-	  f.appendChild(submitPara);
+          // The submit button
+          var submitPara = document.createElement("p");
+          var button = document.createElement("input");
+          button.setAttribute("type", "submit");
+          button.setAttribute("value", "Submit");
+          submitPara.appendChild(button);
+          f.appendChild(submitPara);
 
-	  // And the error line
-	  var errorPara = document.createElement("p");
-	  errorPara.setAttribute("id", "response"+sh.id);
-	  f.appendChild(errorPara);
+          // And the error line
+          var errorPara = document.createElement("p");
+          errorPara.setAttribute("id", "response"+sh.id);
+          f.appendChild(errorPara);
 
-	  // Insert into document
-	  document.getElementsByTagName('body')[0].appendChild(f);
+          // Insert into document
+          document.getElementsByTagName('body')[0].appendChild(f);
       }
 
       function RenderTrackCircuitMonitorForm(tcm) {
-	  console.log("Starting RenderTrackCircuitMonitorForm for "+JSON.stringify(tcm));
-	  
-	  // Create the form
-	  f = document.createElement("form");
-	  f.setAttribute("id", "ID"+tcm.id);
-	  f.setAttribute("class", "trackcircuitmonitorcontrol");
-	  f.setAttribute("action", "");
-	  f.setAttribute("onsubmit", "return RefreshTrackCircuitMonitorControl('"+tcm.id+"');");
+          console.log("Starting RenderTrackCircuitMonitorForm for "+JSON.stringify(tcm));
+          
+          // Create the form
+          f = document.createElement("form");
+          f.setAttribute("id", "ID"+tcm.id);
+          f.setAttribute("class", "trackcircuitmonitorcontrol");
+          f.setAttribute("action", "");
+          f.setAttribute("onsubmit", "return RefreshTrackCircuitMonitorControl('"+tcm.id+"');");
 
-	   // Title
-	  var h = document.createElement("h1");
-	  h.innerHTML = "TrackCircuitMonitor "+tcm.id;
-	  f.appendChild(h);
+           // Title
+          var h = document.createElement("h1");
+          h.innerHTML = "TrackCircuitMonitor "+tcm.id;
+          f.appendChild(h);
 
-	  // Add the status line
-	  var statusPara = document.createElement("p");
-	  statusPara.setAttribute("id", TrackCircuitMonitorStatusString(tcm.id));
-	  statusPara.innerHTML = GetTrackCircuitMonitorOccupancyString(tcm.occupied);
-	  f.appendChild(statusPara);
+          // Add the status line
+          var statusPara = document.createElement("p");
+          statusPara.setAttribute("id", TrackCircuitMonitorStatusString(tcm.id));
+          statusPara.innerHTML = GetTrackCircuitMonitorOccupancyString(tcm.occupied);
+          f.appendChild(statusPara);
 
-	  // The submit button
-	  var submitPara = document.createElement("p");
-	  var button = document.createElement("input");
-	  button.setAttribute("type", "submit");
-	  button.setAttribute("value", "Update");
-	  submitPara.appendChild(button);
-	  f.appendChild(submitPara);
-	  
-	  // Insert into document
-	  document.getElementsByTagName('body')[0].appendChild(f);
+          // The submit button
+          var submitPara = document.createElement("p");
+          var button = document.createElement("input");
+          button.setAttribute("type", "submit");
+          button.setAttribute("value", "Update");
+          submitPara.appendChild(button);
+          f.appendChild(submitPara);
+          
+          // Insert into document
+          document.getElementsByTagName('body')[0].appendChild(f);
       }
       
       function HandleSignalHead(id) {
-	  console.log("Starting HandleSignalHead for "+id);
+          console.log("Starting HandleSignalHead for "+id);
 
-	  var xhr = new XMLHttpRequest();
+          var xhr = new XMLHttpRequest();
           xhr.open("post", '/rpc');
           // Required by JSON-RPC over HTTP
           xhr.setRequestHeader("Content-Type","application/json");
 
-	  var request = new Object();
-	  request['method'] = "getsignalhead";
-	  request['params'] = [ id ];
-	  request['id'] = Math.floor(Math.random() * 32768);
-	  console.log("HandleSignalHead: Request="+JSON.stringify(request));
+          var request = new Object();
+          request['method'] = "getsignalhead";
+          request['params'] = [ id ];
+          request['id'] = Math.floor(Math.random() * 32768);
+          console.log("HandleSignalHead: Request="+JSON.stringify(request));
 
-	  xhr.onreadystatechange = function() {
+          xhr.onreadystatechange = function() {
               if (xhr.readyState === 4) {
                   var res;
                   if(xhr.status === 200) {
-		      console.log("HandleSignalHead: Response = " + xhr.responseText);
+                      console.log("HandleSignalHead: Response = " + xhr.responseText);
                       var result = JSON.parse(xhr.responseText);
-		      console.log("HandleSignalHead: Result = " + JSON.stringify(result.result));
-		      console.log("HandleSignalHead: Error = " + result.error);
+                      console.log("HandleSignalHead: Result = " + JSON.stringify(result.result));
+                      console.log("HandleSignalHead: Error = " + result.error);
                       if(result.error==null) {
                           RenderSignalHeadForm(result.result);
                       }
@@ -284,27 +290,27 @@
       }
 
       function HandleTrackCircuitMonitor(id) {
-	  console.log("Starting HandleSignalHead for "+id);
+          console.log("Starting HandleSignalHead for "+id);
 
-	  var xhr = new XMLHttpRequest();
+          var xhr = new XMLHttpRequest();
           xhr.open("post", '/rpc');
           // Required by JSON-RPC over HTTP
           xhr.setRequestHeader("Content-Type","application/json");
 
-	  var request = new Object();
-	  request['method'] = "gettrackcircuitmonitor";
-	  request['params'] = [ id ];
-	  request['id'] = Math.floor(Math.random() * 32768);
-	  console.log("HandleTrackCircuitMonitor: Request="+JSON.stringify(request));
+          var request = new Object();
+          request['method'] = "gettrackcircuitmonitor";
+          request['params'] = [ id ];
+          request['id'] = Math.floor(Math.random() * 32768);
+          console.log("HandleTrackCircuitMonitor: Request="+JSON.stringify(request));
 
-	  xhr.onreadystatechange = function() {
+          xhr.onreadystatechange = function() {
               if (xhr.readyState === 4) {
                   var res;
                   if(xhr.status === 200) {
-		      console.log("HandleTrackCircuitMonitor: Response = " + xhr.responseText);
+                      console.log("HandleTrackCircuitMonitor: Response = " + xhr.responseText);
                       var result = JSON.parse(xhr.responseText);
-		      console.log("HandleTrackCircuitMonitor: Result = " + JSON.stringify(result.result));
-		      console.log("HandleTrackCircuitMonitor: Error = " + result.error);
+                      console.log("HandleTrackCircuitMonitor: Result = " + JSON.stringify(result.result));
+                      console.log("HandleTrackCircuitMonitor: Error = " + result.error);
                       if(result.error==null) {
                           RenderTrackCircuitMonitorForm(result.result);
                       }
@@ -321,53 +327,53 @@
       }
       
       function HandleItem(item) {
-	  console.log("Starting HandleItem for "+JSON.stringify(item));
-	  switch(item.type) {
-	  case "signalhead":
-	      HandleSignalHead(item.id);
-	      break;
+          console.log("Starting HandleItem for "+JSON.stringify(item));
+          switch(item.type) {
+          case "signalhead":
+              HandleSignalHead(item.id);
+              break;
 
-	  case "trackcircuitmonitor":
-	      HandleTrackCircuitMonitor(item.id);
-	      break;
-	      
-	  default:
-	      console.log("Unrecognised type: "+item.type);
-	  }
+          case "trackcircuitmonitor":
+              HandleTrackCircuitMonitor(item.id);
+              break;
+              
+          default:
+              console.log("Unrecognised type: "+item.type);
+          }
       }
       
       function HandleItemList(items) {
-	  console.log("Starting HandleItemList");
+          console.log("Starting HandleItemList");
 
-	  for( var i=0; i<items.length; i++ ) {
-	      HandleItem(items[i]);
-	  }
+          for( var i=0; i<items.length; i++ ) {
+              HandleItem(items[i]);
+          }
       }
       
       function LoadInfo() {
-	  console.log("Starting LoadInfo");
-	  
-	  var xhr = new XMLHttpRequest();
+          console.log("Starting LoadInfo");
+          
+          var xhr = new XMLHttpRequest();
           xhr.open("post", '/rpc');
           // Required by JSON-RPC over HTTP
           xhr.setRequestHeader("Content-Type","application/json");
-	  
+          
           // It is better to use real formatter like JSON.js
           var request = new Object();
-	  request['method'] = "listitems";
-	  request['params'] = [];
-	  request['id'] = Math.floor(Math.random() * 32768);;
-	  console.log(JSON.stringify(request));
+          request['method'] = "listitems";
+          request['params'] = [];
+          request['id'] = Math.floor(Math.random() * 32768);;
+          console.log(JSON.stringify(request));
 
-	  var pageErrorLoc = "pageErrorMessage";
-	  xhr.onreadystatechange = function() {
+          var pageErrorLoc = "pageErrorMessage";
+          xhr.onreadystatechange = function() {
               if (xhr.readyState === 4) {
                   var res;
                   if(xhr.status === 200) {
-		      console.log("Response = " + xhr.responseText);
+                      console.log("Response = " + xhr.responseText);
                       var result = JSON.parse(xhr.responseText);
-		      console.log("Result = " + JSON.stringify(result.result));
-		      console.log("Error = " + result.error);
+                      console.log("Result = " + JSON.stringify(result.result));
+                      console.log("Error = " + result.error);
                       if(result.error==null) {
                           HandleItemList(result.result);
                       }
@@ -381,12 +387,13 @@
               }
           }
           xhr.send(JSON.stringify(request));
-	  
-	  console.log("Completed LoadInfo");
+          
+          console.log("Completed LoadInfo");
       }
-    </script>
-  </head>
-  <body onload=LoadInfo()>
-    <p id="pageErrorMessage" />
-  </body>
+//]]>
+</script>
+</head>
+<body onload="LoadInfo()">
+<p id="pageErrorMessage"></p>
+</body>
 </html>
