@@ -8,6 +8,9 @@
     <style type="text/css">
       form.signalheadcontrol { border-style: solid;
 			       padding: 1em; }
+      
+      form.trackcircuitmonitorcontrol { border-style: dashed;
+					padding: 1em; }
     </style>
     <script type="text/javascript">
       
@@ -18,9 +21,13 @@
       function FlashingIdString(id) {
 	  return "flashing"+id;
       }
+
+      function TrackCircuitMonitorStatusString(id) {
+	  return "tcmStatus"+id;
+      }
       
       function SetSignal(id) {
-	  console.log(id);
+	  console.log("Starting SetSignal for "+id);
 
 	  var responseId = "response"+id;
 	  
@@ -64,8 +71,57 @@
                   document.getElementById(responseId).innerHTML = res;
               }
           }
-          xhr.send(JSON.stringify(request)); 
+          xhr.send(JSON.stringify(request));
 	  
+	  console.log("SetSignal complete");
+	  return false;
+      }
+
+      function GetTrackCircuitMonitorOccupancyString(occupied) {
+	  return "Occupancy status: " + ( occupied ? "Occupied" : "Vacant" );
+      }
+
+      function RefreshTrackCircuitMonitorControl(id) {
+	  console.log("Starting RefreshTrackCircuitMonitorControl for "+id);
+
+	  var xhr = new XMLHttpRequest();
+          xhr.open("post", '/rpc');
+          // Required by JSON-RPC over HTTP
+          xhr.setRequestHeader("Content-Type","application/json");
+	  
+          // It is better to use real formatter like JSON.js
+          var request = new Object();
+	  request["method"] = "gettrackcircuitmonitor";
+	  request["params"] = [id];
+	  request["id"] = Math.floor(Math.random() * 32768);
+
+	  xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                  var res;
+		  var occupied;
+                  if(xhr.status === 200) {
+                      var result = JSON.parse(xhr.responseText);
+                      if(result.error==null) {
+			  console.log("result: "+JSON.stringify(result));
+			  occupied = result.result.occupied;
+                      }
+                      else {
+                          res = result.error;
+                      }
+                  }
+                  else {
+                      res = 'Invalid Status ' + xhr.status;
+                  }
+		  elementId = TrackCircuitMonitorStatusString(id);
+		  txt = GetTrackCircuitMonitorOccupancyString(occupied);
+		  console.log("ElementId: "+elementId);
+		  console.log("txt: "+txt);
+                  document.getElementById(elementId).innerHTML = txt;
+              }
+          }
+          xhr.send(JSON.stringify(request));
+
+	  console.log("RefreshTrackCircuitMonitorControl complete");
 	  return false;
       }
 
@@ -156,6 +212,39 @@
 	  // Insert into document
 	  document.getElementsByTagName('body')[0].appendChild(f);
       }
+
+      function RenderTrackCircuitMonitorForm(tcm) {
+	  console.log("Starting RenderTrackCircuitMonitorForm for "+JSON.stringify(tcm));
+	  
+	  // Create the form
+	  f = document.createElement("form");
+	  f.setAttribute("id", "ID"+tcm.id);
+	  f.setAttribute("class", "trackcircuitmonitorcontrol");
+	  f.setAttribute("action", "");
+	  f.setAttribute("onsubmit", "return RefreshTrackCircuitMonitorControl('"+tcm.id+"');");
+
+	   // Title
+	  var h = document.createElement("h1");
+	  h.innerHTML = "TrackCircuitMonitor "+tcm.id;
+	  f.appendChild(h);
+
+	  // Add the status line
+	  var statusPara = document.createElement("p");
+	  statusPara.setAttribute("id", TrackCircuitMonitorStatusString(tcm.id));
+	  statusPara.innerHTML = GetTrackCircuitMonitorOccupancyString(tcm.occupied);
+	  f.appendChild(statusPara);
+
+	  // The submit button
+	  var submitPara = document.createElement("p");
+	  var button = document.createElement("input");
+	  button.setAttribute("type", "submit");
+	  button.setAttribute("value", "Update");
+	  submitPara.appendChild(button);
+	  f.appendChild(submitPara);
+	  
+	  // Insert into document
+	  document.getElementsByTagName('body')[0].appendChild(f);
+      }
       
       function HandleSignalHead(id) {
 	  console.log("Starting HandleSignalHead for "+id);
@@ -193,12 +282,53 @@
           }
           xhr.send(JSON.stringify(request));
       }
+
+      function HandleTrackCircuitMonitor(id) {
+	  console.log("Starting HandleSignalHead for "+id);
+
+	  var xhr = new XMLHttpRequest();
+          xhr.open("post", '/rpc');
+          // Required by JSON-RPC over HTTP
+          xhr.setRequestHeader("Content-Type","application/json");
+
+	  var request = new Object();
+	  request['method'] = "gettrackcircuitmonitor";
+	  request['params'] = [ id ];
+	  request['id'] = Math.floor(Math.random() * 32768);
+	  console.log("HandleTrackCircuitMonitor: Request="+JSON.stringify(request));
+
+	  xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                  var res;
+                  if(xhr.status === 200) {
+		      console.log("HandleTrackCircuitMonitor: Response = " + xhr.responseText);
+                      var result = JSON.parse(xhr.responseText);
+		      console.log("HandleTrackCircuitMonitor: Result = " + JSON.stringify(result.result));
+		      console.log("HandleTrackCircuitMonitor: Error = " + result.error);
+                      if(result.error==null) {
+                          RenderTrackCircuitMonitorForm(result.result);
+                      }
+                      else {
+                          document.getElementById(pageErrorLoc).innerHTML = result.error;
+                      }
+                  }
+                  else {
+                      document.getElementById(pageErrorLoc).innerHTML = 'Invalid Status ' + xhr.status;
+                  }
+              }
+          }
+          xhr.send(JSON.stringify(request));
+      }
       
       function HandleItem(item) {
 	  console.log("Starting HandleItem for "+JSON.stringify(item));
 	  switch(item.type) {
 	  case "signalhead":
 	      HandleSignalHead(item.id);
+	      break;
+
+	  case "trackcircuitmonitor":
+	      HandleTrackCircuitMonitor(item.id);
 	      break;
 	      
 	  default:
