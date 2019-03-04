@@ -60,9 +60,9 @@ namespace Signalbox {
     return pin;
   }
   
-  void PiGPIOdPinManager::setupInputPin( PiGPIOdDigitalInputPin* pin, const int pinId ) const {
+  void PiGPIOdPinManager::setupInputPin( PiGPIOdDigitalInputPin* pin, const DigitalInputPinData& data ) const {
     pin->piId = this->piId;
-    pin->pinId = pinId;
+    pin->pinId = this->parsePinId(data.id);
 
     int err = set_mode(pin->piId, pin->pinId, PI_INPUT);
     if( err != 0 ) {
@@ -85,8 +85,6 @@ namespace Signalbox {
 	  << " error: " << callbackId;
       throw std::runtime_error(msg.str());
     }
-    
-    throw std::runtime_error("PiGPIOdPinManager::setupInputPin not yet implemented");
   }
 
   void PiGPIOdPinManager::setupOutputPin( PiGPIOdDigitalOutputPin* pin, const int pinId ) const {

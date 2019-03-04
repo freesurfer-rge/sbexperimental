@@ -31,7 +31,7 @@ namespace Signalbox {
   protected:
     virtual int parsePinId( const std::string idString ) const override;
 
-    virtual void setupInputPin( PiGPIOdDigitalInputPin* pin, const int pinId ) const override;
+    virtual void setupInputPin( PiGPIOdDigitalInputPin* pin, const DigitalInputPinData& data ) const override;
 
     virtual void setupOutputPin( PiGPIOdDigitalOutputPin* pin, const int pinId ) const override;
     

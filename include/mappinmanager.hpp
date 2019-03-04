@@ -36,7 +36,7 @@ namespace Signalbox {
       this->throwIfPinExists(parsedId);
 
       auto nxt = std::unique_ptr<DigitalOutputPinType>(new DigitalOutputPinType());
-      this->setupOutputPin(nxt.get(), pinId);
+      this->setupOutputPin(nxt.get(), parsedId);
 
       this->outputPins[parsedId] = std::move(nxt);
 
