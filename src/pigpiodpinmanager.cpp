@@ -100,6 +100,37 @@ namespace Signalbox {
 	throw std::runtime_error(msg.str());
       }
     }
+
+    const std::string pudSetting = "pudResistor";
+    if( data.settings.count(pudSetting) == 1 ) {
+      unsigned int pud;
+      const std::string pudVal = data.settings.at(pudSetting);
+      
+      if( pudVal == "up" ) {
+	pud = PI_PUD_UP;
+      } else if( pudVal == "down" ) {
+	pud = PI_PUD_DOWN;
+      } else if( pudVal == "off" ) {
+	pud = PI_PUD_OFF;
+      } else {
+	std::stringstream msg;
+	msg << "pudResistor setting '"
+	    << pudVal
+	    << "' not recognised"
+	    << std::endl;
+	throw std::runtime_error(msg.str());
+      }
+
+      err = set_pull_up_down(pin->piId, pin->pinId, pud );
+      if( err != 0 ) {
+	std::stringstream msg;
+	msg << "set_pull_up_down failed for"
+	    << " Pi: " << pin->piId
+	    << " pin: " << pin->pinId
+	    << " error: " << err;
+	throw std::runtime_error(msg.str());
+      }
+    }
   }
 
   void PiGPIOdPinManager::setupOutputPin( PiGPIOdDigitalOutputPin* pin, const int pinId ) const {
