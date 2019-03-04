@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 
 #include <xercesc/dom/DOMNodeList.hpp>
 
@@ -68,6 +69,27 @@ namespace Signalbox {
       return GetAttributeByName(element, "id");
     }
     
+    void PopulateSettingsMap( const xercesc::DOMElement* parent, std::map<std::string,std::string>& settings ) {
+      auto children = parent->getChildNodes();
+
+      auto TAG_Setting = Configuration::StrToXMLCh("Setting");
+      
+      for( XMLSize_t i=0; i<children->getLength(); i++ ) {
+	auto child = children->item(i);
+
+	if( Configuration::IsElementNode(child) ) {
+	  auto element = dynamic_cast<xercesc::DOMElement*>(child);
+
+	  if( xercesc::XMLString::equals( element->getTagName(), TAG_Setting.get() ) ) {
+	    std::string key = GetAttributeByName( element, "key" );
+	    std::string value = GetAttributeByName( element, "value" );
+	    
+	    settings[key] = value;
+	  }
+	}
+      }
+    }
+    
     bool IsElementNode( const xercesc::DOMNode* node ) {
       return (node->getNodeType()) &&
 	(node->getNodeType() == xercesc::DOMNode::ELEMENT_NODE );
@@ -77,6 +99,12 @@ namespace Signalbox {
       auto TAG_OutputPin = StrToXMLCh("OutputPin");
       
       return xercesc::XMLString::equals(element->getTagName(), TAG_OutputPin.get());
+    }
+
+    bool IsInputPin( const xercesc::DOMElement* element ) {
+      auto TAG_InputPin = StrToXMLCh("InputPin");
+
+      return xercesc::XMLString::equals(element->getTagName(), TAG_InputPin.get());
     }
   }
 }

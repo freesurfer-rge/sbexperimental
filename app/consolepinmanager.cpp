@@ -8,8 +8,8 @@ namespace Signalbox {
     return idString;
   }
 
-  void ConsolePinManager::setupInputPin( ConsoleDigitalInputPin* pin, const std::string pinId ) const {
-    pin->id = pinId;
+  void ConsolePinManager::setupInputPin( ConsoleDigitalInputPin* pin, const DigitalInputPinData& data ) const {
+    pin->id = data.id;
   }
 
   void ConsolePinManager::setupOutputPin( ConsoleDigitalOutputPin* pin, const std::string pinId ) const {

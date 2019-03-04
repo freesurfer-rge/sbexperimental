@@ -74,6 +74,7 @@ namespace Signalbox {
     
     auto TAG_ControlledItems = std::string("ControlledItems");
     auto TAG_SignalHead = Configuration::StrToXMLCh("SignalHead");
+    auto TAG_TrackCircuitMonitor = Configuration::StrToXMLCh("TrackCircuitMonitor");
     
     auto elementControlledItems = Configuration::GetSingleElementByName( elementSignalbox,
 									 TAG_ControlledItems );
@@ -89,7 +90,8 @@ namespace Signalbox {
 	
 	if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_SignalHead.get() ) ) {
 	  item.reset( this->ReadSignalHead(currentElement) );
-
+	} else if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_TrackCircuitMonitor.get() ) ) {
+	  item.reset( this->ReadTrackCircuitMonitor(currentElement) );
 	} else {
 	  throw std::runtime_error("Unknown tag name");
 	}
@@ -150,5 +152,35 @@ namespace Signalbox {
     
     // This gets the raw pointer, and stops the unique_ptr from managing it
     return signal.release();
+  }
+
+  ControlledItemData* ConfigReader::ReadTrackCircuitMonitor(xercesc::DOMElement* currentElement ) {
+    std::unique_ptr<TrackCircuitMonitorData> tc( new TrackCircuitMonitorData );
+
+    auto children = currentElement->getChildNodes();
+
+    // We don't have a schema defined for the XML document yet, but we
+    // shall expect it to require that a TrackCircuit has a single OutputPin
+    for( XMLSize_t i=0; i<children->getLength(); i++ ) {
+      auto child = children->item(i);
+
+      if( Configuration::IsElementNode(child) ) {
+	auto nxtElement = dynamic_cast<xercesc::DOMElement*>(child);
+
+	if( Configuration::IsInputPin(nxtElement) ) {
+	  DigitalInputPinData pin;
+
+	  pin.id = Configuration::GetIdAttribute(nxtElement);
+	  pin.sensor = Configuration::GetAttributeByName(nxtElement, "sensor");
+
+	  Configuration::PopulateSettingsMap( nxtElement, pin.settings );
+	  
+	  // Put it into the data structure
+	  tc->inputPin = pin;
+	}
+      }
+    }
+    
+    return tc.release();
   }
 }

@@ -5,6 +5,7 @@
 #include "configreader.hpp"
 
 #include "signalheaddata.hpp"
+#include "trackcircuitmonitordata.hpp"
 #include "railtrafficcontroldata.hpp"
 
 #include "exceptionmessagecheck.hpp"
@@ -13,6 +14,8 @@
 
 const std::string singlesignalfile = "singlesignalhead.xml";
 const std::string twosignalfile = "twosignalheads.xml";
+
+const std::string singletrackcircuitfile = "singletrackcircuitmonitor.xml";
 
 // =====================================================
 
@@ -85,6 +88,38 @@ BOOST_AUTO_TEST_CASE( ReadTwoSignals )
       BOOST_FAIL("Bad ItemId detected");
     }
   }
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+// =============================================================
+
+BOOST_AUTO_TEST_SUITE( ReadTrackCircuitMonitorData )
+
+BOOST_AUTO_TEST_CASE( SingleTrackCircuit )
+{
+  Signalbox::ConfigReader cr(singletrackcircuitfile);
+
+  std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
+
+  cr.ReadControlledItems( configItems );
+
+  BOOST_REQUIRE_EQUAL( configItems.size(), 1 );
+  
+  Signalbox::ItemId expectedId;
+  expectedId.Parse("00:00:00:aa");
+
+  Signalbox::ControlledItemData* item = configItems.at(0).get();
+  BOOST_CHECK_EQUAL( item->id, expectedId );
+
+  Signalbox::TrackCircuitMonitorData* tcmd;
+  tcmd = dynamic_cast<Signalbox::TrackCircuitMonitorData*>(item);
+  BOOST_REQUIRE(tcmd);
+
+  BOOST_CHECK_EQUAL( tcmd->inputPin.id, "GPIO03" );
+  BOOST_CHECK_EQUAL( tcmd->inputPin.sensor, "occupancy" );
+  BOOST_REQUIRE_EQUAL( tcmd->inputPin.settings.size(), 1 );
+  BOOST_CHECK_EQUAL( tcmd->inputPin.settings.at("glitch"), "10000" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

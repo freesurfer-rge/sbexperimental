@@ -17,6 +17,10 @@ namespace Signalbox {
       *val = this->id;
     }
 
+    IdType Get() const {
+      return this->id;
+    }
+
     void Set(const IdType val) {
       this->id = val;
     }

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <map>
 
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/dom/DOMElement.hpp>
@@ -21,8 +22,12 @@ namespace Signalbox {
     
     std::string GetIdAttribute( const xercesc::DOMElement* element );
 
+    void PopulateSettingsMap( const xercesc::DOMElement* parent, std::map<std::string,std::string>& settings );
+    
     bool IsElementNode( const xercesc::DOMNode* node );
     
     bool IsOutputPin( const xercesc::DOMElement* element );
+    bool IsInputPin( const xercesc::DOMElement* element );
+    bool IsSettings( const xercesc::DOMElement* element );
   }
 }

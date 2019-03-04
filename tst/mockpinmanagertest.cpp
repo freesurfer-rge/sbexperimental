@@ -82,49 +82,68 @@ BOOST_AUTO_TEST_CASE( CreateInputPin )
 {
   Signalbox::MockPinManager pm;
 
-  const std::string pinId = "AnyId";
+  Signalbox::DigitalInputPinData data;
+  data.id = "AnyId";
+  data.settings["First"] = "0";
+  data.settings["Second"] = "12";
 
-  auto dip = pm.CreateDigitalInputPin(pinId);
+  auto dip = pm.CreateDigitalInputPin(data);
   BOOST_REQUIRE( dip );
 
   auto mdip = dynamic_cast<Signalbox::MockDigitalInputPin*>(dip);
-  BOOST_CHECK( mdip );
+  BOOST_REQUIRE( mdip );
+  BOOST_CHECK_EQUAL( mdip->id, data.id );
   BOOST_CHECK_EQUAL( mdip->Get(), false );
+  BOOST_REQUIRE_EQUAL( mdip->createSettings.size(), 2 );
+  BOOST_CHECK_EQUAL( mdip->createSettings.at("First"), "0" );
+  BOOST_CHECK_EQUAL( mdip->createSettings.at("Second"), "12" );
 }
 
 BOOST_AUTO_TEST_CASE( CreateTwoInputPins )
 {
   Signalbox::MockPinManager pm;
 
-  const std::string pinId1 = "AnyId1";
-  const std::string pinId2 = "AnyId2";
+  Signalbox::DigitalInputPinData data1, data2;
+  data1.id = "GPIO1";
+  data2.id = "GPIO2";
+  data1.settings["OneSetting"] = "OneValue";
 
-  auto dip1 = pm.CreateDigitalInputPin(pinId1);
-  auto dip2 = pm.CreateDigitalInputPin(pinId2);
+  auto dip1 = pm.CreateDigitalInputPin(data1);
+  auto dip2 = pm.CreateDigitalInputPin(data2);
   BOOST_REQUIRE( dip1 );
   BOOST_REQUIRE( dip1 );
   BOOST_REQUIRE_NE( dip1, dip2 );
 
   auto mdip1 = dynamic_cast<Signalbox::MockDigitalInputPin*>(dip1);
   auto mdip2 = dynamic_cast<Signalbox::MockDigitalInputPin*>(dip2);
-  BOOST_CHECK( mdip1 );
-  BOOST_CHECK( mdip2 );
+  BOOST_REQUIRE( mdip1 );
+  BOOST_REQUIRE( mdip2 );
   BOOST_CHECK_NE( mdip1, mdip2 );
   BOOST_CHECK_EQUAL( mdip1->Get(), false );
   BOOST_CHECK_EQUAL( mdip2->Get(), false );
+
+  BOOST_CHECK_EQUAL( mdip1->id, "GPIO1" );
+  BOOST_CHECK_EQUAL( mdip2->id, "GPIO2" );
+  
+  BOOST_REQUIRE_EQUAL( mdip1->createSettings.size(), 1 );
+  BOOST_CHECK_EQUAL( mdip1->createSettings.at("OneSetting"), "OneValue" );
+  BOOST_CHECK_EQUAL( mdip2->createSettings.size(), 0 );
 }
 
 BOOST_AUTO_TEST_CASE( DuplicateCreateInputPin )
 {
   Signalbox::MockPinManager pm;
 
-  const std::string pinId = "AnyId";
+  Signalbox::DigitalInputPinData data1, data2;
+  data1.id = "AnyId";
+  data2.id = "AnyId";
+  data1.settings["OneSetting"] = "OneValue";
 
-  auto dip = pm.CreateDigitalInputPin(pinId);
+  auto dip = pm.CreateDigitalInputPin(data1);
   BOOST_REQUIRE( dip );
 
   std::string msg("Pin 'AnyId' already exists as InputPin");
-  BOOST_CHECK_EXCEPTION( pm.CreateDigitalInputPin(pinId),
+  BOOST_CHECK_EXCEPTION( pm.CreateDigitalInputPin(data2),
 			 std::runtime_error,
 			 GetExceptionMessageChecker<std::runtime_error>(msg) );
 }

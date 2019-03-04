@@ -13,8 +13,8 @@ namespace Signalbox {
     } else {
       std::cout << "Vacant";
     }
-    std::cout << ". Sending to"
-	      << this->host << ":" << this->port
+    std::cout << ". Sending to "
+	      << this->host << ":" << std::dec << this->port
 	      << std::endl;
   }
 }

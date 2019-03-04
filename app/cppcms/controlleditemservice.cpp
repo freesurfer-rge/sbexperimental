@@ -2,12 +2,14 @@
 
 #include "iteminfo.hpp"
 #include "iteminfojson.hpp"
+#include "trackcircuitmonitorjson.hpp"
 #include "signalheadjson.hpp"
 #include "signalaspectjson.hpp"
 #include "signalflashjson.hpp"
 #include "itemidjson.hpp"
 
 #include "signalhead.hpp"
+#include "trackcircuitmonitor.hpp"
 
 #include "controlleditemservice.hpp"
 
@@ -26,6 +28,11 @@ namespace Signalbox {
 	 method_role);
     bind("getsignalhead",
 	 cppcms::rpc::json_method(&ControlledItemService::GetSignalHead, this),
+	 method_role);
+    
+    // TrackCircuitMonitor methods
+    bind("gettrackcircuitmonitor",
+	 cppcms::rpc::json_method(&ControlledItemService::GetTrackCircuitMonitor, this),
 	 method_role);
   }
 
@@ -86,6 +93,21 @@ namespace Signalbox {
     }
     
     return_result(*sh);
+  }
+
+  void ControlledItemService::GetTrackCircuitMonitor( ItemId id ) {
+    std::cout << __PRETTY_FUNCTION__ << ": Starting" << std::endl;
+    
+    auto ci = this->cif->GetById(id);
+    if( ci == NULL ) {
+      return_error("No such item");
+    }
+    auto tcm = dynamic_cast<TrackCircuitMonitor*>(ci);
+    if( tcm == nullptr ) {
+      return_error("Item is not a TrackCircuitMonitor");
+    }
+
+    return_result(*tcm);
   }
 }
 

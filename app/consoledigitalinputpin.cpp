@@ -1,4 +1,6 @@
 #include <iostream>
+#include <chrono>
+#include <random>
 
 #include "consoledigitalinputpin.hpp"
 
@@ -15,5 +17,20 @@ namespace Signalbox {
     }
     this->state = level;
     this->NotifyOneUpdate();
+  }
+
+  void ConsoleDigitalInputPin::Run() {
+    unsigned long seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    std::default_random_engine rand(seed);
+    std::uniform_int_distribution<int> dist(1, 4);
+
+    while( !this->done ) {
+      std::cout << "Pin " << this->id << " sleeping" << std::endl;
+      const int sleepSecs = dist(rand);
+      std::this_thread::sleep_for(std::chrono::seconds(sleepSecs));
+
+      const bool nextSet = dist(rand) % 2 == 0;
+      this->Set(nextSet);
+    }
   }
 }
