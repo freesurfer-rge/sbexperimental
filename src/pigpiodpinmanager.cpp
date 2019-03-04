@@ -85,6 +85,21 @@ namespace Signalbox {
 	  << " error: " << callbackId;
       throw std::runtime_error(msg.str());
     }
+
+    const std::string glitchSetting = "glitch";
+    if( data.settings.count(glitchSetting) == 1 ) {
+      unsigned int usecFilter = std::stoul(data.settings.at(glitchSetting));
+
+      err = set_glitch_filter(pin->piId, pin->pinId, usecFilter);
+      if( err != 0 ) {
+	std::stringstream msg;
+	msg << "set_glitch_filter failed for"
+	    << " Pi: " << pin->piId
+	    << " pin: " << pin->pinId
+	    << " error: " << err;
+	throw std::runtime_error(msg.str());
+      }
+    }
   }
 
   void PiGPIOdPinManager::setupOutputPin( PiGPIOdDigitalOutputPin* pin, const int pinId ) const {
