@@ -142,10 +142,12 @@ namespace Signalbox {
 	  auto currentPin = dynamic_cast<xercesc::DOMElement*>(pinNode);
 	  
 	  if( IsOutputPin(currentPin) ) {
-	    DigitalOutputPinData pin(currentPin);
+	    DigitalOutputPinData pin;
+	    pin.id = Configuration::GetIdAttribute(currentPin);
+	    pin.control = Configuration::GetAttributeByName(currentPin, "control");
 	    
-	    auto controlPin = StringToSignalHeadPins(pin.getControl());	  
-	    signal->pinData[controlPin] = pin.getId();
+	    auto controlPin = StringToSignalHeadPins(pin.control);	  
+	    signal->pinData[controlPin] = pin.id;
 	  }
 	}
       }
