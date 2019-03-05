@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-#include "configreader.hpp"
+#include "configuration/configreader.hpp"
 
 #include "railtrafficcontrolclient.hpp"
 #include "railtrafficcontroldata.hpp"
@@ -34,7 +34,7 @@ int main(int ac, char* av[]) {
     
     // -----
 
-    Signalbox::ConfigReader cr(opts.configFilePath);
+    Signalbox::Configuration::ConfigReader cr(opts.configFilePath);
     std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
     cr.ReadControlledItems( configItems );
 
