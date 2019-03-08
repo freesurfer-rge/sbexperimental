@@ -1,18 +1,24 @@
 SET( srcs test.cpp )
 
 LIST(APPEND srcs xercesguardtest.cpp)
-LIST(APPEND srcs signalheaddatatest.cpp)
-LIST(APPEND srcs trackcircuitmonitordatatest.cpp)
 LIST(APPEND srcs configreadertest.cpp)
-LIST(APPEND srcs mockpinmanagertest.cpp)
-LIST(APPEND srcs mockdigitalinputpintest.cpp)
-LIST(APPEND srcs signalheadtest.cpp)
+
 LIST(APPEND srcs signalaspecttest.cpp)
 LIST(APPEND srcs signalflashtest.cpp)
-LIST(APPEND srcs signalheadfactorytest.cpp)
+
+LIST(APPEND srcs signalheaddatatest.cpp)
+LIST(APPEND srcs trackcircuitmonitordatatest.cpp)
+
+LIST(APPEND srcs signalheadtest.cpp)
 LIST(APPEND srcs trackcircuitmonitortest.cpp)
+
+LIST(APPEND srcs signalheadfactorytest.cpp)
 LIST(APPEND srcs trackcircuitmonitorfactorytest.cpp)
+
 LIST(APPEND srcs controlleditemmanagertest.cpp)
+
+LIST(APPEND srcs mockpinmanagertest.cpp)
+LIST(APPEND srcs mockdigitalinputpintest.cpp)
 LIST(APPEND srcs mockrailtrafficcontrolclienttest.cpp)
 
 IF( pigpio_FOUND )

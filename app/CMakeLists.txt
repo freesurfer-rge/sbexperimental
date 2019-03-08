@@ -1,9 +1,10 @@
 SET( srcs main.cpp )
 
+LIST(APPEND srcs cmdlineopts.cpp)
+
 LIST(APPEND srcs consoledigitaloutputpin.cpp)
 LIST(APPEND srcs consoledigitalinputpin.cpp)
 LIST(APPEND srcs consolepinmanager.cpp)
-LIST(APPEND srcs cmdlineopts.cpp)
 
 LIST(APPEND srcs outputselector.cpp)
 LIST(APPEND srcs consoleoutputselector.cpp)
@@ -21,16 +22,19 @@ IF( pigpio_FOUND )
 ENDIF()
 
 IF( CPPCMS_FOUND )
+  LIST(APPEND srcs cppcms/cppcmsdriverselector.cpp)
   LIST(APPEND srcs cppcms/cppcmsdriver.cpp)
+  
   LIST(APPEND srcs cppcms/controlleditemservice.cpp)
   LIST(APPEND srcs cppcms/controlleditemservicefactory.cpp)
+  
   LIST(APPEND srcs cppcms/itemidjson.cpp)
   LIST(APPEND srcs cppcms/signalheadjson.cpp)
   LIST(APPEND srcs cppcms/trackcircuitmonitorjson.cpp)
   LIST(APPEND srcs cppcms/signalaspectjson.cpp)
   LIST(APPEND srcs cppcms/signalflashjson.cpp)
   LIST(APPEND srcs cppcms/iteminfojson.cpp)
-  LIST(APPEND srcs cppcms/cppcmsdriverselector.cpp)
+  
   FILE(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html)
   CONFIGURE_FILE(cppcms/index.html ./html/ COPYONLY)
 ENDIF()
