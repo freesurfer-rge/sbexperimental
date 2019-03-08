@@ -7,13 +7,10 @@
 namespace Signalbox {
   class DigitalOutputPinData {
   public:
-    DigitalOutputPinData( const xercesc::DOMElement* xmlElement );
+    DigitalOutputPinData() :
+      id(),
+      control() {}
 
-    std::string getId() const;
-
-    std::string getControl() const;
-    
-  private:
     std::string id;
     std::string control;
   };

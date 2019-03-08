@@ -1,8 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
-#include "xercesguard.hpp"
 
-#include "configreader.hpp"
+#include "configuration/configreader.hpp"
 
 #include "signalheaddata.hpp"
 #include "trackcircuitmonitordata.hpp"
@@ -23,19 +22,19 @@ BOOST_AUTO_TEST_SUITE( ConfigReader )
 
 BOOST_AUTO_TEST_CASE( ConstructorThrowsOnBadFilename )
 {
-  BOOST_CHECK_THROW( Signalbox::ConfigReader("NoSuchFile.xml"), std::runtime_error);
+  BOOST_CHECK_THROW( Signalbox::Configuration::ConfigReader("NoSuchFile.xml"), std::runtime_error);
 }
 
 BOOST_AUTO_TEST_CASE( ConstructorCompletes )
 {
-  BOOST_CHECK_NO_THROW( Signalbox::ConfigReader cr(singlesignalfile) );
+  BOOST_CHECK_NO_THROW( Signalbox::Configuration::ConfigReader cr(singlesignalfile) );
 }
 
 BOOST_AUTO_TEST_SUITE( ReadSignalHeadData )
 
 BOOST_AUTO_TEST_CASE( ReadSingleSignal )
 {
-  Signalbox::ConfigReader cr(singlesignalfile);
+  Signalbox::Configuration::ConfigReader cr(singlesignalfile);
 
   std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
 
@@ -62,7 +61,7 @@ BOOST_AUTO_TEST_CASE( ReadSingleSignal )
 
 BOOST_AUTO_TEST_CASE( ReadTwoSignals )
 {
-  Signalbox::ConfigReader cr(twosignalfile);
+  Signalbox::Configuration::ConfigReader cr(twosignalfile);
 
   std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
 
@@ -98,7 +97,7 @@ BOOST_AUTO_TEST_SUITE( ReadTrackCircuitMonitorData )
 
 BOOST_AUTO_TEST_CASE( SingleTrackCircuit )
 {
-  Signalbox::ConfigReader cr(singletrackcircuitfile);
+  Signalbox::Configuration::ConfigReader cr(singletrackcircuitfile);
 
   std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
 
@@ -130,7 +129,7 @@ BOOST_AUTO_TEST_SUITE( ReadRailTrafficControlData )
   
 BOOST_AUTO_TEST_CASE( ReadRTC )
 {
-  Signalbox::ConfigReader cr(singlesignalfile);
+  Signalbox::Configuration::ConfigReader cr(singlesignalfile);
 
   Signalbox::RailTrafficControlData rtcData;
 
@@ -142,7 +141,7 @@ BOOST_AUTO_TEST_CASE( ReadRTC )
 
 BOOST_AUTO_TEST_CASE( PortTooBig )
 {
-  Signalbox::ConfigReader cr(twosignalfile);
+  Signalbox::Configuration::ConfigReader cr(twosignalfile);
 
   Signalbox::RailTrafficControlData rtcData;
 

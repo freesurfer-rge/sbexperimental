@@ -6,7 +6,10 @@
 namespace Signalbox {
   class DigitalInputPinData {
   public:
-    DigitalInputPinData();
+    DigitalInputPinData() :
+      id(),
+      sensor(),
+      settings() {}
     
     std::string id;
     std::string sensor;
