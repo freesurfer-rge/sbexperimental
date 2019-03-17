@@ -6,6 +6,10 @@ namespace Signalbox {
     this->t = std::thread(&TrackCircuitMonitor::Run, this);
   }
 
+  void TrackCircuitMonitor::Deactivate() {
+    this->done = true;
+  }
+
   void TrackCircuitMonitor::Run() {
     bool lastState = this->Get();
     this->rtc->SendTrackCircuitNotification( this->getId(), lastState );
