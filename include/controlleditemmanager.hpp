@@ -21,6 +21,12 @@ namespace Signalbox {
       signalHeadFactory(this->pinManager.get()),
       trackCircuitMonitorFactory(this->pinManager.get(), this->rtcClient.get()),
       items() {}
+
+    ~ControlledItemManager() {
+      for( auto it=this->items.begin(); it!=this->items.end(); it++ ) {
+	(*it).second->Deactivate();
+      }
+    }
     
     virtual ControlledItemFactory* GetSignalHeadFactory() override;
 

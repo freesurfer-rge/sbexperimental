@@ -12,13 +12,15 @@ namespace Signalbox {
   class TrackCircuitMonitor : public ControlledItem {
   public:
     ~TrackCircuitMonitor() {
+      this->Deactivate();
       if( this->t.joinable() ) {
-	this->done = true;
 	this->t.join();
       }
     }
 
     virtual void Activate() override;
+
+    virtual void Deactivate() override;
     
     bool Get() const;
 
