@@ -8,6 +8,7 @@ LIST(APPEND srcs configuration/configreader.cpp)
 LIST(APPEND srcs signalheadpins.cpp)
 LIST(APPEND srcs signalaspect.cpp)
 LIST(APPEND srcs signalflash.cpp)
+LIST(APPEND srcs turnoutstate.cpp)
 
 LIST(APPEND srcs itemid.cpp)
 LIST(APPEND srcs signalheaddata.cpp)

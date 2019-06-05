@@ -5,6 +5,7 @@ LIST(APPEND srcs configreadertest.cpp)
 
 LIST(APPEND srcs signalaspecttest.cpp)
 LIST(APPEND srcs signalflashtest.cpp)
+LIST(APPEND srcs turnoutstatetest.cpp)
 
 LIST(APPEND srcs signalheaddatatest.cpp)
 LIST(APPEND srcs trackcircuitmonitordatatest.cpp)
