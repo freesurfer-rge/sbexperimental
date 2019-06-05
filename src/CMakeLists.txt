@@ -18,6 +18,7 @@ LIST(APPEND srcs digitalinputpin.cpp)
 
 LIST(APPEND srcs signalhead.cpp)
 LIST(APPEND srcs trackcircuitmonitor.cpp)
+LIST(APPEND srcs turnoutmotor.cpp)
 
 LIST(APPEND srcs signalheadfactory.cpp)
 LIST(APPEND srcs trackcircuitmonitorfactory.cpp)
