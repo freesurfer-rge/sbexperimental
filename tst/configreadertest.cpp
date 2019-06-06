@@ -6,6 +6,7 @@
 #include "signalheaddata.hpp"
 #include "trackcircuitmonitordata.hpp"
 #include "railtrafficcontroldata.hpp"
+#include "i2cbusdata.hpp"
 
 #include "exceptionmessagecheck.hpp"
 
@@ -15,6 +16,8 @@ const std::string singlesignalfile = "singlesignalhead.xml";
 const std::string twosignalfile = "twosignalheads.xml";
 
 const std::string singletrackcircuitfile = "singletrackcircuitmonitor.xml";
+
+const std::string singleturnoutfile = "singleturnout.xml";
 
 // =====================================================
 
@@ -149,6 +152,17 @@ BOOST_AUTO_TEST_CASE( PortTooBig )
   BOOST_CHECK_EXCEPTION( cr.ReadRailTrafficControl( rtcData ),
 			 std::runtime_error,
 			 GetExceptionMessageChecker<std::runtime_error>(msg) );
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+// =============================================================
+
+BOOST_AUTO_TEST_SUITE( ReadI2CBusData )
+
+BOOST_AUTO_TEST_CASE( ReadI2CBus )
+{
+  Signalbox::Configuration::ConfigReader cr(singleturnoutfile);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

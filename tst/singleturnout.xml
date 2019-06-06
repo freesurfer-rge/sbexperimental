@@ -8,7 +8,7 @@
   </I2C>
   <ControlledItems>
     <ServoTurnoutMotor id="00:00:00:aa">
-      <Servo controller="sc01" straight="130" curved="400" />
+      <Servo controller="sc01" controllerData="01" straight="130" curved="400" />
     </ServoTurnoutMotor>
   </ControlledItems>
 </SignalBox>
