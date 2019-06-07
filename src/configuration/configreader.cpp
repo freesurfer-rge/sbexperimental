@@ -22,6 +22,7 @@
 #include "digitaloutputpindata.hpp"
 #include "signalheaddata.hpp"
 #include "trackcircuitmonitordata.hpp"
+#include "servoturnoutmotordata.hpp"
 
 namespace Signalbox {
   namespace Configuration {
@@ -114,6 +115,7 @@ namespace Signalbox {
       auto TAG_ControlledItems = std::string("ControlledItems");
       auto TAG_SignalHead = StrToXMLCh("SignalHead");
       auto TAG_TrackCircuitMonitor = StrToXMLCh("TrackCircuitMonitor");
+      auto TAG_ServoTurnoutMotor = StrToXMLCh("ServoTurnoutMotor");
       
       auto elementControlledItems = GetSingleElementByName( elementSignalbox,
 							    TAG_ControlledItems );
@@ -131,6 +133,8 @@ namespace Signalbox {
 	    item.reset( this->ReadSignalHead(currentElement) );
 	  } else if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_TrackCircuitMonitor.get() ) ) {
 	    item.reset( this->ReadTrackCircuitMonitor(currentElement) );
+	  } else if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_ServoTurnoutMotor.get() ) ) {
+	    item.reset( this->ReadServoTurnoutMotor(currentElement) );
 	  } else {
 	    throw std::runtime_error("Unknown tag name");
 	  }
@@ -223,6 +227,33 @@ namespace Signalbox {
       }
       
       return tc.release();
+    }
+
+    ControlledItemData* ConfigReader::ReadServoTurnoutMotor( xercesc::DOMElement* currentElement ) {
+      std::unique_ptr<ServoTurnoutMotorData> tm( new ServoTurnoutMotorData );
+
+      auto straight_attr = GetAttributeByName(currentElement, "straight");
+      tm->straight = std::stoul(straight_attr);
+
+      auto curved_attr = GetAttributeByName(currentElement, "curved");
+      tm->curved = std::stoul(curved_attr);
+      
+      auto children = currentElement->getChildNodes();
+      // Don't have a schema defined, but should contain one PWMChannel node
+       for( XMLSize_t i=0; i<children->getLength(); i++ ) {
+	auto child = children->item(i);
+	
+	if( IsElementNode(child) ) {
+	  auto nxtElement = dynamic_cast<xercesc::DOMElement*>(child);
+
+	  if( IsPWMChannel(nxtElement) ) {
+	    tm->pwmChannelRequest.controller = GetAttributeByName(nxtElement, "controller");
+	    tm->pwmChannelRequest.controllerData = GetAttributeByName(nxtElement, "controllerData" );
+	  }
+	}
+       }
+      
+      return tm.release();
     }
   }
 }

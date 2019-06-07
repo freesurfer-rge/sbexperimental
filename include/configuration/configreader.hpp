@@ -30,6 +30,7 @@ namespace Signalbox {
       xercesc::DOMElement* GetSignalBoxElement();
       ControlledItemData* ReadSignalHead(xercesc::DOMElement* currentElement );
       ControlledItemData* ReadTrackCircuitMonitor( xercesc::DOMElement* currentElement );
+      ControlledItemData* ReadServoTurnoutMotor( xercesc::DOMElement* currentElement );
     };
   }
 }

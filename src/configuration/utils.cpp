@@ -106,5 +106,11 @@ namespace Signalbox {
 
       return xercesc::XMLString::equals(element->getTagName(), TAG_InputPin.get());
     }
+
+    bool IsPWMChannel( const xercesc::DOMElement* element ) {
+      auto TAG_PWMChannel = StrToXMLCh("PWMChannel");
+
+      return xercesc::XMLString::equals(element->getTagName(), TAG_PWMChannel.get());
+    }
   }
 }
