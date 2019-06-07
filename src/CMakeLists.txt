@@ -13,6 +13,7 @@ LIST(APPEND srcs turnoutstate.cpp)
 LIST(APPEND srcs itemid.cpp)
 LIST(APPEND srcs signalheaddata.cpp)
 LIST(APPEND srcs trackcircuitmonitordata.cpp)
+LIST(APPEND srcs servoturnoutmotordata.cpp)
 
 LIST(APPEND srcs digitalinputpin.cpp)
 

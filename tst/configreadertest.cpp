@@ -5,6 +5,7 @@
 
 #include "signalheaddata.hpp"
 #include "trackcircuitmonitordata.hpp"
+#include "servoturnoutmotordata.hpp"
 #include "railtrafficcontroldata.hpp"
 #include "i2cbusdata.hpp"
 
@@ -122,6 +123,37 @@ BOOST_AUTO_TEST_CASE( SingleTrackCircuit )
   BOOST_CHECK_EQUAL( tcmd->inputPin.sensor, "occupancy" );
   BOOST_REQUIRE_EQUAL( tcmd->inputPin.settings.size(), 1 );
   BOOST_CHECK_EQUAL( tcmd->inputPin.settings.at("glitch"), "10000" );
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+// =============================================================
+
+BOOST_AUTO_TEST_SUITE( ReadServoTurnoutMotorData )
+
+BOOST_AUTO_TEST_CASE( SingleServoTurnoutMotor )
+{
+  Signalbox::Configuration::ConfigReader cr(singleturnoutfile);
+
+   std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
+
+  cr.ReadControlledItems( configItems );
+
+  BOOST_REQUIRE_EQUAL( configItems.size(), 1 );
+  
+  Signalbox::ItemId expectedId;
+  expectedId.Parse("00:fe:1a:af");
+
+  Signalbox::ControlledItemData* item = configItems.at(0).get();
+  BOOST_CHECK_EQUAL( item->id, expectedId );
+
+  auto stmd = dynamic_cast<Signalbox::ServoTurnoutMotorData*>(item);
+  BOOST_REQUIRE(stmd);
+
+  BOOST_CHECK_EQUAL( stmd->straight, 130 );
+  BOOST_CHECK_EQUAL( stmd->curved, 400 );
+  BOOST_CHECK_EQUAL( stmd->pwmChannelRequest.controller, "sc01" );
+  BOOST_CHECK_EQUAL( stmd->pwmChannelRequest.controllerData, "01" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
