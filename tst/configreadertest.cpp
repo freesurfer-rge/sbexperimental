@@ -163,6 +163,20 @@ BOOST_AUTO_TEST_SUITE( ReadI2CBusData )
 BOOST_AUTO_TEST_CASE( ReadI2CBus )
 {
   Signalbox::Configuration::ConfigReader cr(singleturnoutfile);
+
+  Signalbox::I2CBusData i2cData;
+
+  cr.ReadI2CData( i2cData );
+
+  BOOST_CHECK_EQUAL( i2cData.devices.size(), 1 );
+  auto device = i2cData.devices.at(0);
+  BOOST_CHECK_EQUAL( device.kind, "pca9685" );
+  BOOST_CHECK_EQUAL( device.bus, 1 );
+  BOOST_CHECK_EQUAL( device.address, 0x40 );
+  BOOST_CHECK_EQUAL( device.name, "sc01" );
+  BOOST_CHECK_EQUAL( device.settings.size(), 2 );
+  BOOST_CHECK_EQUAL( device.settings["referenceClock"], "25e6" );
+  BOOST_CHECK_EQUAL( device.settings["pwmFrequency"], "50" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

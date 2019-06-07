@@ -64,6 +64,45 @@ namespace Signalbox {
       }
       rtcData.port = std::stoul(portString);
     }
+
+    void ConfigReader::ReadI2CData( I2CBusData& i2cData ) {
+      // Make sure we have an empty list
+      i2cData.devices.clear();
+
+      // Get the root element of the document
+      xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
+      
+      auto TAG_I2C = std::string("I2C");
+      auto TAG_I2CDevice = StrToXMLCh("I2CDevice");
+
+      auto i2cElement = GetSingleElementByName( elementSignalbox,
+						TAG_I2C );
+
+      auto i2cDeviceList = i2cElement->getChildNodes();
+      for( XMLSize_t i=0; i<i2cDeviceList->getLength(); ++i ) {
+	auto currentNode = i2cDeviceList->item(i);
+
+	if( IsElementNode(currentNode) ) {
+	  // Cast node to an element
+	  auto currentElement = dynamic_cast<xercesc::DOMElement*>(currentNode);
+
+	  if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_I2CDevice.get() ) ) {
+	    I2CDeviceData data;
+	    data.kind = Configuration::GetAttributeByName(currentElement, "kind");
+
+	    std::string busString = Configuration::GetAttributeByName(currentElement, "bus" );
+	      data.bus = std::stoul(busString, nullptr, 0);
+	    std::string addrString = Configuration::GetAttributeByName(currentElement, "address" );
+	    data.address = std::stoul(addrString, nullptr, 0);
+	    data.name = Configuration::GetAttributeByName(currentElement, "name");
+
+	    PopulateSettingsMap( currentElement, data.settings );
+
+	    i2cData.devices.push_back(data);
+	  }
+	}
+      }
+    }
     
     void ConfigReader::ReadControlledItems( std::vector<std::unique_ptr<ControlledItemData>>& items ) {
       // Make sure we have an empty list
