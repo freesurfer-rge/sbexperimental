@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "pwmchannel.hpp"
 
 namespace Signalbox {
@@ -13,6 +15,8 @@ namespace Signalbox {
 
     virtual unsigned int Get() const override;
 
+    std::string controller;
+    std::string controllerData;
   private:
     friend MockPinManager;
 

@@ -13,8 +13,23 @@ namespace Signalbox {
     return this->getInputPin(pinId);
   }
 
+  MockPWMChannel* MockPinManager::FetchMockPWMChannel(const DeviceRequestData& data) const {
+    return this->pwmChannels.at(this->getKey(data)).get();
+  }
+
   PWMChannel* MockPinManager::CreatePWMChannel(const DeviceRequestData& data) {
-    throw std::runtime_error("Not implemented");
+    if( this->pwmChannels.count(this->getKey(data)) != 0 ) {
+      std::stringstream msg;
+      msg << "PWMChannel '" << this->getKey(data) << "' already exists";
+      throw std::runtime_error(msg.str());
+    }
+    auto nxt = std::unique_ptr<MockPWMChannel>(new MockPWMChannel);
+    nxt->controller = data.controller;
+    nxt->controllerData = data.controllerData;
+
+    this->pwmChannels[this->getKey(data)] = std::move(nxt);
+
+    return this->pwmChannels[this->getKey(data)].get();
   }
 
   std::string MockPinManager::parsePinId( const std::string idString ) const {
