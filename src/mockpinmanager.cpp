@@ -13,6 +13,10 @@ namespace Signalbox {
     return this->getInputPin(pinId);
   }
 
+  PWMChannel* MockPinManager::CreatePWMChannel(const DeviceRequestData& data) {
+    throw std::runtime_error("Not implemented");
+  }
+
   std::string MockPinManager::parsePinId( const std::string idString ) const {
     return idString;
   }

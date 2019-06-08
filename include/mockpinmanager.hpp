@@ -24,6 +24,7 @@ namespace Signalbox {
       return this->getInputPinCount();
     }
 
+    virtual PWMChannel* CreatePWMChannel(const DeviceRequestData& data) override;
   protected:
     virtual std::string parsePinId( const std::string idString ) const override;
     virtual void setupInputPin( MockDigitalInputPin* pin, const DigitalInputPinData& data ) const override;
