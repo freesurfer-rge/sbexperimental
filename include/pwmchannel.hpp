@@ -5,6 +5,8 @@ namespace Signalbox {
   public:
     virtual ~PWMChannel() {}
 
-    virtual void Set(const int value) = 0;
+    virtual void Set(const unsigned int value) = 0;
+
+    virtual unsigned int Get() const = 0;
   };
 }

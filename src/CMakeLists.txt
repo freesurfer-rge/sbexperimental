@@ -30,6 +30,7 @@ LIST(APPEND srcs controlleditemmanager.cpp)
 LIST(APPEND srcs mockpinmanager.cpp)
 LIST(APPEND srcs mockdigitaloutputpin.cpp)
 LIST(APPEND srcs mockdigitalinputpin.cpp)
+LIST(APPEND srcs mockpwmchannel.cpp)
 
 LIST(APPEND srcs mockrailtrafficcontrolclient.cpp)
 
