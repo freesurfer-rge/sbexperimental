@@ -8,11 +8,8 @@ namespace Signalbox {
     return &(this->signalHeadFactory);
   }
 
-  ControlledItemFactory* ControlledItemManager::GetTurnoutMotorFactory() {
-    std::stringstream msg;
-    msg << __PRETTY_FUNCTION__
-	<< ": Not implemented";
-    throw std::runtime_error(msg.str());
+  ControlledItemFactory* ControlledItemManager::GetServoTurnoutMotorFactory() {
+    return &(this->servoTurnoutMotorFactory);
   }
 
   ControlledItemFactory* ControlledItemManager::GetTrackCircuitMonitorFactory() {

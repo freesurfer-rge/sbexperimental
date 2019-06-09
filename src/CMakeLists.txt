@@ -24,6 +24,7 @@ LIST(APPEND srcs servoturnoutmotor.cpp)
 
 LIST(APPEND srcs signalheadfactory.cpp)
 LIST(APPEND srcs trackcircuitmonitorfactory.cpp)
+LIST(APPEND srcs servoturnoutmotorfactory.cpp)
 
 LIST(APPEND srcs controlleditemmanager.cpp)
 

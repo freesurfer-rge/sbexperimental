@@ -6,6 +6,6 @@ namespace Signalbox {
   }
 
   ControlledItemFactory* ServoTurnoutMotorData::GetFactory(ControlledItemFactorySelector* factorySelector) const {
-    throw std::runtime_error("Not implemented");
+    return factorySelector->GetServoTurnoutMotorFactory();
   }
 }

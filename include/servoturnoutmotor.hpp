@@ -12,9 +12,11 @@ namespace Signalbox {
     virtual void SetState(const TurnoutState desired) override;
 
   private:
+    friend class ServoTurnoutMotorFactory;
+    
     unsigned int pwmStraight;
     unsigned int pwmCurved;
-    std::weak_ptr<PWMChannel> servo;
+    PWMChannel* servo;
 
     ServoTurnoutMotor(const ItemId turnoutId) :
       TurnoutMotor(turnoutId),
