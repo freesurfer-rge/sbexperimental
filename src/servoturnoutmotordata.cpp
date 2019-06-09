@@ -2,7 +2,15 @@
 
 namespace Signalbox {
   std::vector<ControlledItemDataError> ServoTurnoutMotorData::GetErrors() const {
-    return std::vector<ControlledItemDataError>();
+    std::vector<ControlledItemDataError> result;
+
+    if( this->id == ItemId(0) ) {
+      ControlledItemDataError e;
+      e.message = "Invalid id";
+      result.push_back(e);
+    }
+
+    return result;
   }
 
   ControlledItemFactory* ServoTurnoutMotorData::GetFactory(ControlledItemFactorySelector* factorySelector) const {

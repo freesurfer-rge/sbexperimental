@@ -9,6 +9,7 @@ LIST(APPEND srcs turnoutstatetest.cpp)
 
 LIST(APPEND srcs signalheaddatatest.cpp)
 LIST(APPEND srcs trackcircuitmonitordatatest.cpp)
+LIST(APPEND srcs servoturnoutmotordatatest.cpp)
 
 LIST(APPEND srcs signalheadtest.cpp)
 LIST(APPEND srcs trackcircuitmonitortest.cpp)
