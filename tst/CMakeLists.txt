@@ -16,6 +16,7 @@ LIST(APPEND srcs trackcircuitmonitortest.cpp)
 
 LIST(APPEND srcs signalheadfactorytest.cpp)
 LIST(APPEND srcs trackcircuitmonitorfactorytest.cpp)
+LIST(APPEND srcs servoturnoutmotorfactorytest.cpp)
 
 LIST(APPEND srcs controlleditemmanagertest.cpp)
 
