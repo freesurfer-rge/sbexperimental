@@ -9,7 +9,10 @@ namespace Signalbox {
   
   class MockPWMChannel : public PWMChannel {
   public:
-    MockPWMChannel() : state(0) {}
+    MockPWMChannel() :
+      controller("Did not set"),
+      controllerData("Left unset"),
+      state(0) {}
 
     virtual void Set(const unsigned int value ) override;
 

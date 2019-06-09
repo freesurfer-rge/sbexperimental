@@ -11,6 +11,9 @@ namespace Signalbox {
   public:
     virtual void SetState(const TurnoutState desired) override;
 
+    // Remove copy constructor and operator=
+    ServoTurnoutMotor(ServoTurnoutMotor&) = delete;
+    ServoTurnoutMotor& operator=(ServoTurnoutMotor&) = delete;
   private:
     friend class ServoTurnoutMotorFactory;
     
