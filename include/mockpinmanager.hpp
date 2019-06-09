@@ -11,7 +11,8 @@ namespace Signalbox {
   class MockPinManager : public MapPinManager<std::string,MockDigitalInputPin,MockDigitalOutputPin> {
   public:
     MockPinManager() :
-      MapPinManager() {}
+      MapPinManager(),
+      pwmChannels() {}
     
     MockDigitalOutputPin* FetchMockDigitalOutputPin(const std::string pinId) const;
     
