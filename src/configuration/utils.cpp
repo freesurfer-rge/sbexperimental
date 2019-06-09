@@ -30,7 +30,7 @@ namespace Signalbox {
       
       if( elementList->getLength() != 1 ) {
 	std::stringstream msg;
-	msg << "Found multiple child elements " << name;
+	msg << "Did not find exactly one child element " << name;
 	throw std::runtime_error(msg.str());
       }
       

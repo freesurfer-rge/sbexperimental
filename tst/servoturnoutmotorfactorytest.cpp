@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( Manufacture )
 
   BOOST_CHECK_EQUAL( Signalbox::TurnoutState::Straight, stm->getState() );
 
-  BOOST_CHECK_EQUAL( stm->getTypeString(), "turnout" );
+  BOOST_CHECK_EQUAL( stm->getTypeString(), "turnoutmotor" );
 }
 
 BOOST_AUTO_TEST_CASE( BadData )

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <SignalBox>
+  <RailTrafficControl>
+    <Host>rtc.local</Host>
+    <Port>8008</Port>
+  </RailTrafficControl>
   <I2C>
     <I2CDevice kind="pca9685" bus="1" address="0x40" name="sc01">
       <Setting key="referenceClock" value="25e6" />

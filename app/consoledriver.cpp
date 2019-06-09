@@ -3,6 +3,7 @@
 #include <locale>
 
 #include "signalhead.hpp"
+#include "turnoutmotor.hpp"
 
 #include "consoledriver.hpp"
 
@@ -32,7 +33,7 @@ namespace Signalbox {
 	  if( ci->getTypeString() == "signalhead" ) {
 	    this->handlesignalhead( ci, tokens );
 	  } else if( ci->getTypeString() == "turnoutmotor" ) {
-	    throw std::runtime_error("Turnout not implemented");
+	    this->handleturnoutmotor( ci, tokens );
 	  } else {
 	    std::cerr << "ControlledItem type '"
 		      << ci->getTypeString()
@@ -66,6 +67,25 @@ namespace Signalbox {
       sig->SetState(aspect,flash);
     } else {
       std::cerr << "Could not cast to SignalHead" << std::endl;
+    }
+  }
+
+   void ConsoleDriver::handleturnoutmotor( ControlledItem* target, std::vector<std::string>& tokens ) {
+    auto tm = dynamic_cast<TurnoutMotor*>(target);
+    
+    if( tokens.size() != 2 ) {
+      std::cerr << "Did not find three tokens for TurnoutMotor" << std::endl;
+      return;
+    }
+    
+    TurnoutState tms;
+
+    Parse(tokens.at(1), tms);
+
+    if( tm != NULL ) {
+      tm->SetState(tms);
+    } else {
+      std::cerr << "Could not cast to TurnoutMotor" << std::endl;
     }
   }
   

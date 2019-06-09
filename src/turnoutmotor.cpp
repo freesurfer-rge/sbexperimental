@@ -6,6 +6,6 @@ namespace Signalbox {
   }
 
   std::string TurnoutMotor::getTypeString() const {
-    return std::string("turnout");
+    return std::string("turnoutmotor");
   }
 }
