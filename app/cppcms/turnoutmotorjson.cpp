@@ -13,9 +13,9 @@ namespace cppcms {
     }
 
     void traits<Signalbox::TurnoutMotor>::set(value& v,
-						     Signalbox::TurnoutMotor const& tm ) {
+					      Signalbox::TurnoutMotor const& tm ) {
       v.set("id", tm.getId().ToString());
-      v.set("state", tm.Get());
+      v.set("state", Signalbox::ToString(tm.getState()));
     }
   }
 }

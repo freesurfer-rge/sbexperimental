@@ -32,6 +32,8 @@ IF( CPPCMS_FOUND )
   LIST(APPEND srcs cppcms/itemidjson.cpp)
   LIST(APPEND srcs cppcms/signalheadjson.cpp)
   LIST(APPEND srcs cppcms/trackcircuitmonitorjson.cpp)
+  LIST(APPEND srcs cppcms/turnoutmotorjson.cpp)
+
   LIST(APPEND srcs cppcms/signalaspectjson.cpp)
   LIST(APPEND srcs cppcms/signalflashjson.cpp)
   LIST(APPEND srcs cppcms/turnoutstatejson.cpp)

@@ -6,6 +6,7 @@
 #include "itemid.hpp"
 #include "signalaspect.hpp"
 #include "signalflash.hpp"
+#include "turnoutstate.hpp"
 
 #include "controlleditemfetcher.hpp"
 
@@ -21,6 +22,9 @@ namespace Signalbox {
 
     void GetTrackCircuitMonitor( ItemId id );
 
+    void SetTurnoutMotor( ItemId id, TurnoutState state );
+    void GetTurnoutMotor( ItemId id );
+    
     ControlledItemFetcher* cif;
 
     // Protect pointer member

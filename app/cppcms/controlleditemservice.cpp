@@ -6,10 +6,13 @@
 #include "signalheadjson.hpp"
 #include "signalaspectjson.hpp"
 #include "signalflashjson.hpp"
+#include "turnoutstatejson.hpp"
+#include "turnoutmotorjson.hpp"
 #include "itemidjson.hpp"
 
 #include "signalhead.hpp"
 #include "trackcircuitmonitor.hpp"
+#include "turnoutmotor.hpp"
 
 #include "controlleditemservice.hpp"
 
@@ -33,6 +36,14 @@ namespace Signalbox {
     // TrackCircuitMonitor methods
     bind("gettrackcircuitmonitor",
 	 cppcms::rpc::json_method(&ControlledItemService::GetTrackCircuitMonitor, this),
+	 method_role);
+
+    // TurnoutMotor
+    bind("setturnoutmotor",
+	 cppcms::rpc::json_method(&ControlledItemService::SetTurnoutMotor, this),
+	 method_role);
+    bind("getturnoutmotor",
+	 cppcms::rpc::json_method(&ControlledItemService::GetTurnoutMotor, this),
 	 method_role);
   }
 
@@ -108,6 +119,49 @@ namespace Signalbox {
     }
 
     return_result(*tcm);
+  }
+
+  void ControlledItemService::SetTurnoutMotor( ItemId id, TurnoutState state ) {
+    auto ci = this->cif->GetById(id);
+    if( ci == NULL ) {
+      return_error("No such item");
+    }
+    auto tm = dynamic_cast<TurnoutMotor*>(ci);
+    if( tm == NULL ) {
+      return_error("Item is not a TurnoutMotor");
+    }
+    
+    std::cout << __PRETTY_FUNCTION__
+	      << ": Setting " << id
+	      << " to " << state
+	      << std::endl;
+    
+    try {
+      tm->SetState(state);
+      return_result(*tm);
+    }
+    catch( std::exception& e ) {
+      std::cerr << "Caught: " << e.what() << std::endl;
+      std::stringstream msg;
+      msg << "An error occurred: "
+	  << e.what();
+      return_error(msg.str());
+    }
+  }
+
+  void ControlledItemService::GetTurnoutMotor( ItemId id ) {
+    std::cout << __PRETTY_FUNCTION__ << ": Starting" << std::endl;
+    
+    auto ci = this->cif->GetById(id);
+    if( ci == NULL ) {
+      return_error("No such item");
+    }
+    auto sh = dynamic_cast<TurnoutMotor*>(ci);
+    if( sh == NULL ) {
+      return_error("Item is not a TurnoutMotor");
+    }
+    
+    return_result(*sh);
   }
 }
 
