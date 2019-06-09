@@ -13,6 +13,7 @@ LIST(APPEND srcs servoturnoutmotordatatest.cpp)
 
 LIST(APPEND srcs signalheadtest.cpp)
 LIST(APPEND srcs trackcircuitmonitortest.cpp)
+LIST(APPEND srcs servoturnoutmotortest.cpp)
 
 LIST(APPEND srcs signalheadfactorytest.cpp)
 LIST(APPEND srcs trackcircuitmonitorfactorytest.cpp)
