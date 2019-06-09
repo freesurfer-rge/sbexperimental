@@ -34,6 +34,7 @@ IF( CPPCMS_FOUND )
   LIST(APPEND srcs cppcms/trackcircuitmonitorjson.cpp)
   LIST(APPEND srcs cppcms/signalaspectjson.cpp)
   LIST(APPEND srcs cppcms/signalflashjson.cpp)
+  LIST(APPEND srcs cppcms/turnoutstatejson.cpp)
   LIST(APPEND srcs cppcms/iteminfojson.cpp)
   
   FILE(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html)
