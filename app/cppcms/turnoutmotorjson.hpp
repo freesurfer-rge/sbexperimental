@@ -7,7 +7,8 @@ namespace cppcms {
   namespace json {
     template<>
     struct traits<Signalbox::TurnoutMotor> {
-      static Signalbox::TurnoutMotor get(value const& v);
+      // Note: return a reference since TurnoutMotor is abstract
+      static Signalbox::TurnoutMotor& get(value const& v);
 
       static void set(value&v, Signalbox::TurnoutMotor const& tm);
     };

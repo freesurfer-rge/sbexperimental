@@ -4,7 +4,7 @@
 
 namespace cppcms {
   namespace json {
-    Signalbox::TurnoutMotor traits<Signalbox::TurnoutMotor>::get(value const& v ) {
+    Signalbox::TurnoutMotor& traits<Signalbox::TurnoutMotor>::get(value const& v ) {
       std::stringstream msg;
       msg << "Converting JSON value "
 	  << v

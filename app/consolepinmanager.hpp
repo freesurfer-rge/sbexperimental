@@ -11,7 +11,8 @@ namespace Signalbox {
   class ConsolePinManager : public MapPinManager<std::string,ConsoleDigitalInputPin,ConsoleDigitalOutputPin> {
   public:
     ConsolePinManager() :
-      MapPinManager() {}
+      MapPinManager(),
+      pwmChannels() {}
     
     virtual PWMChannel* CreatePWMChannel(const DeviceRequestData& data) override;
   protected:

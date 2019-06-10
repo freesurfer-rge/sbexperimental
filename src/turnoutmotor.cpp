@@ -1,6 +1,9 @@
 #include "turnoutmotor.hpp"
 
-namespace Signalbox {
+#include <sstream>
+#include <stdexcept>
+
+namespace Signalbox {  
   TurnoutState TurnoutMotor::getState() const {
     return this->state;
   }

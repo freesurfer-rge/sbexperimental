@@ -52,6 +52,12 @@ namespace Signalbox {
     }
     PiGPIOdPinManager::singleton = NULL;
   }
+
+  PWMChannel* PiGPIOdPinManager::CreatePWMChannel(const DeviceRequestData& data) {
+    std::stringstream msg;
+    msg << __PRETTY_FUNCTION__ << " not yet implemented";
+    throw std::runtime_error(msg.str());
+  }
   
   int PiGPIOdPinManager::parsePinId(const std::string pinId) const {
     // Format is GPIOnn

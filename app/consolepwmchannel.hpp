@@ -9,7 +9,10 @@ namespace Signalbox {
   
   class ConsolePWMChannel : public PWMChannel {
   public:
-    ConsolePWMChannel() : state(0) {}
+    ConsolePWMChannel() :
+      controller("Not set"),
+      controllerData("Not set"),
+      state(0) {}
 
     virtual void Set(const unsigned int value ) override;
 
