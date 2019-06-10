@@ -4,6 +4,7 @@ LIST(APPEND srcs cmdlineopts.cpp)
 
 LIST(APPEND srcs consoledigitaloutputpin.cpp)
 LIST(APPEND srcs consoledigitalinputpin.cpp)
+LIST(APPEND srcs consolepwmchannel.cpp)
 LIST(APPEND srcs consolepinmanager.cpp)
 
 LIST(APPEND srcs outputselector.cpp)
@@ -31,8 +32,11 @@ IF( CPPCMS_FOUND )
   LIST(APPEND srcs cppcms/itemidjson.cpp)
   LIST(APPEND srcs cppcms/signalheadjson.cpp)
   LIST(APPEND srcs cppcms/trackcircuitmonitorjson.cpp)
+  LIST(APPEND srcs cppcms/turnoutmotorjson.cpp)
+
   LIST(APPEND srcs cppcms/signalaspectjson.cpp)
   LIST(APPEND srcs cppcms/signalflashjson.cpp)
+  LIST(APPEND srcs cppcms/turnoutstatejson.cpp)
   LIST(APPEND srcs cppcms/iteminfojson.cpp)
   
   FILE(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html)

@@ -5,7 +5,9 @@
 
 #include "signalheaddata.hpp"
 #include "trackcircuitmonitordata.hpp"
+#include "servoturnoutmotordata.hpp"
 #include "railtrafficcontroldata.hpp"
+#include "i2cbusdata.hpp"
 
 #include "exceptionmessagecheck.hpp"
 
@@ -15,6 +17,8 @@ const std::string singlesignalfile = "singlesignalhead.xml";
 const std::string twosignalfile = "twosignalheads.xml";
 
 const std::string singletrackcircuitfile = "singletrackcircuitmonitor.xml";
+
+const std::string singleturnoutfile = "singleturnout.xml";
 
 // =====================================================
 
@@ -125,6 +129,37 @@ BOOST_AUTO_TEST_SUITE_END()
 
 // =============================================================
 
+BOOST_AUTO_TEST_SUITE( ReadServoTurnoutMotorData )
+
+BOOST_AUTO_TEST_CASE( SingleServoTurnoutMotor )
+{
+  Signalbox::Configuration::ConfigReader cr(singleturnoutfile);
+
+   std::vector< std::unique_ptr<Signalbox::ControlledItemData> > configItems;
+
+  cr.ReadControlledItems( configItems );
+
+  BOOST_REQUIRE_EQUAL( configItems.size(), 1 );
+  
+  Signalbox::ItemId expectedId;
+  expectedId.Parse("00:fe:1a:af");
+
+  Signalbox::ControlledItemData* item = configItems.at(0).get();
+  BOOST_CHECK_EQUAL( item->id, expectedId );
+
+  auto stmd = dynamic_cast<Signalbox::ServoTurnoutMotorData*>(item);
+  BOOST_REQUIRE(stmd);
+
+  BOOST_CHECK_EQUAL( stmd->straight, 130 );
+  BOOST_CHECK_EQUAL( stmd->curved, 400 );
+  BOOST_CHECK_EQUAL( stmd->pwmChannelRequest.controller, "sc01" );
+  BOOST_CHECK_EQUAL( stmd->pwmChannelRequest.controllerData, "01" );
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+// =============================================================
+
 BOOST_AUTO_TEST_SUITE( ReadRailTrafficControlData )
   
 BOOST_AUTO_TEST_CASE( ReadRTC )
@@ -149,6 +184,31 @@ BOOST_AUTO_TEST_CASE( PortTooBig )
   BOOST_CHECK_EXCEPTION( cr.ReadRailTrafficControl( rtcData ),
 			 std::runtime_error,
 			 GetExceptionMessageChecker<std::runtime_error>(msg) );
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+// =============================================================
+
+BOOST_AUTO_TEST_SUITE( ReadI2CBusData )
+
+BOOST_AUTO_TEST_CASE( ReadI2CBus )
+{
+  Signalbox::Configuration::ConfigReader cr(singleturnoutfile);
+
+  Signalbox::I2CBusData i2cData;
+
+  cr.ReadI2CData( i2cData );
+
+  BOOST_CHECK_EQUAL( i2cData.devices.size(), 1 );
+  auto device = i2cData.devices.at(0);
+  BOOST_CHECK_EQUAL( device.kind, "pca9685" );
+  BOOST_CHECK_EQUAL( device.bus, 1 );
+  BOOST_CHECK_EQUAL( device.address, 0x40 );
+  BOOST_CHECK_EQUAL( device.name, "sc01" );
+  BOOST_CHECK_EQUAL( device.settings.size(), 2 );
+  BOOST_CHECK_EQUAL( device.settings["referenceClock"], "25e6" );
+  BOOST_CHECK_EQUAL( device.settings["pwmFrequency"], "50" );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

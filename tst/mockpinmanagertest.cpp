@@ -148,4 +148,70 @@ BOOST_AUTO_TEST_CASE( DuplicateCreateInputPin )
 			 GetExceptionMessageChecker<std::runtime_error>(msg) );
 }
 
+BOOST_AUTO_TEST_CASE( CreatePWMChannel )
+{
+  Signalbox::MockPinManager pm;
+
+  Signalbox::DeviceRequestData data;
+  data.controller = "sc01";
+  data.controllerData = "01";
+
+  BOOST_CHECK_EQUAL( 0, pm.PWMChannelCount() );
+  auto pc = pm.CreatePWMChannel(data);
+  BOOST_REQUIRE( pc );
+  BOOST_CHECK_EQUAL( 1, pm.PWMChannelCount() );
+  
+
+  auto mpc = dynamic_cast<Signalbox::MockPWMChannel*>(pc);
+  BOOST_REQUIRE( mpc );
+
+  BOOST_CHECK_EQUAL( mpc->controller, data.controller );
+  BOOST_CHECK_EQUAL( mpc->controllerData, data.controllerData );
+  auto fetchmpc = pm.FetchMockPWMChannel( data );
+  BOOST_CHECK_EQUAL( fetchmpc, mpc );
+
+  unsigned int setVal = 10;
+  pc->Set(setVal);
+  BOOST_CHECK_EQUAL( fetchmpc->Get(), setVal );
+}
+
+BOOST_AUTO_TEST_CASE( CreateTwoPWMChannels )
+{
+  Signalbox::MockPinManager pm;
+
+  Signalbox::DeviceRequestData data1;
+  data1.controller = "sc01";
+  data1.controllerData = "01";
+
+  Signalbox::DeviceRequestData data2;
+  data2.controller = "sc01";
+  data2.controllerData = "02";
+
+  BOOST_CHECK_EQUAL( 0, pm.PWMChannelCount() );
+  auto pc1 = pm.CreatePWMChannel(data1);
+  BOOST_REQUIRE( pc1 );
+  BOOST_CHECK_EQUAL( 1, pm.PWMChannelCount() );
+  auto pc2 = pm.CreatePWMChannel(data2);
+  BOOST_REQUIRE( pc2 );
+  BOOST_CHECK_EQUAL( 2, pm.PWMChannelCount() );
+  BOOST_CHECK_NE( pc1, pc2 );
+}
+
+BOOST_AUTO_TEST_CASE( DuplicatePWMChannel )
+{
+  Signalbox::MockPinManager pm;
+  
+  Signalbox::DeviceRequestData data;
+  data.controller = "sc01";
+  data.controllerData = "01";
+
+  auto pc = pm.CreatePWMChannel(data);
+  BOOST_REQUIRE(pc);
+  
+  std::string msg("PWMChannel 'sc0101' already exists");
+  BOOST_CHECK_EXCEPTION( pm.CreatePWMChannel(data),
+			 std::runtime_error,
+			 GetExceptionMessageChecker<std::runtime_error>(msg) );
+}
+
 BOOST_AUTO_TEST_SUITE_END()

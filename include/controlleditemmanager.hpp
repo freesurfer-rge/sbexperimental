@@ -9,6 +9,7 @@
 #include "pinmanagerfactory.hpp"
 #include "signalheadfactory.hpp"
 #include "trackcircuitmonitorfactory.hpp"
+#include "servoturnoutmotorfactory.hpp"
 
 #include "railtrafficcontrolclient.hpp"
 
@@ -20,6 +21,7 @@ namespace Signalbox {
       rtcClient(rtc),
       signalHeadFactory(this->pinManager.get()),
       trackCircuitMonitorFactory(this->pinManager.get(), this->rtcClient.get()),
+      servoTurnoutMotorFactory(this->pinManager.get()),
       items() {}
 
     ~ControlledItemManager() {
@@ -30,7 +32,7 @@ namespace Signalbox {
     
     virtual ControlledItemFactory* GetSignalHeadFactory() override;
 
-    virtual ControlledItemFactory* GetTurnoutMotorFactory() override;
+    virtual ControlledItemFactory* GetServoTurnoutMotorFactory() override;
 
     virtual ControlledItemFactory* GetTrackCircuitMonitorFactory() override;
 
@@ -54,6 +56,7 @@ namespace Signalbox {
 
     SignalHeadFactory signalHeadFactory;
     TrackCircuitMonitorFactory trackCircuitMonitorFactory;
+    ServoTurnoutMotorFactory servoTurnoutMotorFactory;
 
     std::map<ItemId,std::unique_ptr<ControlledItem>> items;   
   };

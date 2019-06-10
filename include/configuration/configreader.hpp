@@ -11,6 +11,7 @@
 
 #include "controlleditemdata.hpp"
 #include "railtrafficcontroldata.hpp"
+#include "i2cbusdata.hpp"
 
 namespace Signalbox {
   namespace Configuration {
@@ -19,6 +20,8 @@ namespace Signalbox {
       ConfigReader( const std::string& filename );
       
       void ReadRailTrafficControl( RailTrafficControlData& rtcData );
+
+      void ReadI2CData( I2CBusData& i2cData );
       
       void ReadControlledItems( std::vector< std::unique_ptr<ControlledItemData>>& items );
     private:
@@ -27,6 +30,7 @@ namespace Signalbox {
       xercesc::DOMElement* GetSignalBoxElement();
       ControlledItemData* ReadSignalHead(xercesc::DOMElement* currentElement );
       ControlledItemData* ReadTrackCircuitMonitor( xercesc::DOMElement* currentElement );
+      ControlledItemData* ReadServoTurnoutMotor( xercesc::DOMElement* currentElement );
     };
   }
 }

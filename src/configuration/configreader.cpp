@@ -22,6 +22,7 @@
 #include "digitaloutputpindata.hpp"
 #include "signalheaddata.hpp"
 #include "trackcircuitmonitordata.hpp"
+#include "servoturnoutmotordata.hpp"
 
 namespace Signalbox {
   namespace Configuration {
@@ -64,6 +65,45 @@ namespace Signalbox {
       }
       rtcData.port = std::stoul(portString);
     }
+
+    void ConfigReader::ReadI2CData( I2CBusData& i2cData ) {
+      // Make sure we have an empty list
+      i2cData.devices.clear();
+
+      // Get the root element of the document
+      xercesc::DOMElement* elementSignalbox = this->GetSignalBoxElement();
+      
+      auto TAG_I2C = std::string("I2C");
+      auto TAG_I2CDevice = StrToXMLCh("I2CDevice");
+
+      auto i2cElement = GetSingleElementByName( elementSignalbox,
+						TAG_I2C );
+
+      auto i2cDeviceList = i2cElement->getChildNodes();
+      for( XMLSize_t i=0; i<i2cDeviceList->getLength(); ++i ) {
+	auto currentNode = i2cDeviceList->item(i);
+
+	if( IsElementNode(currentNode) ) {
+	  // Cast node to an element
+	  auto currentElement = dynamic_cast<xercesc::DOMElement*>(currentNode);
+
+	  if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_I2CDevice.get() ) ) {
+	    I2CDeviceData data;
+	    data.kind = Configuration::GetAttributeByName(currentElement, "kind");
+
+	    std::string busString = Configuration::GetAttributeByName(currentElement, "bus" );
+	      data.bus = std::stoul(busString, nullptr, 0);
+	    std::string addrString = Configuration::GetAttributeByName(currentElement, "address" );
+	    data.address = std::stoul(addrString, nullptr, 0);
+	    data.name = Configuration::GetAttributeByName(currentElement, "name");
+
+	    PopulateSettingsMap( currentElement, data.settings );
+
+	    i2cData.devices.push_back(data);
+	  }
+	}
+      }
+    }
     
     void ConfigReader::ReadControlledItems( std::vector<std::unique_ptr<ControlledItemData>>& items ) {
       // Make sure we have an empty list
@@ -75,6 +115,7 @@ namespace Signalbox {
       auto TAG_ControlledItems = std::string("ControlledItems");
       auto TAG_SignalHead = StrToXMLCh("SignalHead");
       auto TAG_TrackCircuitMonitor = StrToXMLCh("TrackCircuitMonitor");
+      auto TAG_ServoTurnoutMotor = StrToXMLCh("ServoTurnoutMotor");
       
       auto elementControlledItems = GetSingleElementByName( elementSignalbox,
 							    TAG_ControlledItems );
@@ -92,6 +133,8 @@ namespace Signalbox {
 	    item.reset( this->ReadSignalHead(currentElement) );
 	  } else if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_TrackCircuitMonitor.get() ) ) {
 	    item.reset( this->ReadTrackCircuitMonitor(currentElement) );
+	  } else if( xercesc::XMLString::equals(currentElement->getTagName(), TAG_ServoTurnoutMotor.get() ) ) {
+	    item.reset( this->ReadServoTurnoutMotor(currentElement) );
 	  } else {
 	    throw std::runtime_error("Unknown tag name");
 	  }
@@ -184,6 +227,33 @@ namespace Signalbox {
       }
       
       return tc.release();
+    }
+
+    ControlledItemData* ConfigReader::ReadServoTurnoutMotor( xercesc::DOMElement* currentElement ) {
+      std::unique_ptr<ServoTurnoutMotorData> tm( new ServoTurnoutMotorData );
+
+      auto straight_attr = GetAttributeByName(currentElement, "straight");
+      tm->straight = std::stoul(straight_attr);
+
+      auto curved_attr = GetAttributeByName(currentElement, "curved");
+      tm->curved = std::stoul(curved_attr);
+      
+      auto children = currentElement->getChildNodes();
+      // Don't have a schema defined, but should contain one PWMChannel node
+       for( XMLSize_t i=0; i<children->getLength(); i++ ) {
+	auto child = children->item(i);
+	
+	if( IsElementNode(child) ) {
+	  auto nxtElement = dynamic_cast<xercesc::DOMElement*>(child);
+
+	  if( IsPWMChannel(nxtElement) ) {
+	    tm->pwmChannelRequest.controller = GetAttributeByName(nxtElement, "controller");
+	    tm->pwmChannelRequest.controllerData = GetAttributeByName(nxtElement, "controllerData" );
+	  }
+	}
+       }
+      
+      return tm.release();
     }
   }
 }

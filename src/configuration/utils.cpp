@@ -30,7 +30,7 @@ namespace Signalbox {
       
       if( elementList->getLength() != 1 ) {
 	std::stringstream msg;
-	msg << "Found multiple child elements " << name;
+	msg << "Did not find exactly one child element " << name;
 	throw std::runtime_error(msg.str());
       }
       
@@ -105,6 +105,12 @@ namespace Signalbox {
       auto TAG_InputPin = StrToXMLCh("InputPin");
 
       return xercesc::XMLString::equals(element->getTagName(), TAG_InputPin.get());
+    }
+
+    bool IsPWMChannel( const xercesc::DOMElement* element ) {
+      auto TAG_PWMChannel = StrToXMLCh("PWMChannel");
+
+      return xercesc::XMLString::equals(element->getTagName(), TAG_PWMChannel.get());
     }
   }
 }

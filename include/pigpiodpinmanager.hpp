@@ -25,6 +25,8 @@ namespace Signalbox {
       return this->piId;
     }
 
+    virtual PWMChannel* CreatePWMChannel(const DeviceRequestData& data) override;
+    
     // Remove copy constructor and operator=
     PiGPIOdPinManager(PiGPIOdPinManager&) = delete;
     PiGPIOdPinManager& operator=(PiGPIOdPinManager&) = delete;

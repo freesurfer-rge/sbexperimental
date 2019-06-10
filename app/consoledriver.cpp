@@ -3,6 +3,7 @@
 #include <locale>
 
 #include "signalhead.hpp"
+#include "turnoutmotor.hpp"
 
 #include "consoledriver.hpp"
 
@@ -22,28 +23,22 @@ namespace Signalbox {
 	std::vector<std::string> tokens;
 	this->stringtotokens(inputLine, tokens);
 	
-	if( tokens.size() != 3 ) {
-	  std::cerr << "Did not find three tokens" << std::endl;
-	  continue;
-	}
-	
 	ItemId target;
-	SignalAspect aspect;
-	SignalFlash flash;
 	
 	try {
 	  target.Parse(tokens.at(0));
-	  Parse(tokens.at(1), aspect);
-	  Parse(tokens.at(2), flash);
 	  
 	  auto ci = f->GetById(target);
-	  
-	  auto sig = dynamic_cast<SignalHead*>(ci);
-	  
-	  if( sig != NULL ) {
-	    sig->SetState(aspect,flash);
+
+	  if( ci->getTypeString() == "signalhead" ) {
+	    this->handlesignalhead( ci, tokens );
+	  } else if( ci->getTypeString() == "turnoutmotor" ) {
+	    this->handleturnoutmotor( ci, tokens );
 	  } else {
-	    std::cerr << "Could not cast to SignalHead" << std::endl;
+	    std::cerr << "ControlledItem type '"
+		      << ci->getTypeString()
+		      << "' is not supported here"
+		      << std::endl;
 	  }
 	}
 	catch( std::exception& e ) {
@@ -51,6 +46,46 @@ namespace Signalbox {
 	  continue;
 	}
       }
+    }
+  }
+
+  void ConsoleDriver::handlesignalhead( ControlledItem* target, std::vector<std::string>& tokens ) {
+    auto sig = dynamic_cast<SignalHead*>(target);
+    
+    if( tokens.size() != 3 ) {
+      std::cerr << "Did not find three tokens for SignalHead" << std::endl;
+      return;
+    }
+    
+    SignalAspect aspect;
+    SignalFlash flash;
+
+    Parse(tokens.at(1), aspect);
+    Parse(tokens.at(2), flash);
+
+    if( sig != NULL ) {
+      sig->SetState(aspect,flash);
+    } else {
+      std::cerr << "Could not cast to SignalHead" << std::endl;
+    }
+  }
+
+   void ConsoleDriver::handleturnoutmotor( ControlledItem* target, std::vector<std::string>& tokens ) {
+    auto tm = dynamic_cast<TurnoutMotor*>(target);
+    
+    if( tokens.size() != 2 ) {
+      std::cerr << "Did not find three tokens for TurnoutMotor" << std::endl;
+      return;
+    }
+    
+    TurnoutState tms;
+
+    Parse(tokens.at(1), tms);
+
+    if( tm != NULL ) {
+      tm->SetState(tms);
+    } else {
+      std::cerr << "Could not cast to TurnoutMotor" << std::endl;
     }
   }
   

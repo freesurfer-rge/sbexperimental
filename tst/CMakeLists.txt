@@ -5,15 +5,19 @@ LIST(APPEND srcs configreadertest.cpp)
 
 LIST(APPEND srcs signalaspecttest.cpp)
 LIST(APPEND srcs signalflashtest.cpp)
+LIST(APPEND srcs turnoutstatetest.cpp)
 
 LIST(APPEND srcs signalheaddatatest.cpp)
 LIST(APPEND srcs trackcircuitmonitordatatest.cpp)
+LIST(APPEND srcs servoturnoutmotordatatest.cpp)
 
 LIST(APPEND srcs signalheadtest.cpp)
 LIST(APPEND srcs trackcircuitmonitortest.cpp)
+LIST(APPEND srcs servoturnoutmotortest.cpp)
 
 LIST(APPEND srcs signalheadfactorytest.cpp)
 LIST(APPEND srcs trackcircuitmonitorfactorytest.cpp)
+LIST(APPEND srcs servoturnoutmotorfactorytest.cpp)
 
 LIST(APPEND srcs controlleditemmanagertest.cpp)
 
@@ -35,3 +39,4 @@ ENDIF()
 CONFIGURE_FILE(singlesignalhead.xml . COPYONLY)
 CONFIGURE_FILE(twosignalheads.xml . COPYONLY)
 CONFIGURE_FILE(singletrackcircuitmonitor.xml . COPYONLY)
+CONFIGURE_FILE(singleturnout.xml . COPYONLY)

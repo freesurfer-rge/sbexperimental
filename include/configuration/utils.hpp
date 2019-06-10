@@ -29,5 +29,6 @@ namespace Signalbox {
     bool IsOutputPin( const xercesc::DOMElement* element );
     bool IsInputPin( const xercesc::DOMElement* element );
     bool IsSettings( const xercesc::DOMElement* element );
+    bool IsPWMChannel( const xercesc::DOMElement* element );
   }
 }

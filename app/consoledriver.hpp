@@ -13,5 +13,9 @@ namespace Signalbox {
   private:
     void stringtotokens( const std::string s,
 			 std::vector<std::string>& tokens ) const;
+
+    void handlesignalhead( ControlledItem* target, std::vector<std::string>& tokens );
+
+    void handleturnoutmotor( ControlledItem* target, std::vector<std::string>& tokens );
   };
 }
