@@ -23,6 +23,38 @@ BOOST_AUTO_TEST_CASE( ConstructorAndInitialise )
 
   BOOST_CHECK_EQUAL( 25e6, device.referenceClock );
   BOOST_CHECK_EQUAL( 50, device.pwmFrequency );
+  BOOST_CHECK_EQUAL( 0, device.assignedChannels.size() );
+}
+
+BOOST_AUTO_TEST_CASE( GetPWMChannel )
+{
+  const std::string name = "mymock";
+  const unsigned int bus = 1;
+  const unsigned int address = 0x40;
+  Signalbox::MockPCA9685 device(name, bus, address);
+  
+  std::map<std::string,std::string> settings;
+  settings["referenceClock"] = "25e6";
+  settings["pwmFrequency"] = "50";
+
+  device.Initialise(settings);
+
+  // Now the actual work
+  const std::string pwmChannelId = "00";
+  std::map<std::string,std::string> pwmSettings;
+
+  auto pwmChannel = device.GetPWMChannel(pwmChannelId, pwmSettings);
+  BOOST_REQUIRE(pwmChannel);
+
+  auto mpc = dynamic_cast<Signalbox::MockPWMChannel*>(pwmChannel);
+  BOOST_REQUIRE(mpc);
+
+  BOOST_CHECK_EQUAL( 1, device.assignedChannels.size() );
+  BOOST_CHECK_EQUAL( 1, device.assignedChannels.count(0) );
+  BOOST_CHECK_EQUAL( device.assignedChannels.at(0).get(), mpc );
+
+  BOOST_CHECK_EQUAL( mpc->controller, name );
+  BOOST_CHECK_EQUAL( mpc->controllerData, pwmChannelId );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

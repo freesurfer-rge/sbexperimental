@@ -2,6 +2,7 @@
 
 #include "pwmchannelprovider.hpp"
 #include "i2cdevice.hpp"
+#include "mockpwmchannel.hpp"
 
 namespace Signalbox {
   class MockPCA9685 : public I2CDevice, public PWMChannelProvider {
@@ -11,7 +12,8 @@ namespace Signalbox {
 	         const unsigned int address ) :
       I2CDevice(deviceName,bus,address),
       referenceClock(-1),
-      pwmFrequency(-1) {}
+      pwmFrequency(-1),
+      assignedChannels() {}
 
     virtual void Initialise( const std::map<std::string,std::string>& settings ) override;
 
@@ -22,5 +24,7 @@ namespace Signalbox {
     
     double referenceClock;
     double pwmFrequency;
+
+    std::map<unsigned int,std::unique_ptr<MockPWMChannel>> assignedChannels;
   };
 }
