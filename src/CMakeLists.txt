@@ -27,11 +27,14 @@ LIST(APPEND srcs trackcircuitmonitorfactory.cpp)
 LIST(APPEND srcs servoturnoutmotorfactory.cpp)
 
 LIST(APPEND srcs controlleditemmanager.cpp)
+LIST(APPEND srcs hardwareproviderregistrar.cpp)
 
 LIST(APPEND srcs mockpinmanager.cpp)
 LIST(APPEND srcs mockdigitaloutputpin.cpp)
 LIST(APPEND srcs mockdigitalinputpin.cpp)
 LIST(APPEND srcs mockpwmchannel.cpp)
+
+LIST(APPEND srcs mockpca9685.cpp)
 
 LIST(APPEND srcs mockrailtrafficcontrolclient.cpp)
 

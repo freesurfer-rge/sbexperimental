@@ -5,6 +5,8 @@
 namespace Signalbox {
   class HardwareProvider {
   public:
-    virtual void Register(HardwareProviderRegistrar registrar) = 0;
+    virtual ~HardwareProvider() {}
+    
+    virtual void Register(HardwareProviderRegistrar& registrar) = 0;
   };
 }
