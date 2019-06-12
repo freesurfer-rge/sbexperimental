@@ -1,6 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "mockpca9685.hpp"
+#include "exceptionmessagecheck.hpp"
 
 #include "mocki2cdevicefactory.hpp"
 
@@ -34,7 +35,18 @@ BOOST_AUTO_TEST_CASE( CreateMockPCA9685 )
 
 BOOST_AUTO_TEST_CASE( CreateUnknownDevice )
 {
-  BOOST_FAIL("Test not implemented");
+  Signalbox::MockI2CDeviceFactory df;
+  
+  Signalbox::I2CDeviceData deviceData;
+  deviceData.kind = "noSuchKind";
+  deviceData.bus = 0;
+  deviceData.address = 0x40;
+  deviceData.name = "SC01";
+
+  std::string msg("Specified device kind 'noSuchKind' not recognised");
+  BOOST_CHECK_EXCEPTION( df.CreateDevice(deviceData),
+			 std::out_of_range,
+			 GetExceptionMessageChecker<std::out_of_range>(msg) );
 }
 
 BOOST_AUTO_TEST_CASE( CreateDuplicateName )

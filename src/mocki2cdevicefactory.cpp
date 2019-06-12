@@ -7,7 +7,17 @@
 
 namespace Signalbox {
   std::unique_ptr<I2CDevice> MockI2CDeviceFactory::CreateDevice(const I2CDeviceData& data) {
-    auto result = std::unique_ptr<MockPCA9685>(new MockPCA9685(data.name, data.bus, data.address));
+    std::unique_ptr<I2CDevice> result;
+
+    if( data.kind == "pca9685" ) {
+      result = std::unique_ptr<I2CDevice>(new MockPCA9685(data.name, data.bus, data.address));
+    } else {
+      std::stringstream msg;
+      msg << "Specified device kind '"
+	  << data.kind
+	  << "' not recognised";
+      throw std::out_of_range(msg.str());
+    }
 
     result->Initialise(data.settings);
     
