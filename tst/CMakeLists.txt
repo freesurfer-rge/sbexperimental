@@ -20,6 +20,7 @@ LIST(APPEND srcs trackcircuitmonitorfactorytest.cpp)
 LIST(APPEND srcs servoturnoutmotorfactorytest.cpp)
 
 LIST(APPEND srcs controlleditemmanagertest.cpp)
+LIST(APPEND srcs hardwareproviderregistrartest.cpp)
 
 LIST(APPEND srcs mockpinmanagertest.cpp)
 LIST(APPEND srcs mockdigitalinputpintest.cpp)

@@ -20,7 +20,7 @@ namespace Signalbox {
     virtual PWMChannel* GetPWMChannel( const std::string channelId,
 				       const std::map<std::string,std::string> settings ) override;
 
-    virtual void Register(HardwareProviderRegistrar& registrar) override;
+    virtual void Register(HardwareProviderRegistrar* registrar) override;
     
     double referenceClock;
     double pwmFrequency;

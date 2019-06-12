@@ -55,7 +55,7 @@ namespace Signalbox {
     return this->assignedChannels[channel].get();
   }
 
-  void MockPCA9685::Register(HardwareProviderRegistrar& registrar) {
-    registrar.RegisterPWMChannelProvider( this->name, this );
+  void MockPCA9685::Register(HardwareProviderRegistrar* registrar) {
+    registrar->RegisterPWMChannelProvider( this->name, this );
   }
 }

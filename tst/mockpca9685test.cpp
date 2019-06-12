@@ -1,5 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
+#include "hardwareproviderregistrar.hpp"
+
 #include "mockpca9685.hpp"
 
 BOOST_AUTO_TEST_SUITE( MockPCA9685 )
@@ -55,6 +57,21 @@ BOOST_AUTO_TEST_CASE( GetPWMChannel )
 
   BOOST_CHECK_EQUAL( mpc->controller, name );
   BOOST_CHECK_EQUAL( mpc->controllerData, pwmChannelId );
+}
+
+BOOST_AUTO_TEST_CASE( RegisterWithRegistrar )
+{
+  const std::string name = "mymock";
+  const unsigned int bus = 1;
+  const unsigned int address = 0x40;
+  Signalbox::MockPCA9685 device(name, bus, address);
+
+  Signalbox::HardwareProviderRegistrar hpr;
+
+  device.Register(&hpr);
+
+  auto pcp = hpr.GetPWMChannelProvider(name);
+  BOOST_CHECK_EQUAL( pcp, &device );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

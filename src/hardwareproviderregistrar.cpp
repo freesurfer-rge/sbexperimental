@@ -6,22 +6,24 @@
 namespace Signalbox {
   void HardwareProviderRegistrar::RegisterPWMChannelProvider( const std::string providerName,
 							      PWMChannelProvider* provider ) {
-    std::stringstream msg;
-    msg << __FUNCTION__
-	<< " unable to register "
-	<< providerName
-	<< " due to lack of implementation"
-	<< std::endl;
-    throw std::runtime_error(msg.str());
+    if( this->pwmChannelProviders.count(providerName) != 0 ) {
+      std::stringstream msg;
+      msg << "PWMChannelProvider '"
+	  << providerName
+	  << "' already registered";
+      throw std::out_of_range(msg.str());
+    }
+    this->pwmChannelProviders[providerName] = provider;
   }
 
   PWMChannelProvider* HardwareProviderRegistrar::GetPWMChannelProvider( const std::string providerName ) const {
-     std::stringstream msg;
-     msg << __FUNCTION__
-	<< " unable to get PWMChannel from "
-	<< providerName
-	<< " due to lack of implementation"
-	<< std::endl;
-    throw std::runtime_error(msg.str());
+    if( this->pwmChannelProviders.count(providerName) != 1 ) {
+      std::stringstream msg;
+      msg << "PWMChannelProvider '"
+	  << providerName
+	  << "' not found";
+      throw std::out_of_range(msg.str());
+    }
+    return this->pwmChannelProviders.at(providerName);
   }
 }
