@@ -27,6 +27,7 @@ LIST(APPEND srcs mockdigitalinputpintest.cpp)
 LIST(APPEND srcs mockrailtrafficcontrolclienttest.cpp)
 
 LIST(APPEND srcs mockpca9685test.cpp)
+LIST(APPEND srcs mocki2cdevicefactorytest.cpp)
 
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpiodpinmanagertest.cpp)

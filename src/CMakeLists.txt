@@ -34,6 +34,7 @@ LIST(APPEND srcs mockdigitaloutputpin.cpp)
 LIST(APPEND srcs mockdigitalinputpin.cpp)
 LIST(APPEND srcs mockpwmchannel.cpp)
 
+LIST(APPEND srcs mocki2cdevicefactory.cpp)
 LIST(APPEND srcs mockpca9685.cpp)
 
 LIST(APPEND srcs mockrailtrafficcontrolclient.cpp)
