@@ -5,6 +5,10 @@
 
 namespace Signalbox {
 
+  void MockPinManager::Initialise( const std::vector<I2CDeviceData>& i2cDevices ) {
+    throw std::runtime_error(__PRETTY_FUNCTION__);
+  }
+  
   MockDigitalOutputPin* MockPinManager::FetchMockDigitalOutputPin(const std::string pinId) const {
     return this->getOutputPin(pinId);
   }

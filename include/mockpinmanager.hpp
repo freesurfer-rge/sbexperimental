@@ -13,6 +13,8 @@ namespace Signalbox {
     MockPinManager() :
       MapPinManager(),
       pwmChannels() {}
+
+    virtual void Initialise( const std::vector<I2CDeviceData>& i2cDevices ) override;
     
     MockDigitalOutputPin* FetchMockDigitalOutputPin(const std::string pinId) const;
     
