@@ -51,12 +51,60 @@ BOOST_AUTO_TEST_CASE( CreateUnknownDevice )
 
 BOOST_AUTO_TEST_CASE( CreateDuplicateName )
 {
-  BOOST_FAIL("Test not implemented");
+  Signalbox::MockI2CDeviceFactory df;
+  
+  Signalbox::I2CDeviceData deviceData;
+  deviceData.kind = "pca9685";
+  deviceData.bus = 0;
+  deviceData.address = 0x40;
+  deviceData.name = "SC01";
+  deviceData.settings["referenceClock"] = "25e6";
+  deviceData.settings["pwmFrequency"] = "50";
+
+  auto device = df.CreateDevice(deviceData);
+  BOOST_REQUIRE(device);
+
+  Signalbox::I2CDeviceData deviceData2;
+  deviceData2.kind = "pca9685";
+  deviceData2.bus = 1;
+  deviceData2.address = 0x40;
+  deviceData2.name = "SC01";
+  deviceData2.settings["referenceClock"] = "25e6";
+  deviceData2.settings["pwmFrequency"] = "50";
+
+  std::string msg("Specified device name 'SC01' already exists");
+  BOOST_CHECK_EXCEPTION( df.CreateDevice(deviceData2),
+			 std::out_of_range,
+			 GetExceptionMessageChecker<std::out_of_range>(msg) );
 }
 
 BOOST_AUTO_TEST_CASE( CreateDuplicateBusAndAddress )
 {
-  BOOST_FAIL("Test not implemented");
+  Signalbox::MockI2CDeviceFactory df;
+  
+  Signalbox::I2CDeviceData deviceData;
+  deviceData.kind = "pca9685";
+  deviceData.bus = 0;
+  deviceData.address = 0x40;
+  deviceData.name = "SC01";
+  deviceData.settings["referenceClock"] = "25e6";
+  deviceData.settings["pwmFrequency"] = "50";
+
+  auto device = df.CreateDevice(deviceData);
+  BOOST_REQUIRE(device);
+
+  Signalbox::I2CDeviceData deviceData2;
+  deviceData2.kind = "pca9685";
+  deviceData2.bus = 0;
+  deviceData2.address = 0x40;
+  deviceData2.name = "SC02";
+  deviceData2.settings["referenceClock"] = "25e6";
+  deviceData2.settings["pwmFrequency"] = "50";
+
+  std::string msg("Specified bus and address [0, 0x40] already assigned to a device");
+  BOOST_CHECK_EXCEPTION( df.CreateDevice(deviceData2),
+			 std::out_of_range,
+			 GetExceptionMessageChecker<std::out_of_range>(msg) );
 }
 
 BOOST_AUTO_TEST_SUITE_END()
