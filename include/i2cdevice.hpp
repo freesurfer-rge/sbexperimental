@@ -6,7 +6,7 @@
 #include "hardwareprovider.hpp"
 
 namespace Signalbox {
-  class I2CDevice : HardwareProvider {
+  class I2CDevice : public HardwareProvider {
   public:
     I2CDevice( const std::string deviceName,
 	       const unsigned int bus,

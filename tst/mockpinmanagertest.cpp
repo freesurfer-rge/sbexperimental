@@ -148,10 +148,35 @@ BOOST_AUTO_TEST_CASE( DuplicateCreateInputPin )
 			 GetExceptionMessageChecker<std::runtime_error>(msg) );
 }
 
+BOOST_AUTO_TEST_CASE( CreateMockPCA9685 )
+{
+  Signalbox::MockPinManager pm;
+
+  BOOST_CHECK_EQUAL( 0, pm.I2CDeviceCount() );
+
+  Signalbox::I2CDeviceData deviceData;
+  deviceData.kind = "pca9685";
+  deviceData.bus = 0;
+  deviceData.address = 0x40;
+  deviceData.name = "SC01";
+  deviceData.settings["referenceClock"] = "25e6";
+  deviceData.settings["pwmFrequency"] = "50";
+
+  std::vector<Signalbox::I2CDeviceData> deviceDataList;
+  deviceDataList.push_back(deviceData);
+
+  pm.Initialise(deviceDataList);
+
+  BOOST_CHECK_EQUAL( 1, pm.I2CDeviceCount() );
+  
+}
+
 BOOST_AUTO_TEST_CASE( CreatePWMChannel )
 {
   Signalbox::MockPinManager pm;
 
+  BOOST_FAIL("Need to update now that we have I2C");
+  
   Signalbox::DeviceRequestData data;
   data.controller = "sc01";
   data.controllerData = "01";
@@ -178,6 +203,7 @@ BOOST_AUTO_TEST_CASE( CreatePWMChannel )
 BOOST_AUTO_TEST_CASE( CreateTwoPWMChannels )
 {
   Signalbox::MockPinManager pm;
+  BOOST_FAIL("Need to update now that we have I2C");
 
   Signalbox::DeviceRequestData data1;
   data1.controller = "sc01";
@@ -200,6 +226,7 @@ BOOST_AUTO_TEST_CASE( CreateTwoPWMChannels )
 BOOST_AUTO_TEST_CASE( DuplicatePWMChannel )
 {
   Signalbox::MockPinManager pm;
+  BOOST_FAIL("Need to update now that we have I2C");
   
   Signalbox::DeviceRequestData data;
   data.controller = "sc01";
