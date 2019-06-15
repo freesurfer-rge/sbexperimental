@@ -13,6 +13,10 @@ namespace Signalbox {
     ConsolePinManager() :
       MapPinManager(),
       pwmChannels() {}
+
+    virtual void Initialise( const std::vector<I2CDeviceData>& i2cDevices ) override {
+      throw std::runtime_error(__PRETTY_FUNCTION__);
+    }
     
     virtual PWMChannel* CreatePWMChannel(const DeviceRequestData& data) override;
   protected:
