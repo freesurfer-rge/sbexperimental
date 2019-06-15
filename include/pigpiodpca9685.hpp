@@ -8,6 +8,7 @@
 
 namespace Signalbox {
   class PiGPIOdPCA9685 : public I2CDevice, public PWMChannelProvider {
+  public:
     PiGPIOdPCA9685( const std::string deviceName,
 		    const unsigned int bus,
 		    const unsigned int address ) :

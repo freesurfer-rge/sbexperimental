@@ -11,6 +11,8 @@
 #include "trackcircuitmonitorfactory.hpp"
 #include "servoturnoutmotorfactory.hpp"
 
+#include "i2cbusdata.hpp"
+
 #include "railtrafficcontrolclient.hpp"
 
 namespace Signalbox {
@@ -28,6 +30,10 @@ namespace Signalbox {
       for( auto it=this->items.begin(); it!=this->items.end(); it++ ) {
 	(*it).second->Deactivate();
       }
+    }
+
+    void Initialise( I2CBusData& i2cBus ) {
+      this->pinManager->Initialise( i2cBus.devices );
     }
     
     virtual ControlledItemFactory* GetSignalHeadFactory() override;

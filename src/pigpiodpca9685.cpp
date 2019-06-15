@@ -131,4 +131,9 @@ namespace Signalbox {
 
     return this->assignedChannels[channel].get();
   }
+
+  void PiGPIOdPCA9685::Register(HardwareProviderRegistrar* registrar) {
+    registrar->RegisterPWMChannelProvider( this->name, this );
+  }
+
 }

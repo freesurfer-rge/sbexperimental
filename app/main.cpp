@@ -41,6 +41,9 @@ int main(int ac, char* av[]) {
     Signalbox::RailTrafficControlData rtcData;
     cr.ReadRailTrafficControl( rtcData );
 
+    Signalbox::I2CBusData i2cBusData;
+    cr.ReadI2CData( i2cBusData );
+
     std::cout << "Read config file" << std::endl;
     
     // -----
@@ -52,6 +55,8 @@ int main(int ac, char* av[]) {
     Signalbox::PinManagerFactory* pmf = dest->GetPinManagerFactory();
     Signalbox::ControlledItemManager cim(pmf, rtcClient);
 
+    cim.Initialise( i2cBusData );
+    
     auto nPopulate = cim.PopulateItems( configItems );
     std::cout << "Populated " << nPopulate << " items" << std::endl;
 

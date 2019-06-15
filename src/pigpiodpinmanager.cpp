@@ -4,6 +4,8 @@
 
 #include <pigpiod_if2.h>
 
+#include "pigpiodpca9685.hpp"
+
 #include "pigpiodpinmanager.hpp"
 
 namespace Signalbox {
@@ -30,7 +32,9 @@ namespace Signalbox {
   
   PiGPIOdPinManager::PiGPIOdPinManager() :
     MapPinManager(),
-    piId(-1) {
+    piId(-1),
+    devices(),
+    hpr() {
     if( PiGPIOdPinManager::singleton != NULL ) {
       throw std::runtime_error("PiGPIOdPinManager already exists");
     }
@@ -53,10 +57,37 @@ namespace Signalbox {
     PiGPIOdPinManager::singleton = NULL;
   }
 
+  void PiGPIOdPinManager::Initialise(const std::vector<I2CDeviceData>& i2cDevices) {
+    for( auto it=i2cDevices.begin();
+	 it != i2cDevices.end();
+	 ++it ) {
+      // Create the next device
+      std::unique_ptr<I2CDevice> nxtDevice;
+      if( (*it).kind == "pca9685" ) {
+	nxtDevice = std::unique_ptr<I2CDevice>( new PiGPIOdPCA9685( (*it).name,
+								    (*it).bus,
+								    (*it).address ) );
+	auto pca9685 = dynamic_cast<PiGPIOdPCA9685*>(nxtDevice.get());
+	pca9685->piId = this->piId;
+	pca9685->Register(&(this->hpr));
+      } else {
+	std::stringstream msg;
+	msg << "Specified device kind '"
+	    << (*it).kind
+	    << "' not recognised";
+	throw std::out_of_range(msg.str());
+      }
+
+      nxtDevice->Initialise((*it).settings);
+
+      this->devices.push_back(std::move(nxtDevice));
+    }
+  }
+  
   PWMChannel* PiGPIOdPinManager::CreatePWMChannel(const DeviceRequestData& data) {
-    std::stringstream msg;
-    msg << __PRETTY_FUNCTION__ << " not yet implemented";
-    throw std::runtime_error(msg.str());
+    auto channelProvider = this->hpr.GetPWMChannelProvider( data.controller );
+    return channelProvider->GetPWMChannel( data.controllerData,
+					   data.settings );
   }
   
   int PiGPIOdPinManager::parsePinId(const std::string pinId) const {
