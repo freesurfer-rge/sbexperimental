@@ -25,6 +25,10 @@ namespace Signalbox {
       return this->piId;
     }
 
+    virtual void Initialise(const std::vector<I2CDeviceData>& i2cDevices) {
+      throw std::runtime_error(__PRETTY_FUNCTION__);
+    }
+    
     virtual PWMChannel* CreatePWMChannel(const DeviceRequestData& data) override;
     
     // Remove copy constructor and operator=
