@@ -40,6 +40,8 @@ LIST(APPEND srcs mockpca9685.cpp)
 LIST(APPEND srcs mockrailtrafficcontrolclient.cpp)
 
 IF( pigpio_FOUND )
+  LIST(APPEND srcs pca9685pwmchannel.cpp)
+  LIST(APPEND srcs pigpiodpca9685.cpp)
   LIST(APPEND srcs pigpioddigitaloutputpin.cpp)
   LIST(APPEND srcs pigpioddigitalinputpin.cpp)
   LIST(APPEND srcs pigpiodpinmanager.cpp)
