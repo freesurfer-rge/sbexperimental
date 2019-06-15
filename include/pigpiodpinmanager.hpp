@@ -7,6 +7,11 @@
 #include "pinmanager.hpp"
 #include "mappinmanager.hpp"
 
+#include "i2cdevice.hpp"
+#include "i2cdevicedata.hpp"
+
+#include "hardwareproviderregistrar.hpp"
+
 #include "pigpioddigitaloutputpin.hpp"
 #include "pigpioddigitalinputpin.hpp"
 
@@ -25,6 +30,8 @@ namespace Signalbox {
       return this->piId;
     }
 
+    virtual void Initialise(const std::vector<I2CDeviceData>& i2cDevices) override;
+    
     virtual PWMChannel* CreatePWMChannel(const DeviceRequestData& data) override;
     
     // Remove copy constructor and operator=
@@ -43,5 +50,7 @@ namespace Signalbox {
     static void callBackDispatch(int pi, unsigned int user_gpio, unsigned int level, uint32_t tick);
     
     int piId;
+    std::vector<std::unique_ptr<I2CDevice>> devices;
+    HardwareProviderRegistrar hpr;
   };
 }

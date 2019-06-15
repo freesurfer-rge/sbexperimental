@@ -3,8 +3,24 @@
 
 #include "mockpinmanager.hpp"
 
+#include "mocki2cdevicefactory.hpp"
+
 namespace Signalbox {
 
+  void MockPinManager::Initialise( const std::vector<I2CDeviceData>& i2cDevices ) {
+    MockI2CDeviceFactory devFactory;
+
+    for( auto it=i2cDevices.begin();
+	 it!=i2cDevices.end();
+	 ++it ) {
+      auto nxtDevice = devFactory.CreateDevice(*it);
+
+      nxtDevice->Register(&(this->hpr));
+
+      this->devices.push_back(std::move(nxtDevice));
+    }
+  }
+  
   MockDigitalOutputPin* MockPinManager::FetchMockDigitalOutputPin(const std::string pinId) const {
     return this->getOutputPin(pinId);
   }

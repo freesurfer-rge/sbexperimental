@@ -20,10 +20,14 @@ LIST(APPEND srcs trackcircuitmonitorfactorytest.cpp)
 LIST(APPEND srcs servoturnoutmotorfactorytest.cpp)
 
 LIST(APPEND srcs controlleditemmanagertest.cpp)
+LIST(APPEND srcs hardwareproviderregistrartest.cpp)
 
 LIST(APPEND srcs mockpinmanagertest.cpp)
 LIST(APPEND srcs mockdigitalinputpintest.cpp)
 LIST(APPEND srcs mockrailtrafficcontrolclienttest.cpp)
+
+LIST(APPEND srcs mockpca9685test.cpp)
+LIST(APPEND srcs mocki2cdevicefactorytest.cpp)
 
 IF( pigpio_FOUND )
   LIST(APPEND srcs pigpiodpinmanagertest.cpp)
