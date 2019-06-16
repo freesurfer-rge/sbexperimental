@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "pinmanager.hpp"
 #include "mappinmanager.hpp"
 
@@ -15,7 +17,7 @@ namespace Signalbox {
       pwmChannels() {}
 
     virtual void Initialise( const std::vector<I2CDeviceData>& i2cDevices ) override {
-      throw std::runtime_error(__PRETTY_FUNCTION__);
+      std::cout << __PRETTY_FUNCTION__ << " is not yet implemented" << std::endl;
     }
     
     virtual PWMChannel* CreatePWMChannel(const DeviceRequestData& data) override;
