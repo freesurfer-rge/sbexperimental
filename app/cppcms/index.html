@@ -10,13 +10,23 @@
 <style type="text/css">
 /*<![CDATA[*/
   form.signalheadcontrol { border-style: solid;
-                           padding: 1em; }
+			   width: 20em;
+			   height: 15em;
+                           padding: 1em;
+			   margin: 1ex;
+			   float: left }
   
   form.trackcircuitmonitorcontrol { border-style: dashed;
-                                    padding: 1em; }
+				    padding: 1em;
+				    margin: 1ex;
+				    float: left }
   
   form.turnoutmotorcontrol { border-style: dotted;
-                             padding: 1em; }
+                             padding: 1em;
+			     margin: 1ex;
+			     float: left }
+
+  p.response { display: none }
 /*]]>*/
 </style>
 
@@ -284,6 +294,7 @@
       // And the error line
       var errorPara = document.createElement("p");
       errorPara.setAttribute("id", "response"+sh.id);
+      errorPara.setAttribute("class", "response");
       f.appendChild(errorPara);
       
       // Insert into document
@@ -322,6 +333,7 @@
       // And the error line
       var errorPara = document.createElement("p");
       errorPara.setAttribute("id", "response"+tm.id);
+      errorPara.setAttribute("class", "response");
       f.appendChild(errorPara);
       
       // Insert into document
